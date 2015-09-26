@@ -1,0 +1,16 @@
+*.log
+.htaccess
+sitemap.xml
+sitemap.xml.gz
+
+# composer
+composer.lock
+web/*
+!web/index.php
+!web/wp-config.php.dist
+!web/content/themes/wp-dummy-twig
+vendor/
+
+# empty directory
+!.gitkeep
+
