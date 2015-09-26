@@ -14,7 +14,8 @@
   "require": {
     "wordpress/wordpress": "^4.3",
     "fancyguy/webroot-installer": "1.0.0",
-    "dummy-team/wp-installer-composer-scripts": "^0.4.0"
+    "dummy-team/wp-installer-composer-scripts": "^0.4.0",
+    "wp-cli/wp-cli": "^0.20.1"
   },
   "require-dev": {
   },
