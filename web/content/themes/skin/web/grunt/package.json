@@ -1,0 +1,22 @@
+{
+  "devDependencies": {
+    "autoprefixer": "*",
+    "coffeeify": "*",
+    "coffeelint": "*",
+    "glob": "*",
+    "grunt": "*",
+    "grunt-browser-sync": "*",
+    "grunt-browserify": "",
+    "grunt-coffeelint": "*",
+    "grunt-concurrent": "*",
+    "grunt-contrib-clean": "*",
+    "grunt-contrib-cssmin": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-notify": "*",
+    "grunt-postcss": "*",
+    "grunt-sass": "*",
+    "grunt-scss-lint": "*",
+    "load-grunt-tasks": "*"
+  }
+}

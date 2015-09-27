@@ -1,0 +1,17 @@
+////
+/// Links & buttons
+///
+/// @group Elements
+///
+////
+
+button,
+a {
+  text-decoration: none; color: $link-color;
+
+  &:hover { text-decoration: underline; }
+}
+button {
+  background-color: transparent;
+  color: $link-color;
+}

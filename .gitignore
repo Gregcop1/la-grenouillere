@@ -5,8 +5,11 @@ sitemap.xml.gz
 
 # composer
 composer.lock
+vendor/
 
+# Wordpress
 web/*
+web/content/plugins/*
 web/content/themes/*
 !web/index.php
 !web/wp-config.php.dist
@@ -14,7 +17,7 @@ web/content/themes/*
 !web/content/themes
 !web/content/themes/skin
 
-vendor/
+node_modules
 
 # empty directory
 !.gitkeep
