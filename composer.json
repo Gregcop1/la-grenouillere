@@ -15,7 +15,8 @@
     "wordpress/wordpress": "^4.3",
     "fancyguy/webroot-installer": "1.0.0",
     "dummy-team/wp-installer-composer-scripts": "^0.4.0",
-    "wp-cli/wp-cli": "^0.20.1"
+    "wp-cli/wp-cli": "^0.20.1",
+    "gregcop1/vc": "^1.0"
   },
   "require-dev": {
   },
@@ -38,6 +39,10 @@
           "fancyguy/webroot-installer": "1.0.0"
         }
       }
+    },
+    {
+      "type": "git",
+      "url": "git@github.com:gregcop1/vc.git"
     }
   ],
   "extra": {
