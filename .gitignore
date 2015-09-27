@@ -5,10 +5,15 @@ sitemap.xml.gz
 
 # composer
 composer.lock
+
 web/*
+web/content/themes/*
 !web/index.php
 !web/wp-config.php.dist
-!web/content/themes/wp-dummy-twig
+!web/content
+!web/content/themes
+!web/content/themes/skin
+
 vendor/
 
 # empty directory
