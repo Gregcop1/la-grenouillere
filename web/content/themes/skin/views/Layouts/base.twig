@@ -14,12 +14,6 @@
 </section>
 
 {% block footer %}
-    <footer id="footer" class="footer">
-        <div class=" page-sized">
-            {% include 'Partials/Layout/_footer.twig' %}
-        </div>
-    </footer>
-
     {{ function('wp_footer') }}
 
     {% include 'Partials/Components/_analytics.twig' %}

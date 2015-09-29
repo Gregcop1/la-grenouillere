@@ -8,7 +8,7 @@ module.exports =
       '../img/**'
     ]
     # Start a basic file server
-    server: '../'
+    server: false
     # Use an existing server (apache,node...)
     proxy: false # 'domain.local'
     # Open browser on server start

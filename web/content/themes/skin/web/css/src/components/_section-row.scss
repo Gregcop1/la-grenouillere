@@ -1,0 +1,15 @@
+.section-row {
+  height: 100%;
+
+  article { float: left; background-repeat: no-repeat; background-position: 50% 50%; background-size: cover; }
+
+  [id="post-5"] { background-image: url('../img/bg-1.jpg'); }
+  [id="post-7"] { background-image: url('../img/bg-2.jpg'); }
+  [id="post-9"] { background-image: url('../img/bg-3.jpg'); }
+  [id="post-11"] { background-image: url('../img/bg-4.jpg'); }
+  [id="post-13"] { background-image: url('../img/bg-5.jpg'); }
+  [id="post-15"] { background-image: url('../img/bg-6.jpg'); }
+  [id="post-17"] { background-image: url('../img/bg-7.jpg'); }
+  [id="post-19"] { background-image: url('../img/bg-8.jpg'); }
+  [id="post-21"] { background-image: url('../img/bg-9.jpg'); }
+}

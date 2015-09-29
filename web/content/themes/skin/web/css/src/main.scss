@@ -25,6 +25,7 @@
 @import 'elements/headings';
 @import 'elements/body';
 @import 'elements/links';
+@import 'elements/header';
 
 // Objects
 @import 'objects/alignements';
@@ -34,6 +35,7 @@
 @import 'objects/page-sized';
 
 // Components
+@import 'components/section-row';
 
 // Trumps
 @import 'trumps/print';

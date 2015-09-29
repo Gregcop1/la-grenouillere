@@ -11,6 +11,5 @@ module.exports =
         ignored: /^([.][^.\/\\])|([\/\\]+[.][^.])/
       server: options.sync.server
       proxy: options.sync.proxy
-
     bsFiles:
       src : options.sync.files

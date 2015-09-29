@@ -62,7 +62,7 @@
     "level": "warn"
   },
   "no_empty_param_list": {
-    "level": "error"
+    "level": "ignore"
   },
   "no_implicit_braces": {
     "level": "ignore",
