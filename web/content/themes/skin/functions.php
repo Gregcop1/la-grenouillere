@@ -6,9 +6,21 @@ class SkinSite extends TimberSite
     public function __construct()
     {
         $this->disableBar();
+        $this->addAction();
         $this->removeAction();
         $this->registerScripts();
+        $this->register_menus();
         parent::__construct();
+    }
+
+    public static function isReallyHome()
+    {
+        return $_SERVER['REQUEST_URI'] === '/';
+    }
+
+    private function addAction()
+    {
+        add_action('wp_footer', array($this, 'print_inline_script'));
     }
 
     private function removeAction()
@@ -29,11 +41,29 @@ class SkinSite extends TimberSite
 
     private function registerScripts()
     {
-        if(!is_admin()) {
-            wp_deregister_script('jquery');
-            wp_register_script('jquery', (""), false, '');
-            wp_enqueue_script('jquery');
+        wp_enqueue_script('modernizr', get_stylesheet_directory_uri() . '/web/js/vendors/modernizr.js');
+//        if (!is_admin()) {
+//            wp_deregister_script('jquery');
+//            wp_register_script('jquery', (""), false, '');
+//            wp_enqueue_script('jquery');
+//        }
+    }
+
+    public function print_inline_script()
+    {
+        if ($_SERVER['SERVER_NAME'] == 'localhost') {
+            echo "<script type='text/javascript' id='__bs_script__'>
+                    document.write(\"<script async src='http://HOST:3000/browser-sync/browser-sync-client.2.9.6.js'><\/script>\".replace(\"HOST\", location.hostname));
+                </script>";
         }
+    }
+
+    private function register_menus()
+    {
+        //this is where you can register menus
+        register_nav_menus(array(
+            'first-level' => __('Niveau 1', 'skin-dummy')
+        ));
     }
 }
 

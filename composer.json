@@ -18,7 +18,8 @@
     "wp-cli/wp-cli": "^0.20.1",
     "gregcop1/vc": "^1.0",
     "dummy-team/wp-dummy-twig": "dev-twig-structure",
-    "wpackagist-plugin/timber": "dev-trunk"
+    "wpackagist-plugin/polylang": "dev-trunk",
+    "wpackagist-plugin/timber-library": "dev-trunk"
   },
   "require-dev": {
   },

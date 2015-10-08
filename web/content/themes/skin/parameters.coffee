@@ -2,10 +2,10 @@ module.exports =
   sync:
     # Files which trigger a browser reload
     files: [
-      '../*.html'
-      '../css/*.css'
-      '../js/*.js'
-      '../img/**'
+      'web/*.html'
+      'web/css/*.css'
+      'web/js/*.js'
+      'web/img/**'
     ]
     # Start a basic file server
     server: false
@@ -23,10 +23,10 @@ module.exports =
 
   # Source files
   js:
-    source: '../js/src/'
-    dest: '../js/'
+    source: 'web/js/src/'
+    dest: 'web/js/'
   css:
-    source  : '../css/src/'
-    dest : '../css/'
+    source  : 'web/css/src/'
+    dest : 'web/css/'
     style: 'compact'
     precision: 20

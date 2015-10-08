@@ -54,7 +54,7 @@ input, select, textarea, label { vertical-align: middle; }
 
 h1, h2, h3, h4, h5, h6 { line-height: 1em; font-weight: 700; }
 
-body { overflow: hidden; font-family: Arial, sans-serif; font-weight: 400; color: #222; }
+body { font-family: Arial, sans-serif; font-weight: 400; color: #222; }
 
 button, a { text-decoration: none; color: #68bbdb; }
 
@@ -79,6 +79,8 @@ header { position: absolute; }
 .important { font-size: 2.4em; }
 
 .introduction { font-size: 1.7em; }
+
+.nav-block .nav-main { display: none; }
 
 .section-row { height: 100%; }
 
