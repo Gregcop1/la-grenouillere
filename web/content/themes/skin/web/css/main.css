@@ -18,7 +18,7 @@ h6 { margin: 15px 0; font-size: 1.4em; }
 
 [type="tel"]:focus, [type="email"]:focus, [type="url"]:focus, [type="search"]:focus, [type="date"]:focus, [type="time"]:focus, [type="datetime"]:focus, [type="month"]:focus, [type="week"]:focus, [type="number"]:focus, select:focus, textarea:focus { outline: none; }
 
-.page-sized { margin: auto; padding: 0 0px; width: 1200px; max-width: 100%; }
+.page-sized { margin: auto; padding: 0 0px; width: 100%; }
 
 @media screen and (max-width: 1200px) { .page-sized { margin-right: 0px; margin-left: 0px; padding: 0; width: auto; } }
 
@@ -54,7 +54,7 @@ input, select, textarea, label { vertical-align: middle; }
 
 h1, h2, h3, h4, h5, h6 { line-height: 1em; font-weight: 700; }
 
-body { font-family: Arial, sans-serif; font-weight: 400; color: #222; }
+body { overflow: hidden; font-family: Arial, sans-serif; font-weight: 400; color: #222; }
 
 button, a { text-decoration: none; color: #68bbdb; }
 
@@ -82,23 +82,25 @@ header { position: absolute; }
 
 .nav-block .nav-main { display: none; }
 
-.section-row { height: 100%; }
+.section-row { height: 100%; opacity: 0; }
 
 .section-row article { float: left; background-repeat: no-repeat; background-position: 50% 50%; background-size: cover; }
 
+.section-row .article-content { opacity: 0; }
+
 .section-row [id="post-5"] { background-image: url("../img/bg-1.jpg"); }
 
-.section-row [id="post-7"] { background-image: url("../img/bg-2.jpg"); }
+.section-row [id="post-67"] { background-image: url("../img/bg-2.jpg"); }
 
-.section-row [id="post-9"] { background-image: url("../img/bg-3.jpg"); }
+.section-row [id="post-69"] { background-image: url("../img/bg-3.jpg"); }
 
-.section-row [id="post-11"] { background-image: url("../img/bg-4.jpg"); }
+.section-row [id="post-71"] { background-image: url("../img/bg-4.jpg"); }
 
-.section-row [id="post-13"] { background-image: url("../img/bg-5.jpg"); }
+.section-row [id="post-15"] { background-image: url("../img/bg-5.jpg"); }
 
-.section-row [id="post-15"] { background-image: url("../img/bg-6.jpg"); }
+.section-row [id="post-73"] { background-image: url("../img/bg-6.jpg"); }
 
-.section-row [id="post-17"] { background-image: url("../img/bg-7.jpg"); }
+.section-row [id="post-75"] { background-image: url("../img/bg-7.jpg"); }
 
 .section-row [id="post-19"] { background-image: url("../img/bg-8.jpg"); }
 

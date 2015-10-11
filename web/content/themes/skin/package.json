@@ -17,6 +17,7 @@
     "grunt-postcss": "*",
     "grunt-sass": "*",
     "grunt-scss-lint": "*",
-    "load-grunt-tasks": "*"
+    "load-grunt-tasks": "*",
+    "velocity-animate": "^1.2.3"
   }
 }
