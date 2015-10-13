@@ -9,8 +9,9 @@
 window.addEventListener('load', ->
   # Content builder
   if(!document.body.classList.contains('home'))
-    ContentBuilder = require('./components/contentBuilder.coffee')
+    ContentBuilder = require('./components/ContentBuilder.coffee')
     window.cb = new ContentBuilder('#nav-main > ul', '#content')
 
     window.keyboardListener = require('./components/keyboardListener.coffee')
+    window.footerManager = require('./components/footerManager.coffee')
 )

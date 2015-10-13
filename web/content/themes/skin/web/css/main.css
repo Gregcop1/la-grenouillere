@@ -64,6 +64,10 @@ button { background-color: transparent; color: #68bbdb; }
 
 header { position: absolute; }
 
+footer { position: fixed; top: 0; right: 0; bottom: 0; padding: 1% 3% x; width: 400px; max-width: 100%; background: linear-gradient(to right, #262626 0%, #333 10%); overflow: auto; opacity: 0; z-index: 1; filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$grey3', endColorstr='$grey2',GradientType=1); }
+
+footer.shown { display: block; }
+
 .align-left { text-align: left; }
 
 .align-center { text-align: center; }
@@ -82,9 +86,27 @@ header { position: absolute; }
 
 .nav-block .nav-main { display: none; }
 
+.nav-footer ul { margin: 0 0 0 15px; padding: 0; }
+
+.nav-footer .nav-item { margin: 5px 0; }
+
+.nav-footer .nav-drop-item { margin: 0; list-style-type: none; }
+
+.nav-footer .first-level > .nav-item { display: table; margin: 20px 0; width: 100%; }
+
+.nav-footer .first-level > .nav-item > a, .nav-footer .first-level > .nav-item .second-level { display: table-cell; padding: 0 4%; vertical-align: middle; }
+
+.nav-footer .first-level > .nav-item > a { width: 30%; font-size: 1.2em; font-weight: 700; text-align: right; }
+
+.nav-footer .second-level { border-left: 3px solid #949494; width: 54%; }
+
+.nav-footer .second-level a { display: inline; }
+
+.nav-footer a { color: #949494; }
+
 .section-row { height: 100%; opacity: 0; }
 
-.section-row article { float: left; background-repeat: no-repeat; background-position: 50% 50%; background-size: cover; }
+.section-row article { position: relative; float: left; background-repeat: no-repeat; background-position: 50% 50%; background-size: cover; z-index: 2; }
 
 .section-row .article-content { opacity: 0; }
 

@@ -1,0 +1,14 @@
+.nav-footer {
+  ul { margin: 0 0 0 15px; padding: 0; }
+  .nav-item { margin: 5px 0; }
+  .nav-drop-item { margin: 0; list-style-type: none; }
+  .first-level > .nav-item { display: table; margin: 20px 0; width: 100%;
+    > a, .second-level { display: table-cell; padding: 0 4%; vertical-align: middle; }
+    > a { width: 30%;
+      font-size: 1.2em; font-weight: $fw-bold; text-align: right; }
+  }
+  .second-level { border-left: 3px solid $grey; width: 54%;
+    a { display: inline; }
+  }
+  a { color: $grey; }
+}

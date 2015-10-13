@@ -1,7 +1,7 @@
 .section-row {
   height: 100%; opacity: 0;
 
-  article { float: left; background-repeat: no-repeat; background-position: 50% 50%; background-size: cover; }
+  article { position: relative; float: left; background-repeat: no-repeat; background-position: 50% 50%; background-size: cover; z-index: 2; }
   .article-content { opacity: 0; }
 
   [id="post-5"] { background-image: url('../img/bg-1.jpg'); }

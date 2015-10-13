@@ -14,21 +14,34 @@ HTMLElement.prototype.index = () ->
   return -1
 
 module.exports = class ContentBuilder
+  articlesLoaded: 0
   slice: []
-  classes:
+  selector:
     row: 'section-row'
     currentRow: 'current-row'
     currentArticle: 'current-article'
     article: 'post-type-page'
     articleContent: 'article-content'
+    cutByFooter: 'cut-by-footer'
   transitionDuration:
     slide: 250
     fade: 350
+  event:
+    NEXT_ARTICLE: 'NEXT_ARTICLE'
+    PREVIOUS_ARTICLE: 'PREVIOUS_ARTICLE'
+    NEXT_ROW: 'NEXT_ROW'
+    PREVIOUS_ROW: 'PREVIOUS_ROW'
+    ARTICLES_LOADED: 'ARTICLES_LOADED'
+    ARTICLES_DISPLAYED: 'ARTICLES_DISPLAYED'
+    FOOTER_SHOW: 'FOOTER_SHOW'
+    FOOTER_HIDE: 'FOOTER_HIDE'
 
   constructor: (menu, container) ->
     @viewport =
       width: Math.max(document.documentElement.clientWidth, window.innerWidth || 0) + 'px'
       height: Math.max(document.documentElement.clientHeight, window.innerHeight || 0) + 'px'
+    @footer =
+      width: parseInt(document.querySelector('#footer').offsetWidth)
     @menu = document.querySelector(menu)
     @container = document.querySelector(container)
     @emptyContainer()
@@ -62,6 +75,7 @@ module.exports = class ContentBuilder
     XHRT.onload = =>
       response = @setViewportSizeToContent(XHRT.response.querySelector('#content'))
       @buildArticle(index, response.innerHTML)
+      document.body.dispatchEvent(new Event(@event.ARTICLES_LOADED))
     XHRT.open('GET', link.getAttribute('href'), true)
     XHRT.send()
     return @
@@ -103,16 +117,16 @@ module.exports = class ContentBuilder
   buildRow: (index) ->
     if(@container.children.length <= index)
       row = document.createElement('div')
-      row.classList.add(@classes.row)
+      row.classList.add(@selector.row)
       row.style.width = @viewport.width
       row.style.height = @viewport.height
       @container.appendChild( row )
     return @
 
   getCurrentRow: () =>
-    currentRow = @container.querySelector('.' + @classes.currentRow)
+    currentRow = @container.querySelector('.' + @selector.currentRow)
     if(!currentRow)
-      currentRow = @container.querySelector('.' + @classes.row)
+      currentRow = @container.querySelector('.' + @selector.row)
     return currentRow
 
   goToNextRow: () =>
@@ -123,7 +137,7 @@ module.exports = class ContentBuilder
       nextRow = nextRow.nextSibling
 
     if(nextRow)
-      firstArticle = nextRow.querySelector('.' + @classes.article)
+      firstArticle = nextRow.querySelector('.' + @selector.article)
       @goToArticle(firstArticle)
     return @
 
@@ -135,15 +149,15 @@ module.exports = class ContentBuilder
       previousRow = previousRow.previousSibling
 
     if(previousRow)
-      firstArticle = previousRow.querySelector('.' + @classes.article)
+      firstArticle = previousRow.querySelector('.' + @selector.article)
       @goToArticle(firstArticle)
     return @
 
   prepareSwitchOfRow: (cumulatedDelay) =>
     goTrough = false
-    [].forEach.call(@container.querySelectorAll('.' + @classes.currentRow), (node) =>
+    [].forEach.call(@container.querySelectorAll('.' + @selector.currentRow), (node) =>
       goTrough = true
-      node.classList.remove(@classes.currentRow)
+      node.classList.remove(@selector.currentRow)
 
       # hide row
       Velocity(node, 'fadeOut', {duration: @transitionDuration.fade, delay: cumulatedDelay})
@@ -155,10 +169,10 @@ module.exports = class ContentBuilder
     return cumulatedDelay
 
   goToRow: (row, cumulatedDelay) =>
-    if(!row.classList.contains(@classes.currentRow))
+    if(!row.classList.contains(@selector.currentRow))
       cumulatedDelay += @prepareSwitchOfRow(cumulatedDelay)
       row.style.marginLeft = 0
-      row.classList.add(@classes.currentRow)
+      row.classList.add(@selector.currentRow)
 
       # show row
       Velocity(row, 'fadeIn', {duration: @transitionDuration.fade, delay: cumulatedDelay})
@@ -168,10 +182,10 @@ module.exports = class ContentBuilder
 
   prepareSwitchOfArticle: (cumulatedDelay) =>
     goTrough = false
-    [].forEach.call(@container.querySelectorAll('.' + @classes.currentArticle), (node) =>
+    [].forEach.call(@container.querySelectorAll('.' + @selector.currentArticle), (node) =>
       goTrough = true
-      node.classList.remove(@classes.currentArticle)
-      Velocity(node.querySelector('.' + @classes.articleContent),
+      node.classList.remove(@selector.currentArticle)
+      Velocity(node.querySelector('.' + @selector.articleContent),
         'fadeOut',
         {duration: @transitionDuration.fade, delay: cumulatedDelay})
     )
@@ -182,13 +196,13 @@ module.exports = class ContentBuilder
     return cumulatedDelay
 
   goToArticle: (article) =>
-    if(!article.classList.contains(@classes.currentArticle))
+    if(!article.classList.contains(@selector.currentArticle))
       cumulatedDelay = 0
       cumulatedDelay = @prepareSwitchOfArticle(cumulatedDelay)
-      row = article.closest('.' + @classes.row)
+      row = article.closest('.' + @selector.row)
       cumulatedDelay = @goToRow(row, cumulatedDelay)
 
-      article.classList.add(@classes.currentArticle)
+      article.classList.add(@selector.currentArticle)
       # move slide
       newLeft = -(article.index() * parseInt(@viewport.width))
       Velocity(row,
@@ -197,7 +211,7 @@ module.exports = class ContentBuilder
       cumulatedDelay += @transitionDuration.slide
 
       # show content
-      Velocity(article.querySelector('.' + @classes.articleContent),
+      Velocity(article.querySelector('.' + @selector.articleContent),
         'fadeIn',
         {duration: @transitionDuration.fade, delay: cumulatedDelay}
       )
@@ -206,9 +220,9 @@ module.exports = class ContentBuilder
     return cumulatedDelay
 
   getCurrentArticle: () =>
-    currentArticle = @container.querySelector('.' + @classes.currentArticle)
+    currentArticle = @container.querySelector('.' + @selector.currentArticle)
     if(!currentArticle)
-      currentArticle = @container.querySelector('.' + @classes.article)
+      currentArticle = @container.querySelector('.' + @selector.article)
     return currentArticle
 
   goToNextArticle: () =>
@@ -220,24 +234,53 @@ module.exports = class ContentBuilder
 
     if(nextArticle)
       @goToArticle(nextArticle)
+    else
+      @goToFooter()
     return @
 
   goToPrevArticle: () =>
     currentArticle = @getCurrentArticle()
 
-    previousArticle = currentArticle.previousSibling
-    while(previousArticle && previousArticle.nodeType != 1)
-      previousArticle = previousArticle.previousSibling
+    if(currentArticle.classList.contains(@selector.cutByFooter))
+      currentArticle.classList.remove(@selector.cutByFooter)
+      currentArticle.classList.remove(@selector.currentArticle)
+      previousArticle = currentArticle
+      document.body.dispatchEvent(new Event(@event.FOOTER_HIDE))
+    else
+      previousArticle = currentArticle.previousSibling
+      while(previousArticle && previousArticle.nodeType != 1)
+        previousArticle = previousArticle.previousSibling
 
     if(previousArticle)
       @goToArticle(previousArticle)
     return @
 
+  goToFooter: () =>
+    document.body.dispatchEvent(new Event(@event.FOOTER_SHOW))
+    article = @getCurrentArticle()
+    article.classList.add(@selector.cutByFooter)
+    row = article.closest('.' + @selector.row)
+
+    newLeft = -((row.children.length - 1) * parseInt(@viewport.width)) - @footer.width
+    Velocity(row,
+      {marginLeft: newLeft + 'px'},
+      {duration: @transitionDuration.slide})
+    return @
+
+  showFirstArticle: () =>
+    if(@articlesLoaded == 3)
+      @goToArticle(@container.querySelector('.' + @selector.article))
+      document.body.removeEventListener(@event.ARTICLES_LOADED, @showFirstArticle)
+      document.body.dispatchEvent(new Event(@event.ARTICLES_DISPLAYED))
+    @articlesLoaded++
+    return @
+
   bind: () ->
     window.addEventListener('resize', @resizeRowAndArticles)
-    document.body.addEventListener('NEXT_ARTICLE', @goToNextArticle)
-    document.body.addEventListener('PREVIOUS_ARTICLE', @goToPrevArticle)
-    document.body.addEventListener('NEXT_ROW', @goToNextRow)
-    document.body.addEventListener('PREVIOUS_ROW', @goToPrevRow)
+    document.body.addEventListener(@event.NEXT_ARTICLE, @goToNextArticle)
+    document.body.addEventListener(@event.PREVIOUS_ARTICLE, @goToPrevArticle)
+    document.body.addEventListener(@event.NEXT_ROW, @goToNextRow)
+    document.body.addEventListener(@event.PREVIOUS_ROW, @goToPrevRow)
+    document.body.addEventListener(@event.ARTICLES_LOADED, @showFirstArticle)
 
     return @

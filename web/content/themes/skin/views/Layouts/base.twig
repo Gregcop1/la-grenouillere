@@ -15,6 +15,10 @@
     </section>
 
     {% block footer %}
+        <footer id="footer" class="footer">
+            {% include 'Partials/Layout/_footer.twig' %}
+        </footer>
+
         {{ function('wp_footer') }}
     {% endblock %}
 
