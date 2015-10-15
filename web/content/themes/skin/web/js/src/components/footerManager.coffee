@@ -25,6 +25,7 @@ class FooterManager
       {
         duration: if @isShown then ContentBuilder::transitionDuration.fade else 0
         delay: ContentBuilder::transitionDuration.fade
+        easing: 'linear'
         complete: () =>
           @isShown = false
       }
@@ -32,10 +33,11 @@ class FooterManager
     return @
 
   bind: () ->
-    document.body.addEventListener(ContentBuilder::event.FOOTER_SHOW, @show)
-    document.body.addEventListener(ContentBuilder::event.FOOTER_HIDE, @hide)
-    document.body.addEventListener(ContentBuilder::event.PREVIOUS_ROW, @hide)
-    document.body.addEventListener(ContentBuilder::event.NEXT_ROW, @hide)
+    body = document.body
+    body.addEventListener(ContentBuilder::event.FOOTER_SHOW, @show)
+    body.addEventListener(ContentBuilder::event.FOOTER_HIDE, @hide)
+    body.addEventListener(ContentBuilder::event.PREVIOUS_ROW, @hide)
+    body.addEventListener(ContentBuilder::event.NEXT_ROW, @hide)
     return @
 
 module.exports = new FooterManager()

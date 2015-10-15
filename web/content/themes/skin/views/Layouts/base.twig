@@ -4,15 +4,17 @@
 
 <body class="{{body_class}}" data-template="base.twig" id="body">
 
-    {% block header %}
-        {% include 'Partials/Layout/_header.twig' %}
-    {% endblock %}
-
-    <section id="content" role="main" class="page-sized">
-        {% block content %}
-            Sorry, no content
+    <div id="site-content" class="site-content">
+        {% block header %}
+            {% include 'Partials/Layout/_header.twig' %}
         {% endblock %}
-    </section>
+
+        <section id="content" role="main" class="page-sized">
+            {% block content %}
+                Sorry, no content
+            {% endblock %}
+        </section>
+    </div>
 
     {% block footer %}
         <footer id="footer" class="footer">
@@ -21,6 +23,5 @@
 
         {{ function('wp_footer') }}
     {% endblock %}
-
 </body>
 </html>

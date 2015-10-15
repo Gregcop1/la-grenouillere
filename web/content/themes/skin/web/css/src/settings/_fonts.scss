@@ -5,10 +5,13 @@
 ///
 ////
 
+/// Import
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,300|Roboto+Slab:400,300,700);
 
-/// Font fomily
-$arial : Arial, sans-serif;
-$font : $arial;
+/// Font family
+$roboto : 'Roboto', Arial sans-serif;
+$roboto-serif : 'Roboto Slab', serif;
+$font : $roboto;
 
 /// Fonts weight
 /// They must reflect avalaible weights

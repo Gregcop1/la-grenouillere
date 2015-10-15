@@ -55,7 +55,7 @@ linters:
     enabled: true
 
   IdSelector:
-    enabled: true
+    enabled: false
 
   ImportantRule:
     enabled: false
@@ -117,8 +117,8 @@ linters:
     max_depth: 6
 
   SelectorFormat:
-    enabled: true
-    convention: hyphenated_lowercase # or 'BEM', or 'hyphenated_BEM', or 'snake_case', or 'camel_case', or a regex pattern
+    enabled: false
+    convention: 'hyphenated_lowercase' # or 'BEM', or 'hyphenated_BEM', or 'snake_case', or 'camel_case', or a regex pattern
 
   Shorthand:
     enabled: true

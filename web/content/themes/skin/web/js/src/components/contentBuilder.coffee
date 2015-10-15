@@ -17,12 +17,17 @@ module.exports = class ContentBuilder
   articlesLoaded: 0
   slice: []
   selector:
+    siteContent: '#site-content'
     row: 'section-row'
     currentRow: 'current-row'
     currentArticle: 'current-article'
     article: 'post-type-page'
     articleContent: 'article-content'
     cutByFooter: 'cut-by-footer'
+    footer: '#footer'
+    vc:
+      almostVisible: 'wpb_animate_when_almost_visible'
+      startAnimation: 'wpb_start_animation'
   transitionDuration:
     slide: 250
     fade: 350
@@ -38,10 +43,10 @@ module.exports = class ContentBuilder
 
   constructor: (menu, container) ->
     @viewport =
-      width: Math.max(document.documentElement.clientWidth, window.innerWidth || 0) + 'px'
-      height: Math.max(document.documentElement.clientHeight, window.innerHeight || 0) + 'px'
+      width: Math.max(document.documentElement.clientWidth, window.innerWidth || 0) - 20 + 'px'
+      height: Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - 20 + 'px'
     @footer =
-      width: parseInt(document.querySelector('#footer').offsetWidth)
+      width: parseInt(document.querySelector(@selector.footer).offsetWidth)
     @menu = document.querySelector(menu)
     @container = document.querySelector(container)
     @emptyContainer()
@@ -60,7 +65,10 @@ module.exports = class ContentBuilder
     return @
 
   findLink: (parent) =>
-    @slice.push([].slice.call(parent.querySelectorAll('a')))
+    childrenLink = parent.querySelectorAll('.nav a')
+    if(!childrenLink.length)
+      childrenLink = parent.querySelectorAll('a')
+    @slice.push([].slice.call(childrenLink))
     return @
 
   load: (index) ->
@@ -100,12 +108,10 @@ module.exports = class ContentBuilder
 
   resizeRowAndArticles: (e) =>
     @viewport =
-      width: Math.max(document.documentElement.clientWidth, window.innerWidth || 0) + 'px'
-      height: Math.max(document.documentElement.clientHeight, window.innerHeight || 0) + 'px'
+      width: Math.max(document.documentElement.clientWidth, window.innerWidth || 0) - 20 + 'px'
+      height: Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - 20 + 'px'
 
     [].forEach.call(@container.children, (node) =>
-      node.style.width = node.children.length * parseInt(@viewport.width) + 'px'
-      node.style.height = @viewport.height
       [].slice.call(node.children).forEach((child) =>
         child.style.width = @viewport.width
         child.style.height = @viewport.height
@@ -160,7 +166,7 @@ module.exports = class ContentBuilder
       node.classList.remove(@selector.currentRow)
 
       # hide row
-      Velocity(node, 'fadeOut', {duration: @transitionDuration.fade, delay: cumulatedDelay})
+      Velocity(node, 'fadeOut', {duration: @transitionDuration.fade, delay: cumulatedDelay, easing: 'linear'})
     )
 
     if(goTrough)
@@ -170,24 +176,31 @@ module.exports = class ContentBuilder
 
   goToRow: (row, cumulatedDelay) =>
     if(!row.classList.contains(@selector.currentRow))
+      # reset row if necessary
+      @hideFooter()
+
       cumulatedDelay += @prepareSwitchOfRow(cumulatedDelay)
       row.style.marginLeft = 0
       row.classList.add(@selector.currentRow)
 
       # show row
-      Velocity(row, 'fadeIn', {duration: @transitionDuration.fade, delay: cumulatedDelay})
+      Velocity(row, 'fadeIn', {duration: @transitionDuration.fade, delay: cumulatedDelay, easing: 'linear'})
       return (cumulatedDelay + @transitionDuration.fade)
 
     return cumulatedDelay
 
   prepareSwitchOfArticle: (cumulatedDelay) =>
     goTrough = false
+
+    # disable visual composer animation
+    @disableVcAnimation()
+
     [].forEach.call(@container.querySelectorAll('.' + @selector.currentArticle), (node) =>
       goTrough = true
       node.classList.remove(@selector.currentArticle)
       Velocity(node.querySelector('.' + @selector.articleContent),
         'fadeOut',
-        {duration: @transitionDuration.fade, delay: cumulatedDelay})
+        {duration: @transitionDuration.fade, delay: cumulatedDelay, easing: 'linear'})
     )
 
     if(goTrough)
@@ -207,13 +220,27 @@ module.exports = class ContentBuilder
       newLeft = -(article.index() * parseInt(@viewport.width))
       Velocity(row,
         {marginLeft: newLeft + 'px'},
-        {duration: @transitionDuration.slide, delay: cumulatedDelay})
+        {duration: @transitionDuration.slide, delay: cumulatedDelay, easing: 'linear'})
       cumulatedDelay += @transitionDuration.slide
 
       # show content
       Velocity(article.querySelector('.' + @selector.articleContent),
         'fadeIn',
-        {duration: @transitionDuration.fade, delay: cumulatedDelay}
+        {
+          duration: @transitionDuration.fade
+          delay: cumulatedDelay
+          easing: 'linear'
+          begin: ((items) ->
+            items.forEach((node) ->
+              if(!node.style.height)
+                node.style.height = node.children[0].offsetHeight + 'px'
+            )
+          )
+          complete: (() =>
+            # enable visual composer animation
+            @enableVcAnimation(article)
+          )
+        }
       )
       cumulatedDelay += @transitionDuration.fade
 
@@ -235,17 +262,14 @@ module.exports = class ContentBuilder
     if(nextArticle)
       @goToArticle(nextArticle)
     else
-      @goToFooter()
+      @showFooter()
     return @
 
   goToPrevArticle: () =>
     currentArticle = @getCurrentArticle()
 
     if(currentArticle.classList.contains(@selector.cutByFooter))
-      currentArticle.classList.remove(@selector.cutByFooter)
-      currentArticle.classList.remove(@selector.currentArticle)
-      previousArticle = currentArticle
-      document.body.dispatchEvent(new Event(@event.FOOTER_HIDE))
+      previousArticle = @hideFooter(currentArticle)
     else
       previousArticle = currentArticle.previousSibling
       while(previousArticle && previousArticle.nodeType != 1)
@@ -255,7 +279,7 @@ module.exports = class ContentBuilder
       @goToArticle(previousArticle)
     return @
 
-  goToFooter: () =>
+  showFooter: () =>
     document.body.dispatchEvent(new Event(@event.FOOTER_SHOW))
     article = @getCurrentArticle()
     article.classList.add(@selector.cutByFooter)
@@ -264,8 +288,22 @@ module.exports = class ContentBuilder
     newLeft = -((row.children.length - 1) * parseInt(@viewport.width)) - @footer.width
     Velocity(row,
       {marginLeft: newLeft + 'px'},
-      {duration: @transitionDuration.slide})
+      {duration: @transitionDuration.slide, easing: 'linear'})
+    Velocity(document.querySelector(@selector.siteContent),
+      {right: @footer.width},
+      {transition: @transitionDuration.slide, easing: 'linear'})
     return @
+
+  hideFooter: () =>
+    currentArticle = @getCurrentArticle()
+    currentArticle.classList.remove(@selector.cutByFooter)
+    currentArticle.classList.remove(@selector.currentArticle)
+
+    document.body.dispatchEvent(new Event(@event.FOOTER_HIDE))
+    Velocity(document.querySelector(@selector.siteContent),
+      {right: 0},
+      {transition: @transitionDuration.slide, easing: 'linear'})
+    return currentArticle
 
   showFirstArticle: () =>
     if(@articlesLoaded == 3)
@@ -275,12 +313,22 @@ module.exports = class ContentBuilder
     @articlesLoaded++
     return @
 
+  enableVcAnimation: (article) =>
+    [].forEach.call(article.querySelectorAll('.' + @selector.vc.almostVisible), (node) =>
+      node.classList.add(@selector.vc.startAnimation)
+    )
+
+  disableVcAnimation: () =>
+    [].forEach.call(@container.querySelectorAll('.' + @selector.vc.startAnimation), (node) =>
+      node.classList.remove(@selector.vc.startAnimation)
+    )
+
   bind: () ->
     window.addEventListener('resize', @resizeRowAndArticles)
-    document.body.addEventListener(@event.NEXT_ARTICLE, @goToNextArticle)
-    document.body.addEventListener(@event.PREVIOUS_ARTICLE, @goToPrevArticle)
-    document.body.addEventListener(@event.NEXT_ROW, @goToNextRow)
-    document.body.addEventListener(@event.PREVIOUS_ROW, @goToPrevRow)
-    document.body.addEventListener(@event.ARTICLES_LOADED, @showFirstArticle)
-
+    body = document.body
+    body.addEventListener(@event.NEXT_ARTICLE, @goToNextArticle)
+    body.addEventListener(@event.PREVIOUS_ARTICLE, @goToPrevArticle)
+    body.addEventListener(@event.NEXT_ROW, @goToNextRow)
+    body.addEventListener(@event.PREVIOUS_ROW, @goToPrevRow)
+    body.addEventListener(@event.ARTICLES_LOADED, @showFirstArticle)
     return @

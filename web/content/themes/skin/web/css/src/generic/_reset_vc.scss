@@ -1,0 +1,9 @@
+////
+/// Reset Visual composer styles
+///
+/// @group Generic
+///
+////
+
+.wpb_alert p:last-child, #content .wpb_alert p:last-child, .wpb_text_column p:last-child, .wpb_text_column *:last-child, #content .wpb_text_column p:last-child, #content .wpb_text_column *:last-child { margin-bottom: 10px; }
+.wpb_row, .wpb_content_element, .wpb_thumbnails-fluid > li, .wpb_button { margin-bottom: inherit; }

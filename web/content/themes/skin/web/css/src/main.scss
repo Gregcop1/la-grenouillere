@@ -18,6 +18,7 @@
 
 // Generic
 @import 'generic/reset';
+@import 'generic/reset_vc';
 
 // Base
 @import 'elements/blocks';
@@ -36,6 +37,7 @@
 @import 'objects/page-sized';
 
 // Components
+@import 'components/site-content';
 @import 'components/nav-block';
 @import 'components/nav-footer';
 @import 'components/section-row';

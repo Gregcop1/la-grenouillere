@@ -7,9 +7,9 @@
 
 footer {
   //display: none;
-  position: fixed; top: 0; right: 0; bottom: 0; padding: 1% 3%x; width: 400px; max-width: 100%; background: linear-gradient(to right, $grey3 0%, $grey2 10%); overflow: auto; opacity: 0; z-index: 1;
+  position: fixed; top: 0; right: 0; bottom: 0; padding: 1% 0O; width: 400px; max-width: 100%; background: linear-gradient(to right, $black 0%, $grey4 10%); overflow: auto; opacity: 0; z-index: 1;
 
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$grey3', endColorstr='$grey2',GradientType=1);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$black', endColorstr='$grey4',GradientType=1);
 
   &.shown { display: block; }
 }
