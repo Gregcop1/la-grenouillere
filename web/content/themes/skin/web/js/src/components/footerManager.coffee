@@ -1,30 +1,38 @@
 Velocity = require('velocity-animate')
 ContentBuilder = require('./ContentBuilder.coffee')
+utils = require('./utils.coffee')
 
 class FooterManager
   selector:
     footer: '#footer'
+    nav: '#nav-footer'
   isShown: false
   constructor: () ->
-    @bind()
+    @setVariables()
+      .bind()
+    return @
+
+  setVariables: () =>
+    @footer = document.querySelector(@selector.footer)
+    @nav = document.querySelector(@selector.nav)
+
     return @
 
   show: () =>
     @isShown = true
-    footer = document.querySelector(@selector.footer)
-    Velocity(footer, 'stop')
-    Velocity(footer, 'fadeIn', {
+    Velocity(@footer, 'stop')
+    Velocity(@footer, 'fadeIn', {
       duration: 0,
       queue: false
     })
     return @
 
-  hide: () =>
-    Velocity(document.querySelector(@selector.footer),
+  close: () =>
+    Velocity(@footer,
       'fadeOut',
       {
         duration: if @isShown then ContentBuilder::transitionDuration.fade else 0
-        delay: ContentBuilder::transitionDuration.fade
+        delay: ContentBuilder::transitionDuration.fade * 2
         easing: 'linear'
         complete: () =>
           @isShown = false
@@ -32,12 +40,24 @@ class FooterManager
     )
     return @
 
+  clickOnMenuItem: (event) =>
+    window.cb.hideFooter()
+    utils.linkToSlide(event)
+    return @
+
   bind: () ->
     body = document.body
     body.addEventListener(ContentBuilder::event.FOOTER_SHOW, @show)
-    body.addEventListener(ContentBuilder::event.FOOTER_HIDE, @hide)
-    body.addEventListener(ContentBuilder::event.PREVIOUS_ROW, @hide)
-    body.addEventListener(ContentBuilder::event.NEXT_ROW, @hide)
+    body.addEventListener(ContentBuilder::event.FOOTER_HIDE, @close)
+#    body.addEventListener(ContentBuilder::event.PREVIOUS_ROW, @close)
+#    body.addEventListener(ContentBuilder::event.NEXT_ROW, @close)
+
+    # bind links
+    [].forEach.call(@nav.querySelectorAll('a'), (node) =>
+      node.addEventListener('click', @clickOnMenuItem)
+      return @
+    )
+
     return @
 
 module.exports = new FooterManager()

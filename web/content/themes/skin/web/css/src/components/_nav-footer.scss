@@ -1,15 +1,17 @@
 .nav-footer {
-  ul { margin: 0 0 0 15px; padding: 0; }
-  .nav-item { margin: 5px 0; }
-  .nav-drop-item { margin: 0; list-style-type: none; }
-  .first-level > .nav-item { display: table; margin: 20px 0; width: 100%;
-    > a, .second-level { display: table-cell; padding: 0 4%; vertical-align: middle; }
-    > a { width: 30%;
-      font-size: 1.2em; font-weight: $fw-bold; text-align: right; }
+  position: absolute; right: 30px; bottom: 30px; left: 30px;
+  text-align: left;
+
+  .first-level { margin: 0; border-top: 2px dotted $grey2; padding: 0; }
+  .nav-item { margin: 20px 0; list-style-type: none;
+    font-size: 1.2em; text-transform: uppercase;
+
+    &:first-child { margin-top: 10px; }
+    &:last-child { margin-bottom: 0; }
   }
-  .first-level .page-item-161 { width: 34%; }
-  .second-level { border-left: 3px solid $grey; width: 54%;
-    a { display: inline; }
+  a { transition: color $tr-default linear;
+    color: $brown3;
+
+    &:hover { text-decoration: none; color: $grey2; }
   }
-  a { color: $grey; }
 }

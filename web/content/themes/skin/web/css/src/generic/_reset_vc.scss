@@ -5,5 +5,19 @@
 ///
 ////
 
+// animations
+@keyframes wpb_ttb {
+  0% { opacity: 0; transform: translate(0, -30%); filter: alpha(opacity=0); }
+  100% { opacity: 1; transform: translate(0, 0); filter: alpha(opacity=100); }
+}
+@keyframes wpb_btt {
+  0% { opacity: 0; transform: translate(0, 30%); filter: alpha(opacity=0); }
+  100% { opacity: 1; transform: translate(0, 0); filter: alpha(opacity=100); }
+}
+.wpb_start_animation.wpb_top-to-bottom,
+.wpb_start_animation.wpb_bottom-to-top {
+  animation-timing-function: ease-out;
+}
+
 .wpb_alert p:last-child, #content .wpb_alert p:last-child, .wpb_text_column p:last-child, .wpb_text_column *:last-child, #content .wpb_text_column p:last-child, #content .wpb_text_column *:last-child { margin-bottom: 10px; }
 .wpb_row, .wpb_content_element, .wpb_thumbnails-fluid > li, .wpb_button { margin-bottom: inherit; }

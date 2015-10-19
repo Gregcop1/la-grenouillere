@@ -42,11 +42,7 @@ class SkinSite extends TimberSite
     private function registerScripts()
     {
         wp_enqueue_script('modernizr', get_stylesheet_directory_uri() . '/web/js/vendors/modernizr.js');
-//        if (!is_admin()) {
-//            wp_deregister_script('jquery');
-//            wp_register_script('jquery', (""), false, '');
-//            wp_enqueue_script('jquery');
-//        }
+        wp_enqueue_script('snap/svg', get_stylesheet_directory_uri() . '/web/js/vendors/snap.svg-min.js');
     }
 
     public function print_inline_script()

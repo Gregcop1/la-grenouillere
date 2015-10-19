@@ -1,18 +1,5 @@
 Velocity = require('velocity-animate')
 
-HTMLElement.prototype.index = () ->
-  self = @
-  parent = self.parentNode
-  i = 0
-  while (self.previousElementSibling)
-    i++
-    self = self.previousElementSibling
-
-  if(@ == parent.children[i])
-    return i
-
-  return -1
-
 module.exports = class ContentBuilder
   articlesLoaded: 0
   slice: []
@@ -30,7 +17,7 @@ module.exports = class ContentBuilder
       startAnimation: 'wpb_start_animation'
   transitionDuration:
     slide: 250
-    fade: 350
+    fade: 250
   event:
     NEXT_ARTICLE: 'NEXT_ARTICLE'
     PREVIOUS_ARTICLE: 'PREVIOUS_ARTICLE'
@@ -136,6 +123,7 @@ module.exports = class ContentBuilder
     return currentRow
 
   goToNextRow: () =>
+    @hideFooter()
     currentRow = @getCurrentRow()
 
     nextRow = currentRow.nextSibling
@@ -148,6 +136,7 @@ module.exports = class ContentBuilder
     return @
 
   goToPrevRow: () =>
+    @hideFooter()
     currentRow = @getCurrentRow()
 
     previousRow = currentRow.previousSibling
@@ -180,7 +169,7 @@ module.exports = class ContentBuilder
       @hideFooter()
 
       cumulatedDelay += @prepareSwitchOfRow(cumulatedDelay)
-      row.style.marginLeft = 0
+      row.style.left = 0
       row.classList.add(@selector.currentRow)
 
       # show row
@@ -219,7 +208,7 @@ module.exports = class ContentBuilder
       # move slide
       newLeft = -(article.index() * parseInt(@viewport.width))
       Velocity(row,
-        {marginLeft: newLeft + 'px'},
+        {left: newLeft + 'px'},
         {duration: @transitionDuration.slide, delay: cumulatedDelay, easing: 'linear'})
       cumulatedDelay += @transitionDuration.slide
 
@@ -287,22 +276,29 @@ module.exports = class ContentBuilder
 
     newLeft = -((row.children.length - 1) * parseInt(@viewport.width)) - @footer.width
     Velocity(row,
-      {marginLeft: newLeft + 'px'},
+      {left: newLeft + 'px'},
       {duration: @transitionDuration.slide, easing: 'linear'})
     Velocity(document.querySelector(@selector.siteContent),
       {right: @footer.width},
-      {transition: @transitionDuration.slide, easing: 'linear'})
+      {duration: @transitionDuration.slide, easing: 'linear'})
     return @
+
 
   hideFooter: () =>
     currentArticle = @getCurrentArticle()
-    currentArticle.classList.remove(@selector.cutByFooter)
-    currentArticle.classList.remove(@selector.currentArticle)
+    if(currentArticle.classList.contains(@selector.cutByFooter))
+      currentArticle.classList.remove(@selector.currentArticle)
+      currentArticle.classList.remove(@selector.cutByFooter)
+      row = currentArticle.closest('.' + @selector.row)
 
-    document.body.dispatchEvent(new Event(@event.FOOTER_HIDE))
-    Velocity(document.querySelector(@selector.siteContent),
-      {right: 0},
-      {transition: @transitionDuration.slide, easing: 'linear'})
+      document.body.dispatchEvent(new Event(@event.FOOTER_HIDE))
+      newLeft = -((row.children.length - 1) * parseInt(@viewport.width))
+      Velocity(row,
+        {left: newLeft + 'px'},
+        {duration: @transitionDuration.slide, easing: 'linear'})
+      Velocity(document.querySelector(@selector.siteContent),
+        {left: 0, right: 0},
+        {duration: @transitionDuration.slide, easing: 'linear'})
     return currentArticle
 
   showFirstArticle: () =>
@@ -331,4 +327,5 @@ module.exports = class ContentBuilder
     body.addEventListener(@event.NEXT_ROW, @goToNextRow)
     body.addEventListener(@event.PREVIOUS_ROW, @goToPrevRow)
     body.addEventListener(@event.ARTICLES_LOADED, @showFirstArticle)
+    body.addEventListener(window.mainMenuManager.event.OPEN_MENU, @hideFooter)
     return @

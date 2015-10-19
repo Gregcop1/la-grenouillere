@@ -4,10 +4,10 @@
 
 <body class="{{body_class}}" data-template="base.twig" id="body">
 
+    {% block header %}
+        {% include 'Partials/Layout/_header.twig' %}
+    {% endblock %}
     <div id="site-content" class="site-content">
-        {% block header %}
-            {% include 'Partials/Layout/_header.twig' %}
-        {% endblock %}
 
         <section id="content" role="main" class="page-sized">
             {% block content %}

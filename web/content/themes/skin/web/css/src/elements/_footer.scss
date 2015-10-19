@@ -7,9 +7,7 @@
 
 footer {
   //display: none;
-  position: fixed; top: 0; right: 0; bottom: 0; padding: 1% 0O; width: 400px; max-width: 100%; background: linear-gradient(to right, $black 0%, $grey4 10%); overflow: auto; opacity: 0; z-index: 1;
-
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$black', endColorstr='$grey4',GradientType=1);
+  position: fixed; top: 0; right: 0; bottom: 0; padding: 1% 0; width: 235px; max-width: 100%; background: url('../img/fond_footer.gif') 50% 50% repeat-y; overflow: auto; opacity: 0; z-index: 1;
 
   &.shown { display: block; }
 }
