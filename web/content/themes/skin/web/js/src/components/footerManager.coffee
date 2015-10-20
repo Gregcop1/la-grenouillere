@@ -6,6 +6,8 @@ class FooterManager
   selector:
     footer: '#footer'
     nav: '#nav-footer'
+    nextRow: '#next-row'
+    nextRowTitle: '.title'
   isShown: false
   constructor: () ->
     @setVariables()
@@ -15,6 +17,21 @@ class FooterManager
   setVariables: () =>
     @footer = document.querySelector(@selector.footer)
     @nav = document.querySelector(@selector.nav)
+    @nextRow = document.querySelector(@selector.nextRow)
+
+    return @
+
+  prepareNextRow: () =>
+    nextRow = window.cb.getNextRow()
+    @nextRow.querySelector(@selector.nextRowTitle).innerHTML = ''
+
+    if(nextRow)
+      title = nextRow.querySelector('h3')
+      if(title)
+        @nextRow.querySelector(@selector.nextRowTitle).innerHTML = title.innerHTML
+      Velocity(@nextRow, 'fadeIn', {duration: ContentBuilder::transitionDuration.fade})
+    else
+      Velocity(@nextRow, 'fadeOut', {duration: ContentBuilder::transitionDuration.fade})
 
     return @
 
@@ -40,6 +57,10 @@ class FooterManager
     )
     return @
 
+  clickOnNextRow: (event) =>
+    document.body.dispatchEvent(new Event(ContentBuilder::event.NEXT_ROW))
+    return @
+
   clickOnMenuItem: (event) =>
     window.cb.hideFooter()
     utils.linkToSlide(event)
@@ -49,6 +70,8 @@ class FooterManager
     body = document.body
     body.addEventListener(ContentBuilder::event.FOOTER_SHOW, @show)
     body.addEventListener(ContentBuilder::event.FOOTER_HIDE, @close)
+    body.addEventListener(ContentBuilder::event.GOTO_ROW, @prepareNextRow)
+    @nextRow.addEventListener('click', @clickOnNextRow)
 
     # bind links
     [].forEach.call(@nav.querySelectorAll('a'), (node) =>

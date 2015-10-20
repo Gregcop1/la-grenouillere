@@ -60,7 +60,6 @@ class MainMenuManager
 
   close: (event) =>
     if(@header.classList.contains('open'))
-      console.log('event', event)
       @header.classList.remove('open')
       @transformIconToBurger()
       Velocity(@header, {marginLeft: '-330px'}, {duration: ContentBuilder::transitionDuration.slide})

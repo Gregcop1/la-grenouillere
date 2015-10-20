@@ -257,5 +257,13 @@ footer.shown { display: block; }
 
 .nav-slit .hover h3 { transition-delay: .6s; -webkit-transform: rotateX(0deg); transform: rotateX(0deg); }
 
+.next-row { position: absolute; top: 50%; right: 30px; left: 30px; -webkit-transform: translateY(-50%); -ms-transform: translateY(-50%); transform: translateY(-50%); font-size: 1.4em; }
+
+.next-row a { color: #fff; }
+
+.next-row a:hover { text-decoration: none; }
+
+.next-row .title { font-size: 1.73em; line-height: 1.5; text-transform: uppercase; color: #ebc390; }
+
 @media print { .no-print, [id="header"], [id="footer"] { display: none !important; } }
 /*# sourceMappingURL=main.css.map */

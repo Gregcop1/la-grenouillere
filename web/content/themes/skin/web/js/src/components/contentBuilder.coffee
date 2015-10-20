@@ -22,6 +22,7 @@ module.exports = class ContentBuilder
     GOTO_ARTICLE: 'GOTO_ARTICLE'
     NEXT_ARTICLE: 'NEXT_ARTICLE'
     PREVIOUS_ARTICLE: 'PREVIOUS_ARTICLE'
+    GOTO_ROW: 'GOTO_ROW'
     NEXT_ROW: 'NEXT_ROW'
     PREVIOUS_ROW: 'PREVIOUS_ROW'
     ARTICLES_LOADED: 'ARTICLES_LOADED'
@@ -125,29 +126,40 @@ module.exports = class ContentBuilder
 
   goToNextRow: () =>
     @hideFooter()
-    currentRow = @getCurrentRow()
 
-    nextRow = currentRow.nextSibling
-    while(nextRow && nextRow.nodeType != 1)
-      nextRow = nextRow.nextSibling
+    nextRow = @getNextRow()
 
     if(nextRow)
       firstArticle = nextRow.querySelector('.' + @selector.article)
       @goToArticle(firstArticle)
     return @
 
+  getNextRow: () =>
+    currentRow = @getCurrentRow()
+
+    nextRow = currentRow.nextSibling
+    while(nextRow && nextRow.nodeType != 1)
+      nextRow = nextRow.nextSibling
+
+    return nextRow
+
   goToPrevRow: () =>
     @hideFooter()
+
+    previousRow = @getPrevRow()
+    if(previousRow)
+      firstArticle = previousRow.querySelector('.' + @selector.article)
+      @goToArticle(firstArticle)
+    return @
+
+  getPrevRow: () =>
     currentRow = @getCurrentRow()
 
     previousRow = currentRow.previousSibling
     while(previousRow && previousRow.nodeType != 1)
       previousRow = previousRow.previousSibling
 
-    if(previousRow)
-      firstArticle = previousRow.querySelector('.' + @selector.article)
-      @goToArticle(firstArticle)
-    return @
+    return previousRow
 
   prepareSwitchOfRow: (cumulatedDelay) =>
     goTrough = false
@@ -172,6 +184,8 @@ module.exports = class ContentBuilder
       cumulatedDelay += @prepareSwitchOfRow(cumulatedDelay)
       row.style.left = 0
       row.classList.add(@selector.currentRow)
+
+      document.body.dispatchEvent(new Event(@event.GOTO_ROW))
 
       # show row
       Velocity(row, 'fadeIn', {duration: @transitionDuration.fade, delay: cumulatedDelay, easing: 'linear'})
