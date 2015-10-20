@@ -58,12 +58,15 @@ class MainMenuManager
     document.body.dispatchEvent(new Event(@event.OPEN_MENU))
     return @
 
-  close: () =>
-    @header.classList.remove('open')
-    @transformIconToBurger()
-    Velocity(@header, {marginLeft: '-330px'}, {duration: ContentBuilder::transitionDuration.slide})
-    Velocity(@siteContent, {left: 0}, {duration: ContentBuilder::transitionDuration.slide})
-    document.body.dispatchEvent(new Event(@event.CLOSE_MENU))
+  close: (event) =>
+    if(@header.classList.contains('open'))
+      console.log('event', event)
+      @header.classList.remove('open')
+      @transformIconToBurger()
+      Velocity(@header, {marginLeft: '-330px'}, {duration: ContentBuilder::transitionDuration.slide})
+      if(event.type != ContentBuilder::event.FOOTER_SHOW)
+        Velocity(@siteContent, {left: 0}, {duration: ContentBuilder::transitionDuration.slide})
+      document.body.dispatchEvent(new Event(@event.CLOSE_MENU))
     return @
 
   transformIconToBurger: () =>
@@ -96,10 +99,8 @@ class MainMenuManager
   bind: () =>
     @button.addEventListener('click', @toggleMenu)
     body = document.body
-    body.addEventListener(ContentBuilder::event.NEXT_ARTICLE, @close)
-    body.addEventListener(ContentBuilder::event.PREVIOUS_ARTICLE, @close)
-    body.addEventListener(ContentBuilder::event.NEXT_ROW, @close)
-    body.addEventListener(ContentBuilder::event.PREVIOUS_ROW, @close)
+    body.addEventListener(ContentBuilder::event.GOTO_ARTICLE, @close)
+    body.addEventListener(ContentBuilder::event.FOOTER_SHOW, @close)
 
     # bind links
     [].forEach.call(@nav.querySelectorAll('a'), (node) =>

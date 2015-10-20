@@ -12,6 +12,8 @@ window.addEventListener('load', ->
     window.mainMenuManager = require('./components/MainMenuManager.coffee')
     window.keyboardListener = require('./components/keyboardListener.coffee')
     window.footerManager = require('./components/footerManager.coffee')
+
     ContentBuilder = require('./components/ContentBuilder.coffee')
     window.cb = new ContentBuilder('#nav-main > ul', '#content')
+    window.arrowManager = require('./components/ArrowManager.coffee')
 )

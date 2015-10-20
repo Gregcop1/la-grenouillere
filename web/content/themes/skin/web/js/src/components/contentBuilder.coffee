@@ -19,6 +19,7 @@ module.exports = class ContentBuilder
     slide: 250
     fade: 250
   event:
+    GOTO_ARTICLE: 'GOTO_ARTICLE'
     NEXT_ARTICLE: 'NEXT_ARTICLE'
     PREVIOUS_ARTICLE: 'PREVIOUS_ARTICLE'
     NEXT_ROW: 'NEXT_ROW'
@@ -205,6 +206,7 @@ module.exports = class ContentBuilder
       cumulatedDelay = @goToRow(row, cumulatedDelay)
 
       article.classList.add(@selector.currentArticle)
+      document.body.dispatchEvent(new Event(@event.GOTO_ARTICLE))
       # move slide
       newLeft = -(article.index() * parseInt(@viewport.width))
       Velocity(row,
@@ -242,11 +244,7 @@ module.exports = class ContentBuilder
     return currentArticle
 
   goToNextArticle: () =>
-    currentArticle = @getCurrentArticle()
-
-    nextArticle = currentArticle.nextSibling
-    while(nextArticle && nextArticle.nodeType != 1)
-      nextArticle = nextArticle.nextSibling
+    nextArticle = @getNextArticle()
 
     if(nextArticle)
       @goToArticle(nextArticle)
@@ -254,32 +252,48 @@ module.exports = class ContentBuilder
       @showFooter()
     return @
 
+  getNextArticle: () =>
+    currentArticle = @getCurrentArticle()
+
+    nextArticle = currentArticle.nextSibling
+    while(nextArticle && nextArticle.nodeType != 1)
+      nextArticle = nextArticle.nextSibling
+
+    return nextArticle
+
   goToPrevArticle: () =>
     currentArticle = @getCurrentArticle()
 
     if(currentArticle.classList.contains(@selector.cutByFooter))
       previousArticle = @hideFooter(currentArticle)
     else
-      previousArticle = currentArticle.previousSibling
-      while(previousArticle && previousArticle.nodeType != 1)
-        previousArticle = previousArticle.previousSibling
-
+      previousArticle = @getPreviousArticle()
     if(previousArticle)
       @goToArticle(previousArticle)
+
     return @
 
+  getPreviousArticle: () =>
+    currentArticle = @getCurrentArticle()
+
+    previousArticle = currentArticle.previousSibling
+    while(previousArticle && previousArticle.nodeType != 1)
+      previousArticle = previousArticle.previousSibling
+
+    return previousArticle
+
   showFooter: () =>
-    document.body.dispatchEvent(new Event(@event.FOOTER_SHOW))
     article = @getCurrentArticle()
     article.classList.add(@selector.cutByFooter)
     row = article.closest('.' + @selector.row)
 
+    document.body.dispatchEvent(new Event(@event.FOOTER_SHOW))
     newLeft = -((row.children.length - 1) * parseInt(@viewport.width)) - @footer.width
     Velocity(row,
       {left: newLeft + 'px'},
       {duration: @transitionDuration.slide, easing: 'linear'})
     Velocity(document.querySelector(@selector.siteContent),
-      {right: @footer.width},
+      {left: 0, right: @footer.width},
       {duration: @transitionDuration.slide, easing: 'linear'})
     return @
 

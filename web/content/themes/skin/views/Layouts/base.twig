@@ -14,6 +14,21 @@
                 Sorry, no content
             {% endblock %}
         </section>
+        <nav class="nav-slit">
+            <a id="arrow-prev" class="arrow prev" href="#">
+                <span class="icon-wrap">
+                    <img src="{{site.theme.link}}/web/img/flecheGauche.svg" width="25" height="76" alt=""/>
+                </span>
+                <div class="preview"></div>
+            </a>
+            <a id="arrow-next" class="arrow next" href="#">
+                <span class="icon-wrap">
+                    <img src="{{site.theme.link}}/web/img/flecheDroit.svg" width="25" height="76" alt=""/>
+                </span>
+                <div class="preview">
+                </div>
+            </a>
+        </nav>
     </div>
 
     {% block footer %}

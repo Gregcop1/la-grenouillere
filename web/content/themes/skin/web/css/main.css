@@ -223,5 +223,39 @@ footer.shown { display: block; }
 
 .section-row ul, .section-row li, .section-row p, .section-row th, .section-row td, .section-row blockquote, .section-row caption, .section-row label { color: #fff; }
 
+.nav-slit .prev { left: 0; }
+
+.nav-slit .prev div { left: 0; -webkit-transform: translateX(-100%); -ms-transform: translateX(-100%); transform: translateX(-100%); }
+
+.nav-slit .prev.hover .icon { -webkit-transform: translateX(-100%); -ms-transform: translateX(-100%); transform: translateX(-100%); }
+
+.nav-slit a { display: none; position: absolute; top: 50%; opacity: 0; outline: none; -webkit-transform: translateY(-50%); -ms-transform: translateY(-50%); transform: translateY(-50%); z-index: 1000; text-align: left; }
+
+.nav-slit a svg { display: block; margin: 0 auto; padding: 0; }
+
+.nav-slit .next { right: 0; }
+
+.nav-slit .next div { right: 0; -webkit-transform: translateX(100%); -ms-transform: translateX(100%); transform: translateX(100%); text-align: right; }
+
+.nav-slit .next .hover .icon { -webkit-transform: translateX(100%); -ms-transform: translateX(100%); transform: translateX(100%); }
+
+.nav-slit .icon-wrap { display: block; position: relative; padding: 84px 29px; background-color: #2f3031; }
+
+.nav-slit .icon-wrap img { position: absolute; top: 0; right: 0; bottom: 0; left: 0; margin: auto; width: 25px; height: 70px; }
+
+.nav-slit .icon { fill: #fff; transition: -webkit-transform 0.3s 0.3s; transition: transform 0.3s 0.3s; }
+
+.nav-slit div { position: absolute; top: 0; width: 228px; height: 100%; background-color: #2f3031; -webkit-perspective: 1000px; perspective: 1000px; transition: -webkit-transform 0.3s 0.3s; transition: transform 0.3s 0.3s; }
+
+.nav-slit h3 { position: absolute; top: 100%; margin: 0; width: 100%; background: #2f3031; transition: -webkit-transform 0.3s; transition: transform 0.3s; -webkit-transform: rotateX(-90deg); transform: rotateX(-90deg); -webkit-transform-origin: 50% 0; -ms-transform-origin: 50% 0; transform-origin: 50% 0; -webkit-backface-visibility: hidden; backface-visibility: hidden; font-size: 1.4em; line-height: 2.8; font-weight: 500; text-align: center; white-space: nowrap; color: #ebc390; }
+
+.nav-slit img { position: absolute; top: 0; left: 0; width: 100%; }
+
+.nav-slit .hover .icon { transition-delay: 0s; }
+
+.nav-slit .hover div { -webkit-transform: translateX(0); -ms-transform: translateX(0); transform: translateX(0); }
+
+.nav-slit .hover h3 { transition-delay: .6s; -webkit-transform: rotateX(0deg); transform: rotateX(0deg); }
+
 @media print { .no-print, [id="header"], [id="footer"] { display: none !important; } }
 /*# sourceMappingURL=main.css.map */

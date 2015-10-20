@@ -49,8 +49,6 @@ class FooterManager
     body = document.body
     body.addEventListener(ContentBuilder::event.FOOTER_SHOW, @show)
     body.addEventListener(ContentBuilder::event.FOOTER_HIDE, @close)
-#    body.addEventListener(ContentBuilder::event.PREVIOUS_ROW, @close)
-#    body.addEventListener(ContentBuilder::event.NEXT_ROW, @close)
 
     # bind links
     [].forEach.call(@nav.querySelectorAll('a'), (node) =>

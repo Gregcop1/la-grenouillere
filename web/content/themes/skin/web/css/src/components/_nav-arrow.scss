@@ -1,18 +1,28 @@
-//.nav-slit {
-//  a.prev { left: 0; }
-//  a { position: absolute; top: 50%; display: block; outline: none; text-align: left; z-index: 1000; -webkit-transform: translateY(-50%); transform: translateY(-50%); }
-//  a.next { right: 0; }
-//  a svg { display: block; margin: 0 auto; padding: 0; }
-//  .icon-wrap { position: relative; display: block; padding: 45px 5px; background-color: #939a9f; }
-//  svg.icon { -webkit-transition: -webkit-transform 0.3s 0.3s; transition: transform 0.3s 0.3s; fill: #fff; }
-//  div { position: absolute; top: 0; width: 200px; height: 100%; background-color: #939a9f; -webkit-transition: -webkit-transform 0.3s 0.3s; transition: transform 0.3s 0.3s; -webkit-perspective: 1000px; perspective: 1000px; }
-//  a.prev div { left: 0; -webkit-transform: translateX(-100%); transform: translateX(-100%); }
-//  a.next div { right: 0; text-align: right; -webkit-transform: translateX(100%); transform: translateX(100%); }
-//  h3 { position: absolute; top: 100%; margin: 0; padding: 0 20px; width: 100%; height: 30%; background: #34495e; color: #fff; text-transform: uppercase; white-space: nowrap; letter-spacing: 1px; font-weight: 500; font-size: 0.75em; line-height: 2.75; -webkit-transition: -webkit-transform 0.3s; transition: transform 0.3s; -webkit-transform: rotateX(-90deg); transform: rotateX(-90deg); -webkit-transform-origin: 50% 0; transform-origin: 50% 0; -webki-backface-visibility: hidden; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
-//  img { position: absolute; top: 0; left: 0; width: 100%; }
-//  a:hover svg.icon { -webkit-transition-delay: 0s; transition-delay: 0s; }
-//  a.prev:hover svg.icon { -webkit-transform: translateX(-100%); transform: translateX(-100%); }
-//  a.next:hover svg.icon { -webkit-transform: translateX(100%); transform: translateX(100%); }
-//  a:hover div { -webkit-transform: translateX(0); transform: translateX(0); }
-//  a:hover h3 { -webkit-transition-delay: 0.6s; transition-delay: 0.6s; -webkit-transform: rotateX(0deg); transform: rotateX(0deg); }
-//}
+.nav-slit {
+  .prev { left: 0;
+    div { left: 0; transform: translateX(-100%); }
+    &.hover .icon { transform: translateX(-100%); }
+  }
+  a {  display: none; position: absolute; top: 50%; opacity: 0; outline: none; transform: translateY(-50%); z-index: 1000;
+    text-align: left;
+
+    svg { display: block; margin: 0 auto; padding: 0; }
+  }
+  .next { right: 0;
+    div { right: 0; transform: translateX(100%);
+      text-align: right;
+    }
+    .hover .icon { transform: translateX(100%); }
+  }
+  .icon-wrap { display: block; position: relative; padding: 84px 29px; background-color: $grey2;
+    img { position: absolute; top: 0; right: 0; bottom: 0; left: 0; margin: auto; width: 25px; height: 70px; }
+  }
+  .icon { fill: $white; transition: transform .3s .3s; }
+  div { position: absolute; top: 0; width: 228px; height: 100%; background-color: $grey2; perspective: 1000px; transition: transform .3s .3s; }
+  h3 { position: absolute; top: 100%; margin: 0; width: 100%; background: $grey2; transition: transform .3s; transform: rotateX(-90deg); transform-origin: 50% 0; backface-visibility: hidden;
+    font-size: 1.4em; line-height: 2.8; font-weight: $fw-medium; text-align: center; white-space: nowrap; color: $brown1; }
+  img { position: absolute; top: 0; left: 0; width: 100%; }
+  .hover .icon { transition-delay: 0s; }
+  .hover div { transform: translateX(0); }
+  .hover h3 { transition-delay: .6s; transform: rotateX(0deg); }
+}
