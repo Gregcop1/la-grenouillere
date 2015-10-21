@@ -17,7 +17,7 @@
     "dummy-team/wp-installer-composer-scripts": "^0.4.0",
     "wp-cli/wp-cli": "^0.20.1",
     "gregcop1/vc": "^1.0",
-    "dummy-team/wp-dummy-twig": "dev-twig-structure",
+    "dummy-team/wp-dummy-twig": "^0.0.2",
     "wpackagist-plugin/polylang": "dev-trunk",
     "wpackagist-plugin/timber-library": "dev-trunk"
   },
