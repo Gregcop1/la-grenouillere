@@ -330,7 +330,7 @@ module.exports = class ContentBuilder
     return currentArticle
 
   showFirstArticle: () =>
-    if(@articlesLoaded == 3)
+    if(@articlesLoaded == 10)
       @goToArticle(@container.querySelector('.' + @selector.article))
       document.body.removeEventListener(@event.ARTICLES_LOADED, @showFirstArticle)
       document.body.dispatchEvent(new Event(@event.ARTICLES_DISPLAYED))
