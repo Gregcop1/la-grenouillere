@@ -63,7 +63,7 @@ class MainMenuManager
       @header.classList.remove('open')
       @transformIconToBurger()
       Velocity(@header, {marginLeft: '-330px'}, {duration: ContentBuilder::transitionDuration.slide})
-      if(event.type != ContentBuilder::event.FOOTER_SHOW)
+      if(!event || event.type != ContentBuilder::event.FOOTER_SHOW)
         Velocity(@siteContent, {left: 0}, {duration: ContentBuilder::transitionDuration.slide})
       document.body.dispatchEvent(new Event(@event.CLOSE_MENU))
     return @
