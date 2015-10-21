@@ -185,37 +185,29 @@ footer.shown { display: block; }
 
 .section-row .article-content { position: absolute; top: 0; right: 0; bottom: 0; left: 0; margin: auto; padding: 50px; opacity: 0; }
 
-.section-row [id="post-161"] { background-image: url("../img/image_manger_cuisine.jpg"); }
+.section-row [id="post-67"] { background-image: url("../img/img67.jpg"); }
 
-.section-row [id="post-128"] { background-image: url("../img/image_chef_bio.jpg"); }
+.section-row [id="post-69"] { background-image: url("../img/img69.jpg"); }
 
-.section-row [id="post-130"] { background-image: url("../img/image_dormir_chambre1.jpg"); }
+.section-row [id="post-71"] { background-image: url("../img/img71.jpg"); }
 
-.section-row [id="post-132"] { background-image: url("../img/image_manger_cuisine.jpg"); }
+.section-row [id="post-73"] { background-image: url("../img/img73.jpg"); }
 
-.section-row [id="post-67"] { background-image: url("../img/image_manger_cuisine2.jpg"); }
+.section-row [id="post-75"] { background-image: url("../img/img75.jpg"); }
 
-.section-row [id="post-69"] { background-image: url("../img/image_manger_cuisine3jpg.jpg"); }
+.section-row [id="post-81"] { background-image: url("../img/img81.jpg"); }
 
-.section-row [id="post-71"] { background-image: url("../img/image_manger_menu1.jpg"); }
+.section-row [id="post-83"] { background-image: url("../img/img83.jpg"); }
 
-.section-row [id="post-77"] { background-image: url("../img/image_manger_restaurant1.jpg"); }
+.section-row [id="post-128"] { background-image: url("../img/img128.jpg"); }
 
-.section-row [id="post-75"] { background-image: url("../img/image_manger_restaurant2.jpg"); }
+.section-row [id="post-130"] { background-image: url("../img/img130.jpg"); }
 
-.section-row [id="post-73"] { background-image: url("../img/image_manger_restaurant2.jpg"); }
+.section-row [id="post-132"] { background-image: url("../img/img132.jpg"); }
 
-.section-row [id="post-79"] { background-image: url("../img/image_manger_restaurant2.jpg"); }
+.section-row [id="post-141"] { background-image: url("../img/img141.jpg"); }
 
-.section-row [id="post-141"] { background-image: url("../img/image_manger_restaurant2.jpg"); }
-
-.section-row [id="post-83"] { background-image: url("../img/image_manger_restaurant2.jpg"); }
-
-.section-row [id="post-81"] { background-image: url("../img/image_manger_restaurant2.jpg"); }
-
-.section-row [id="post-87"] { background-image: url("../img/image_manger_restaurant2.jpg"); }
-
-.section-row [id="post-85"] { background-image: url("../img/image_manger_restaurant2.jpg"); }
+.section-row [id="post-161"] { background-image: url("../img/img161.jpg"); }
 
 .section-row h1, .section-row h2, .section-row h4, .section-row h5, .section-row h6 { color: #fff; }
 
