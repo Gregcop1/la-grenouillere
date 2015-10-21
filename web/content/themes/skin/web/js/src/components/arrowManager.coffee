@@ -25,7 +25,7 @@ class ArrowManager
 
     @preparePreviousArrowContent()
     @prepareNextArrowContent()
-
+    console.log(previousArticle)
     if(previousArticle || currentArticle.classList.contains(ContentBuilder::selector.cutByFooter))
       style = window.getComputedStyle(@prev, false)
       if(style.opacity == '0')
@@ -115,7 +115,6 @@ class ArrowManager
     body = document.body
     body.addEventListener(ContentBuilder::event.GOTO_ARTICLE, @prepareArrow)
     body.addEventListener(ContentBuilder::event.FOOTER_SHOW, @prepareArrow)
-    body.addEventListener(ContentBuilder::event.FOOTER_HIDE, @prepareArrow)
     body.addEventListener(ContentBuilder::event.ARTICLES_LOADED, @prepareArrowOnce)
 
     [@prev, @next].map(((item) =>
