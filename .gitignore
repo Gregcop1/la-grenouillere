@@ -17,6 +17,8 @@ web/content/themes/*
 !web/content
 !web/content/themes
 !web/content/themes/skin
+!web/content/plugins
+!web/content/plugins/Ultimate_VC_Addons
 
 # Theme
 node_modules
