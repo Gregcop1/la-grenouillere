@@ -7,7 +7,7 @@ module.exports = class ContentBuilder
     siteContent: '#site-content'
     row: 'section-row'
     currentRow: 'current-row'
-    currentArticle: 'current-article'
+    currentArticle: 'cb-current-article'
     article: 'post-type-page'
     articleContent: 'article-content'
     cutByFooter: 'cut-by-footer'

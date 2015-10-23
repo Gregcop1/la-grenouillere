@@ -36,8 +36,9 @@ class ArrowManager
 
     setTimeout((=>
       @buildContent()
-        .show()
         .setActiveContent()
+      if(@content.children.length)
+        @show()
     ), ContentBuilder::transitionDuration.fade * 2 )
 
     return @
@@ -63,7 +64,8 @@ class ArrowManager
   clickOnItem: (el) ->
     target = el.closest('li')
     row = window.cb.getCurrentRow()
-    nextArticle = row.querySelector(':nth-child(' + (target.index() + 1) + ')')
+    nextArticle = row.querySelector('article:nth-child(' + (target.index() + 1) + ')')
+
     if(nextArticle)
       window.cb.goToArticle(nextArticle)
 
