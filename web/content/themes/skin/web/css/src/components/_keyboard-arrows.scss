@@ -1,3 +1,6 @@
 .keyboard-arrows {
   position: absolute; right: 0; bottom: 90px; left: 0; height: 63px; background: url('../img/keyboard.png') 50% 100% no-repeat; z-index: 3;
+  @media screen and (max-width: $vw-small) {
+    display: none;
+  } 
 }

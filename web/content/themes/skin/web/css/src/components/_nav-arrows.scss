@@ -18,11 +18,11 @@
     img { position: absolute; top: 0; right: 0; bottom: 0; left: 0; margin: auto; width: 25px; height: 70px; }
   }
   .icon { fill: $white; transition: transform .3s .3s; }
-  div { position: absolute; top: 0; width: 228px; height: 100%; background-color: $grey2; perspective: 1000px; transition: transform .3s .3s; }
+  div { position: absolute; top: 0; width: 228px; height: 100%; background-color: $grey2; perspective: 1000px; transition: transform .3s 0s; }
   h3 { position: absolute; top: 100%; margin: 0; width: 100%; background: $grey2; transition: transform .3s; transform: rotateX(-90deg); transform-origin: 50% 0; backface-visibility: hidden;
-    font-size: 1.4em; line-height: 2.8; font-weight: $fw-medium; text-align: center; white-space: nowrap; color: $brown1; }
+    font-size: 1.5em; line-height: 2.8; font-weight: $fw-medium; text-align: center; white-space: nowrap; color: $brown1; }
   img { position: absolute; top: 0; left: 0; width: 100%; }
   .hover .icon { transition-delay: 0s; }
   .hover div { transform: translateX(0); }
-  .hover h3 { transition-delay: .6s; transform: rotateX(0deg); }
+  .hover h3 { transition-delay: .3s; transform: rotateX(0deg); }
 }

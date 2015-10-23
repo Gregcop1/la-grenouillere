@@ -2,8 +2,10 @@
   position: absolute; top: 0; left: 0; height: 100%; opacity: 0;
 
   article { position: relative; float: left; background-repeat: no-repeat; background-position: 50% 50%; background-size: cover; z-index: 2; }
+  
   .article-content { position: absolute; top: 0; right: 0; bottom: 0; left: 0; margin: auto; padding: 50px; opacity: 0; }
 
+  [id="post-45"] { background-image: url('../img/img45.jpg'); }    
   [id="post-67"] { background-image: url('../img/img67.jpg'); }
   [id="post-69"] { background-image: url('../img/img69.jpg'); }
   [id="post-71"] { background-image: url('../img/img71.jpg'); }
@@ -11,6 +13,8 @@
   [id="post-75"] { background-image: url('../img/img75.jpg'); }
   [id="post-81"] { background-image: url('../img/img81.jpg'); }
   [id="post-83"] { background-image: url('../img/img83.jpg'); }
+  [id="post-85"] { background-image: url('../img/img85.jpg'); }
+  [id="post-87"] { background-image: url('../img/img87.jpg'); }
   [id="post-128"] { background-image: url('../img/img128.jpg'); }
   [id="post-130"] { background-image: url('../img/img130.jpg'); }
   [id="post-132"] { background-image: url('../img/img132.jpg'); }
@@ -18,6 +22,11 @@
   [id="post-161"] { background-image: url('../img/img161.jpg'); }
 
   h1, h2, h4, h5, h6 { color: $white; }
-  h3 { font-weight: $fw-light; text-transform: uppercase; color: $brown1; }
-  ul, li, p, th, td, blockquote, caption, label { text-shadow: 0 0 15px rgba($black, .2); color: $white; }
+  h3 { font-weight: $fw-medium; text-transform: uppercase; color: $brown1; }
+  ul, li, p, th, td, blockquote, caption, label { 
+    text-shadow: 0 0 15px rgba($black, .3); color: $white;
+    @media screen and (max-width: $vw-small) {
+      text-shadow: 0 0 30px rgba($black, .8); color: $white;
+    } 
+  }
 }
