@@ -97,7 +97,7 @@ input, select, textarea, label { vertical-align: middle; }
 
 h1, h2, h3, h4, h5, h6 { line-height: 1em; }
 
-body { overflow: hidden; font-family: "Roboto", Arial sans-serif; font-weight: 400; color: #000; }
+body { background-color: #2f3031; overflow: hidden; font-family: "Roboto", Arial sans-serif; font-weight: 400; color: #000; }
 
 button, a { text-decoration: none; color: #68bbdb; }
 
@@ -133,7 +133,7 @@ footer.shown { display: block; }
 
 .introduction { font-size: 1.7em; }
 
-.site-content { position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 10px solid #fff; background-color: #000; overflow: hidden; z-index: 2; }
+.site-content { position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 10px solid #fff; overflow: hidden; z-index: 2; }
 
 .nav-block { position: absolute; top: 30px; right: 30px; bottom: 30px; left: 30px; overflow: auto; }
 
@@ -213,7 +213,7 @@ footer.shown { display: block; }
 
 .section-row h3 { font-weight: 300; text-transform: uppercase; color: #ebc390; }
 
-.section-row ul, .section-row li, .section-row p, .section-row th, .section-row td, .section-row blockquote, .section-row caption, .section-row label { color: #fff; }
+.section-row ul, .section-row li, .section-row p, .section-row th, .section-row td, .section-row blockquote, .section-row caption, .section-row label { text-shadow: 0 0 15px rgba(0, 0, 0, 0.2); color: #fff; }
 
 .nav-slit .prev { left: 0; }
 
@@ -249,7 +249,7 @@ footer.shown { display: block; }
 
 .nav-slit .hover h3 { transition-delay: .6s; -webkit-transform: rotateX(0deg); transform: rotateX(0deg); }
 
-.keyboard-arrows { position: absolute; right: 0; bottom: 50px; left: 0; height: 63px; background: url("../img/keyboard.png") 50% 100% no-repeat; z-index: 3; }
+.keyboard-arrows { position: absolute; right: 0; bottom: 90px; left: 0; height: 63px; background: url("../img/keyboard.png") 50% 100% no-repeat; z-index: 3; }
 
 .next-row { position: absolute; top: 50%; right: 30px; left: 30px; -webkit-transform: translateY(-50%); -ms-transform: translateY(-50%); transform: translateY(-50%); font-size: 1.4em; }
 
@@ -258,6 +258,32 @@ footer.shown { display: block; }
 .next-row a:hover { text-decoration: none; }
 
 .next-row .title { font-size: 1.73em; line-height: 1.5; text-transform: uppercase; color: #ebc390; }
+
+.breadcrumb { position: absolute; right: 10px; bottom: 0; left: 10px; border-bottom: 10px solid #fff; padding-top: 23px; overflow: hidden; z-index: 3; }
+
+.breadcrumb .bc-progress .bc-grip { position: absolute; top: 0; left: 0; opacity: 0; -webkit-transform: translate(-50%, 0); -ms-transform: translate(-50%, 0); transform: translate(-50%, 0); }
+
+.breadcrumb .bc-progress svg { height: 4px; background-color: #2f3031; }
+
+.breadcrumb .bc-progress path { height: 4px; stroke: #ebc390; }
+
+.breadcrumb.col-2 li { width: 50%; }
+
+.breadcrumb.col-3 li { width: 33.334%; }
+
+.breadcrumb.col-4 li { width: 25%; }
+
+.breadcrumb.col-5 li { width: 20%; }
+
+.breadcrumb.shown .bc-content { margin-bottom: 0; }
+
+.breadcrumb .bc-content { display: table; margin: 0 0 -38px; padding: 12px 0; width: 100%; min-height: 14px; background: #161516 url("../img/border-dotted-breadcrumb.gif") 50% 50% repeat-x; transition: 200ms margin linear; }
+
+.breadcrumb .bc-content li { display: table-cell; margin: 0; padding: 0; font-family: "Roboto Slab", serif; font-size: 1.4em; line-height: 1; font-weight: 700; text-align: center; }
+
+.breadcrumb .bc-content li a { display: inline-block; padding: 0 5px; background-color: #161516; transition: 200ms color linear; color: #4e4b53; }
+
+.breadcrumb .bc-content li a:hover, .breadcrumb .bc-content li.active a { text-decoration: none; color: #d2d5da; }
 
 @media print { .no-print, [id="header"], [id="footer"] { display: none !important; } }
 /*# sourceMappingURL=main.css.map */

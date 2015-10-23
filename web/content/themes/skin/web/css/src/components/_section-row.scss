@@ -19,5 +19,5 @@
 
   h1, h2, h4, h5, h6 { color: $white; }
   h3 { font-weight: $fw-light; text-transform: uppercase; color: $brown1; }
-  ul, li, p, th, td, blockquote, caption, label { color: $white; }
+  ul, li, p, th, td, blockquote, caption, label { text-shadow: 0 0 15px rgba($black, .2); color: $white; }
 }

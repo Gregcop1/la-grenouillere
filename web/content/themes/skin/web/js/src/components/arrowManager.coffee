@@ -25,7 +25,7 @@ class ArrowManager
 
     @preparePreviousArrowContent()
     @prepareNextArrowContent()
-    console.log(previousArticle)
+
     if(previousArticle || currentArticle.classList.contains(ContentBuilder::selector.cutByFooter))
       style = window.getComputedStyle(@prev, false)
       if(style.opacity == '0')

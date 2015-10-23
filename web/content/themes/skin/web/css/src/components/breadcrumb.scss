@@ -1,0 +1,29 @@
+.breadcrumb {
+  position: absolute; right: 10px; bottom: 0; left: 10px; border-bottom: 10px solid $white; padding-top: 23px; overflow: hidden; z-index: 3;
+
+  .bc-progress {
+    .bc-grip { position: absolute; top: 0; left: 0; opacity: 0; transform: translate(-50%, 0); }
+    svg { height: 4px; background-color: $grey2; }
+    path { height: 4px; stroke: $brown1; }
+  }
+
+  &.col-2 li { width: 50%; }
+  &.col-3 li { width: 33.334%; }
+  &.col-4 li { width: 25%; }
+  &.col-5 li { width: 20%; }
+  &.shown .bc-content { margin-bottom: 0; }
+  .bc-content {
+    display: table; margin: 0 0 -38px; padding: 12px 0; width: 100%; min-height: 14px; background: $grey4 url('../img/border-dotted-breadcrumb.gif') 50% 50% repeat-x; transition: $tr-default margin linear;
+
+    li { display: table-cell; margin: 0; padding: 0;
+      font-family: $roboto-serif; font-size: 1.4em; line-height: 1; font-weight: $fw-bold; text-align: center;
+
+      a { display: inline-block; padding: 0 5px; background-color: $grey4; transition: $tr-default color linear;
+        color: $grey3;
+
+      }
+      a:hover,
+      &.active a { text-decoration: none; color: $grey5; }
+    }
+  }
+}

@@ -6,4 +6,5 @@
 ////
 
 /// Text default font and color
-body { overflow: hidden; font-family: $font; font-weight: $fw-regular; color: $text-color; }
+body { background-color: $grey2; overflow: hidden;
+  font-family: $font; font-weight: $fw-regular; color: $text-color; }
