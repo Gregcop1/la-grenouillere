@@ -35,5 +35,6 @@ query_posts($postQuery);
 $context['posts'] = Timber::get_posts();
 $context['pagination'] = Timber::get_pagination();
 
-$template = SkinSite::isReallyHome()  ? 'Templates/home.twig' : array( 'Templates/page-' . $post->post_name . '.twig', 'Templates/page.twig' );
+//$template = SkinSite::isReallyHome()  ? 'Templates/home.twig' : array( 'Templates/page-' . $post->post_name . '.twig', 'Templates/page.twig' );
+$template =array( 'Templates/page-' . $post->post_name . '.twig', 'Templates/page.twig' );
 Timber::render($template , $context, TWIG_CACHE_ENABLE );

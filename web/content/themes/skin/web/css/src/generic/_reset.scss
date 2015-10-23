@@ -7,7 +7,8 @@
 ////
 
 /// Reset font-size for easier use : 1.6em = 16px
-html { font-size: 62.5%; line-height: 1.3em; }
+html { height: 100%;
+  font-size: 62.5%; line-height: 1.3em; }
 body {
   margin: 0; padding: 0;
   font-size: 1em; }

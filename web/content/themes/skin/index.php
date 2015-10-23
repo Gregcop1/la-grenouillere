@@ -20,6 +20,7 @@ if ( ! class_exists( 'Timber' ) ) {
 $context = Timber::get_context();
 $context['posts'] = Timber::get_posts();
 
-$template = SkinSite::isReallyHome()  ? 'Templates/home.twig' : 'Templates/index.twig';
+//$template = SkinSite::isReallyHome()  ? 'Templates/home.twig' : 'Templates/index.twig';
+$template = 'Templates/index.twig';
 
 Timber::render( $template, $context, TWIG_CACHE_ENABLE );
