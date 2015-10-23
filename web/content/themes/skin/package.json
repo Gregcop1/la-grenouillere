@@ -18,10 +18,12 @@
     "grunt-sass": "*",
     "grunt-scss-lint": "*",
     "load-grunt-tasks": "*",
+    "lodash": "^3.10.1",
     "progressbar.js": "^0.9.0",
     "velocity-animate": "^1.2.3"
   },
   "dependencies": {
-    "progressbar.js": "^0.9.0"
+    "progressbar.js": "^0.9.0",
+    "hammerjs": "^2.0.4"
   }
 }

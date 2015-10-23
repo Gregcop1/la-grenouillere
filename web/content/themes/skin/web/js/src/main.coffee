@@ -17,4 +17,5 @@ window.addEventListener('load', ->
     window.cb = new ContentBuilder('#nav-main > ul', '#content')
     window.arrowManager = require('./components/ArrowManager.coffee')
     window.breadCrumbManager = require('./components/breadCrumbManager.coffee')
+    window.mouseManager = require('./components/mouseManager.coffee')
 )
