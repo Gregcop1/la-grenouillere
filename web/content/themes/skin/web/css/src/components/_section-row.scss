@@ -33,7 +33,12 @@
       text-shadow: 0 0 30px rgba($black, .8); color: $white;
     }  
   }
-  h3 { font-weight: $fw-medium; text-transform: uppercase; color: $brown1; }
+  h3 { font-weight: $fw-medium; text-transform: uppercase; color: $brown1; 
+    @media screen and (max-width: $vw-small) {   
+      font-size: 1.5em;
+      text-shadow: 0 0 30px rgba($black, .8);
+    }   
+  }
   ul, li, p, th, td, blockquote, caption, label { 
     text-shadow: 0 0 15px rgba($black, .3); color: $white;
     @media screen and (max-width: $vw-small) {

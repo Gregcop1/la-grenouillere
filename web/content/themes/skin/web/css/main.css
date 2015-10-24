@@ -233,6 +233,8 @@ footer.shown { display: block; }
 
 .section-row h3 { font-weight: 500; text-transform: uppercase; color: #ebc390; }
 
+@media screen and (max-width: 480px) { .section-row h3 { font-size: 1.5em; text-shadow: 0 0 30px rgba(0, 0, 0, 0.8); } }
+
 .section-row ul, .section-row li, .section-row p, .section-row th, .section-row td, .section-row blockquote, .section-row caption, .section-row label { text-shadow: 0 0 15px rgba(0, 0, 0, 0.3); color: #fff; }
 
 @media screen and (max-width: 480px) { .section-row ul, .section-row li, .section-row p, .section-row th, .section-row td, .section-row blockquote, .section-row caption, .section-row label { padding: 0; font-size: 1em; text-shadow: 0 0 20px rgba(0, 0, 0, 0.9); color: #fff; } }
@@ -278,11 +280,15 @@ footer.shown { display: block; }
 
 .next-row { position: absolute; top: 50%; right: 30px; left: 30px; -webkit-transform: translateY(-50%); -ms-transform: translateY(-50%); transform: translateY(-50%); font-size: 1.4em; }
 
+@media screen and (max-width: 480px) { .next-row { font-size: 1.2em; } }
+
 .next-row a { color: #fff; }
 
 .next-row a:hover { text-decoration: none; }
 
 .next-row .title { font-size: 1.73em; line-height: 1.5; text-transform: uppercase; color: #ebc390; }
+
+@media screen and (max-width: 480px) { .next-row .title { font-size: 1.4em; } }
 
 .breadcrumb { position: absolute; right: 10px; bottom: 0; left: 10px; border-bottom: 10px solid #fff; padding-top: 23px; overflow: hidden; z-index: 3; }
 

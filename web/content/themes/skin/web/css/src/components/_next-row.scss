@@ -1,10 +1,16 @@
 .next-row {
   position: absolute; top: 50%; right: 30px; left: 30px; transform: translateY(-50%);
   font-size: 1.4em;
-
+  @media screen and (max-width: $vw-small) {   
+    font-size: 1.2em;
+  }    
   a { color: $white;
 
     &:hover { text-decoration: none; }
   }
-  .title { font-size: 1.73em; line-height: 1.5; text-transform: uppercase; color: $brown1; }
+  .title { font-size: 1.73em; line-height: 1.5; text-transform: uppercase; color: $brown1; 
+    @media screen and (max-width: $vw-small) {   
+      font-size: 1.4em;
+    }   
+  }
 }
