@@ -109,6 +109,8 @@ header { position: relative; margin-left: -330px; border-right: 10px solid #fff;
 
 header h1 { position: absolute; top: 10px; left: 100%; margin: 0 0 0 10px; padding: 0; width: 360px; }
 
+@media screen and (max-width: 480px) { header h1 img { max-width: 80%; } }
+
 header .nav-button { padding: 0 10px; width: 50px; height: 50px; background-color: #2f3031; }
 
 header .menu-icon { margin-top: -12px; max-width: 100%; }
@@ -233,7 +235,7 @@ footer.shown { display: block; }
 
 .section-row ul, .section-row li, .section-row p, .section-row th, .section-row td, .section-row blockquote, .section-row caption, .section-row label { text-shadow: 0 0 15px rgba(0, 0, 0, 0.3); color: #fff; }
 
-@media screen and (max-width: 480px) { .section-row ul, .section-row li, .section-row p, .section-row th, .section-row td, .section-row blockquote, .section-row caption, .section-row label { padding: 0 5px; font-size: 1.1em; text-shadow: 0 0 20px rgba(0, 0, 0, 0.9); color: #fff; } }
+@media screen and (max-width: 480px) { .section-row ul, .section-row li, .section-row p, .section-row th, .section-row td, .section-row blockquote, .section-row caption, .section-row label { padding: 0; font-size: 1em; text-shadow: 0 0 20px rgba(0, 0, 0, 0.9); color: #fff; } }
 
 .nav-slit .prev { left: 0; }
 
@@ -272,11 +274,7 @@ footer.shown { display: block; }
 
 .nav-slit .hover h3 { transition-delay: .3s; -webkit-transform: rotateX(0deg); transform: rotateX(0deg); }
 
-.keyboard-arrows { position: absolute; right: 0; bottom: 90px; left: 0; height: 63px; background: url("../img/keyboard.png") 50% 100% no-repeat; z-index: 3; }
-
-@media screen and (max-width: 480px) { .keyboard-arrows { display: none; } }
-
-@media screen and (max-width: 780px) and (max-width: 1024px) { .keyboard-arrows { display: none; } }
+.keyboard-arrows { display: none; position: absolute; right: 0; bottom: 90px; left: 0; height: 63px; background: url("../img/keyboard.png") 50% 100% no-repeat; z-index: 3; }
 
 .next-row { position: absolute; top: 50%; right: 30px; left: 30px; -webkit-transform: translateY(-50%); -ms-transform: translateY(-50%); transform: translateY(-50%); font-size: 1.4em; }
 
