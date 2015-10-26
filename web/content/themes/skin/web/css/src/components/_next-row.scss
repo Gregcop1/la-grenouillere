@@ -2,6 +2,7 @@
   position: absolute; top: 50%; right: 30px; left: 30px; transform: translateY(-50%);
   font-size: 1.4em;
   @media screen and (max-width: $vw-small) {   
+    top: 30%;
     font-size: 1.2em;
   }    
   a { color: $white;

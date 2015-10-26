@@ -26,25 +26,42 @@
   [id="post-132"] { background-image: url('../img/img132.jpg'); }
   [id="post-141"] { background-image: url('../img/img141.jpg'); }
   [id="post-161"] { background-image: url('../img/img161.jpg'); }
-
+  @media screen and (max-width: $vw-small) {   
+    [id="post-45"] { background-image: url('../img/img45b.jpg'); }    
+    [id="post-67"] { background-image: url('../img/img67b.jpg'); }
+    [id="post-69"] { background-image: url('../img/img69b.jpg'); }
+    [id="post-71"] { background-image: url('../img/img71b.jpg'); }
+    [id="post-73"] { background-image: url('../img/img73b.jpg'); }
+    [id="post-75"] { background-image: url('../img/img75b.jpg'); }
+    [id="post-81"] { background-image: url('../img/img81b.jpg'); }
+    [id="post-83"] { background-image: url('../img/img83b.jpg'); }
+    [id="post-85"] { background-image: url('../img/img85b.jpg'); }
+    [id="post-87"] { background-image: url('../img/img87b.jpg'); }
+    [id="post-128"] { background-image: url('../img/img128b.jpg'); }
+    [id="post-130"] { background-image: url('../img/img130b.jpg'); }
+    [id="post-132"] { background-image: url('../img/img132b.jpg'); }
+    [id="post-141"] { background-image: url('../img/img141b.jpg'); }
+    [id="post-161"] { background-image: url('../img/img161b.jpg'); }
+  } 
   h1, h2, h4, h5, h6 { color: $white;
-    @media screen and (max-width: $vw-small) {   
+    @media screen and (max-width: $vw-small) {
+      margin: 10px 0;
       font-size: 2em;
       text-shadow: 0 0 30px rgba($black, .8); color: $white;
     }  
   }
   h3 { font-weight: $fw-medium; text-transform: uppercase; color: $brown1; 
     @media screen and (max-width: $vw-small) {   
-      font-size: 1.5em;
-      text-shadow: 0 0 30px rgba($black, .8);
+      font-size: 1.3em;
+      text-shadow: 0 0 20px rgba($black, .9);
     }   
   }
   ul, li, p, th, td, blockquote, caption, label { 
     text-shadow: 0 0 15px rgba($black, .3); color: $white;
     @media screen and (max-width: $vw-small) {
       padding: 0;    
-      font-size: 1em;
-      text-shadow: 0 0 20px rgba($black, .9); color: $white;
+      font-size: 1.1em;
+      text-shadow: 0 0 10px rgba($black, 1); color: $white;
     } 
   }
 }

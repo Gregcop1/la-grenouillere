@@ -169,7 +169,7 @@ module.exports = class ContentBuilder
       node.classList.remove(@selector.currentRow)
 
       # hide row
-      Velocity(node, 'fadeOut', {duration: @transitionDuration.fade, delay: cumulatedDelay, easing: 'linear'})
+      Velocity(node, 'fadeOut', {duration: @transitionDuration.fade, delay: cumulatedDelay, easing: 'easeInOutCubic'})
     )
 
     if(goTrough)
@@ -189,7 +189,7 @@ module.exports = class ContentBuilder
       document.body.dispatchEvent(new Event(@event.GOTO_ROW))
 
       # show row
-      Velocity(row, 'fadeIn', {duration: @transitionDuration.fade, delay: cumulatedDelay, easing: 'linear'})
+      Velocity(row, 'fadeIn', {duration: @transitionDuration.fade, delay: cumulatedDelay, easing: 'easeInOutCubic'})
       return (cumulatedDelay + @transitionDuration.fade)
 
     return cumulatedDelay

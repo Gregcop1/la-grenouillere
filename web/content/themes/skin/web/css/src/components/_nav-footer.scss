@@ -5,9 +5,10 @@
   .first-level { margin: 0; border-top: 2px dotted $grey2; padding: 0; }
   .nav-item { margin: 20px 0; list-style-type: none;
     font-size: 1.2em; text-transform: uppercase;
-
+    
     &:first-child { margin-top: 10px; }
     &:last-child { margin-bottom: 0; }
+  
   }
   a { transition: color $tr-default linear;
     color: $brown3;

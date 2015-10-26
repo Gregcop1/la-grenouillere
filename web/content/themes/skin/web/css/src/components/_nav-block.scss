@@ -22,7 +22,10 @@
   .nav-drop { border-right: 3px dotted $grey2; padding-right: 15px; }
   .nav-drop-item { margin: 5px 0;
     font-family: $roboto-serif; font-size: 1em;
-
+    @media screen and (max-width: $vw-small) {
+      margin: 2px 0;
+      font-size: .8em;
+    } 
     a { color: $brown2;
       &:hover { text-decoration: none; color: $brown1; }
     }

@@ -9,7 +9,7 @@ header { position: relative; margin-left: -330px; border-right: 10px solid $whit
 
   h1 { position: absolute; top: 10px; left: 100%; margin: 0 0 0 10px; padding: 0; width: 360px; 
     @media screen and (max-width: $vw-small) {
-      img { max-width: 80%; }
+      img { position: fixed; margin-top: 15px; margin-left: 15px; max-width: 60%;}
     } 
   }
 

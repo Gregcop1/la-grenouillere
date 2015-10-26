@@ -7,7 +7,7 @@
 
 footer {
   //display: none;
-  position: fixed; top: 0; right: 0; bottom: 0; padding: 1% 0; width: 235px; max-width: 100%; background: url('../img/fond_footer.gif') top left repeat-y; overflow: auto; opacity: 0; z-index: 1;
+  position: fixed; top: 0; right: 0; bottom: 0; padding: 1% 0; width: 235px; max-width: 100%; background: url('../img/fondFooter.jpg') center center repeat-y; overflow: auto; opacity: 0; z-index: 1;
 
   &.shown { display: block; }
 }

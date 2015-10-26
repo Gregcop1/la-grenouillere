@@ -50,7 +50,7 @@ class FooterManager
       {
         duration: if @isShown then ContentBuilder::transitionDuration.fade else 0
         delay: ContentBuilder::transitionDuration.fade * 2
-        easing: 'linear'
+        easing: 'easeInOutQuart'
         complete: () =>
           @isShown = false
       }
