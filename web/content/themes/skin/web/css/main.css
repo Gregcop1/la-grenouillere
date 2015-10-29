@@ -249,11 +249,11 @@ footer.shown { display: block; }
 
 @media screen and (max-width: 480px) { .section-row h1, .section-row h2, .section-row h4, .section-row h5, .section-row h6 { margin: 10px 0; font-size: 2em; text-shadow: 0 0 30px rgba(0, 0, 0, 0.8); color: #fff; } }
 
-.section-row h3 { font-weight: 500; text-transform: uppercase; color: #ebc390; }
+.section-row h3 { font-weight: 500; text-transform: uppercase; text-shadow: 0 0 15px rgba(0, 0, 0, 0.8); color: #ebc390; }
 
 @media screen and (max-width: 480px) { .section-row h3 { font-size: 1.3em; text-shadow: 0 0 20px rgba(0, 0, 0, 0.9); } }
 
-.section-row ul, .section-row li, .section-row p, .section-row th, .section-row td, .section-row blockquote, .section-row caption, .section-row label { text-shadow: 0 0 15px rgba(0, 0, 0, 0.3); color: #fff; }
+.section-row ul, .section-row li, .section-row p, .section-row th, .section-row td, .section-row blockquote, .section-row caption, .section-row label { text-shadow: 0 0 15px rgba(0, 0, 0, 0.8); color: #fff; }
 
 @media screen and (max-width: 480px) { .section-row ul, .section-row li, .section-row p, .section-row th, .section-row td, .section-row blockquote, .section-row caption, .section-row label { padding: 0; font-size: 1.1em; text-shadow: 0 0 10px black; color: #fff; } }
 
