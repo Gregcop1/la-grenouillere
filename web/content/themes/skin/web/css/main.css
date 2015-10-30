@@ -1,9 +1,9 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,300|Roboto+Slab:400,300,700);
 h1 { margin: 25px 0; font-size: 4.5em; }
 
-h2 { margin: 20px 0; font-family: "Roboto Slab", serif; font-size: 4em; font-weight: 400; }
+h2 { margin: 15px 0; font-family: "Roboto Slab", serif; font-size: 3em; font-weight: 400; }
 
-h3 { margin: 10px 0; font-size: 1.6em; font-weight: 700; }
+h3 { margin: 10px 0; font-size: 1.2em; font-weight: 500; }
 
 h4 { margin: 20px 0; font-size: 1.4em; }
 
@@ -83,7 +83,7 @@ li { margin: 5px 0; }
 
 p { margin: 10px 0; }
 
-p, li, td, th, textarea, caption, pre, blockquote, label, input, select, textarea { font-size: 1.4em; line-height: 1.6em; font-weight: 400; }
+p, li, td, th, textarea, caption, pre, blockquote, label, input, select, textarea { font-size: 1.2em; line-height: 1.5em; font-weight: 400; }
 
 td p, td .bodytext { margin: 0; }
 
@@ -245,11 +245,11 @@ footer.shown { display: block; }
   .section-row [id="post-141"] { background-image: url("../img/img141b.jpg"); }
   .section-row [id="post-161"] { background-image: url("../img/img161b.jpg"); } }
 
-.section-row h1, .section-row h2, .section-row h4, .section-row h5, .section-row h6 { color: #fff; }
+.section-row h1, .section-row h2, .section-row h4, .section-row h5, .section-row h6 { text-shadow: 0 0 25px rgba(0, 0, 0, 0.6); color: #fff; }
 
-@media screen and (max-width: 480px) { .section-row h1, .section-row h2, .section-row h4, .section-row h5, .section-row h6 { margin: 10px 0; font-size: 2em; text-shadow: 0 0 30px rgba(0, 0, 0, 0.8); color: #fff; } }
+@media screen and (max-width: 480px) { .section-row h1, .section-row h2, .section-row h4, .section-row h5, .section-row h6 { margin: 10px 0; font-size: 2em; text-shadow: 0 0 30px rgba(0, 0, 0, 0.6); color: #fff; } }
 
-.section-row h3 { font-weight: 500; text-transform: uppercase; text-shadow: 0 0 15px rgba(0, 0, 0, 0.8); color: #ebc390; }
+.section-row h3 { font-weight: 400; text-transform: uppercase; text-shadow: 0 0 25px rgba(0, 0, 0, 0.6); color: #ffe1bb; }
 
 @media screen and (max-width: 480px) { .section-row h3 { font-size: 1.3em; text-shadow: 0 0 20px rgba(0, 0, 0, 0.9); } }
 
