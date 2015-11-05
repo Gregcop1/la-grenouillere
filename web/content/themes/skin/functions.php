@@ -41,8 +41,14 @@ class SkinSite extends TimberSite
 
     private function registerScripts()
     {
+        //Ultimate_VC_Addons/assets/min-css/ultimate.min.css
         wp_enqueue_script('modernizr', get_stylesheet_directory_uri() . '/web/js/vendors/modernizr.js');
         wp_enqueue_script('snap/svg', get_stylesheet_directory_uri() . '/web/js/vendors/snap.svg-min.js');
+        wp_enqueue_script('ultimateVC-modernizr', plugins_url('Ultimate_VC_Addons/assets/min-js/modernizr-custom.min.js'), ['jquery'], '3.13.17');
+        wp_enqueue_script('ultimateVC-ultimate', plugins_url('Ultimate_VC_Addons/assets/min-js/ultimate.min.js'), ['jquery'], '3.13.17');
+        wp_enqueue_script('ultimateVC-modal', get_stylesheet_directory_uri() . '/web/js/vendors/modal.js', ['jquery'], '3.13.17');
+
+        wp_enqueue_style('ultimateVC', plugins_url('Ultimate_VC_Addons/assets/min-css/ultimate.min.css')); // Add composer files to all templates
     }
 
     public function print_inline_script()

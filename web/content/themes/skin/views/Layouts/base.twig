@@ -52,6 +52,8 @@
         </footer>
 
         {{ function('wp_footer') }}
+
+        {% include 'Partials/Components/_analytics.twig' %}
     {% endblock %}
     <div id="preloader" class="preloader">
         <img src="{{site.theme.link}}/web/img/logoInt.png" width="275" height="38" alt="La grenouillère"/>

@@ -1,4 +1,5 @@
 Velocity = require('velocity-animate')
+_ = require('lodash')
 
 module.exports = class ContentBuilder
   articlesLoaded: 0
@@ -65,17 +66,37 @@ module.exports = class ContentBuilder
     if(@slice[index] != undefined)
       link = @slice[index].splice(0, 1)[0]
       @loadContent(index, link)
+    else
+      initLoadModal()
+      initReadyModal()
+
     return @
 
   loadContent: (index, link) ->
-    XHRT = new XMLHttpRequest()
-    XHRT.responseType = 'document'
-    XHRT.onload = =>
-      response = @setViewportSizeToContent(XHRT.response.querySelector('#content'))
-      @buildArticle(index, response.innerHTML)
-      document.body.dispatchEvent(new Event(@event.ARTICLES_LOADED))
-    XHRT.open('GET', link.getAttribute('href'), true)
-    XHRT.send()
+    jQuery.get(link.getAttribute('href'))
+      .success((data) =>
+        parser = new DOMParser()
+        html = parser.parseFromString(data, 'text/html')
+
+#        headerScripts = html.querySelectorAll('head script')
+#        @mergeHeaders(headerScripts)
+
+        response = @setViewportSizeToContent(html.querySelector('#content'))
+        @buildArticle(index, response.innerHTML)
+        document.body.dispatchEvent(new Event(@event.ARTICLES_LOADED))
+      )
+    return @
+
+  mergeHeaders: (newHeaders) ->
+    currentHeaders = document.querySelectorAll('head script')
+
+    diffHeaders = _.select newHeaders, (item) ->
+      !_.findWhere(currentHeaders, {outerHTML: item.outerHTML})
+
+    _.map(diffHeaders, (item) ->
+      console.log(item.outerHTML)
+    )
+
     return @
 
   buildArticle: (index, content) ->

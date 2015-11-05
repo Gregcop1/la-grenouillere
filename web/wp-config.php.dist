@@ -79,7 +79,9 @@ $table_prefix  = 'wp_';
  */
 define('WP_DEBUG', false);
 
-define( 'ABSPATH', dirname( __FILE__ ) . '/wp/' );
+if(!ABSPATH) {
+    define('ABSPATH', dirname(__FILE__) . '/wp/');
+}
 define( 'WP_CONTENT_DIR', dirname( __FILE__ ) . '/content' );
 define( 'WP_CONTENT_URL', 'http://' . $_SERVER['HTTP_HOST'] . '/content' );
 

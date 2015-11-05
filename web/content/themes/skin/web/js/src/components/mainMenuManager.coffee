@@ -54,7 +54,7 @@ class MainMenuManager
     @header.classList.add('open')
     @transformIconToClose()
     Velocity(@header, {marginLeft: 0}, {duration: ContentBuilder::transitionDuration.slide})
-    Velocity(@siteContent, {left: '330px'}, {duration: ContentBuilder::transitionDuration.slide}, "easeInOutQuart")
+    Velocity(@siteContent, {left: '330px'}, {duration: ContentBuilder::transitionDuration.slide}, 'easeInOutQuart')
     document.body.dispatchEvent(new Event(@event.OPEN_MENU))
     return @
 
@@ -62,9 +62,9 @@ class MainMenuManager
     if(@header.classList.contains('open'))
       @header.classList.remove('open')
       @transformIconToBurger()
-      Velocity(@header, {marginLeft: '-330px'}, {duration: ContentBuilder::transitionDuration.slide}, "easeInOutQuart")
+      Velocity(@header, {marginLeft: '-330px'}, {duration: ContentBuilder::transitionDuration.slide}, 'easeInOutQuart')
       if(!event || event.type != ContentBuilder::event.FOOTER_SHOW)
-        Velocity(@siteContent, {left: 0}, {duration: ContentBuilder::transitionDuration.slide}, "easeInOutQuart")
+        Velocity(@siteContent, {left: 0}, {duration: ContentBuilder::transitionDuration.slide}, 'easeInOutQuart')
       document.body.dispatchEvent(new Event(@event.CLOSE_MENU))
     return @
 
