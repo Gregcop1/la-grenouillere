@@ -82,6 +82,7 @@ module.exports = class ContentBuilder
 #        @mergeHeaders(headerScripts)
 
         response = @setViewportSizeToContent(html.querySelector('#content'))
+        console.log('response', response)
         @buildArticle(index, response.innerHTML)
         document.body.dispatchEvent(new Event(@event.ARTICLES_LOADED))
       )
