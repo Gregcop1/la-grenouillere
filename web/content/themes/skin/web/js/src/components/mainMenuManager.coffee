@@ -44,6 +44,7 @@ class MainMenuManager
     return @
 
   toggleMenu: () =>
+    console.log('toggle', @header.classList)
     if(@header.classList.contains('open'))
       @close()
     else
@@ -55,7 +56,7 @@ class MainMenuManager
     @transformIconToClose()
     Velocity(@header, {marginLeft: 0}, {duration: ContentBuilder::transitionDuration.slide})
     Velocity(@siteContent, {left: '330px'}, {duration: ContentBuilder::transitionDuration.slide}, 'easeInOutQuart')
-    document.body.dispatchEvent(new Event(@event.OPEN_MENU))
+    jQuery('body').bind(@event.OPEN_MENU)
     return @
 
   close: (event) =>
@@ -65,28 +66,30 @@ class MainMenuManager
       Velocity(@header, {marginLeft: '-330px'}, {duration: ContentBuilder::transitionDuration.slide}, 'easeInOutQuart')
       if(!event || event.type != ContentBuilder::event.FOOTER_SHOW)
         Velocity(@siteContent, {left: 0}, {duration: ContentBuilder::transitionDuration.slide}, 'easeInOutQuart')
-      document.body.dispatchEvent(new Event(@event.CLOSE_MENU))
+      jQuery('body').bind(@event.CLOSE_MENU)
     return @
 
   transformIconToBurger: () =>
     icon = Snap.select(@selector.icon)
     el1 = icon.select('path:nth-child(1)')
-    el1.animate({path: 'm 12.0916789,24.818994 40.8166421,0'}, 200, mina.backin)
-    el2 = icon.select('path:nth-child(2)')
-    el2.animate({opacity: 1}, 200, mina.backin)
-    el3 = icon.select('path:nth-child(3)')
-    el3.animate({path: 'm 12.0916788,56.95698 40.8166422,0'}, 200, mina.backin)
+    if(el1)
+      el1.animate({path: 'm 12.0916789,24.818994 40.8166421,0'}, 200, mina.backin)
+      el2 = icon.select('path:nth-child(2)')
+      el2.animate({opacity: 1}, 200, mina.backin)
+      el3 = icon.select('path:nth-child(3)')
+      el3.animate({path: 'm 12.0916788,56.95698 40.8166422,0'}, 200, mina.backin)
 
     return @
 
   transformIconToClose: () =>
     icon = Snap.select(@selector.icon)
     el1 = icon.select('path:nth-child(1)')
-    el1.animate({path: 'M 12.972944,56.95698 51.027056,24.818994'}, 200, mina.backin)
-    el2 = icon.select('path:nth-child(2)')
-    el2.animate({opacity: 0}, 200, mina.backin)
-    el3 = icon.select('path:nth-child(3)')
-    el3.animate({path: 'M 12.972944,24.818994 51.027056,56.95698'}, 200, mina.backin)
+    if(el1)
+      el1.animate({path: 'M 12.972944,56.95698 51.027056,24.818994'}, 200, mina.backin)
+      el2 = icon.select('path:nth-child(2)')
+      el2.animate({opacity: 0}, 200, mina.backin)
+      el3 = icon.select('path:nth-child(3)')
+      el3.animate({path: 'M 12.972944,24.818994 51.027056,56.95698'}, 200, mina.backin)
 
     return @
 
@@ -96,14 +99,14 @@ class MainMenuManager
     return @
 
   bind: () =>
-    @button.addEventListener('click', @toggleMenu)
-    body = document.body
-    body.addEventListener(ContentBuilder::event.GOTO_ARTICLE, @close)
-    body.addEventListener(ContentBuilder::event.FOOTER_SHOW, @close)
+    jQuery(@button).bind('click', @toggleMenu)
+    body = jQuery('body')
+    body.bind(ContentBuilder::event.GOTO_ARTICLE, @close)
+    body.bind(ContentBuilder::event.FOOTER_SHOW, @close)
 
     # bind links
     [].forEach.call(@nav.querySelectorAll('a'), (node) =>
-      node.addEventListener('click', @clickOnMenuItem)
+      jQuery(node).bind('click', @clickOnMenuItem)
       return @
     )
 

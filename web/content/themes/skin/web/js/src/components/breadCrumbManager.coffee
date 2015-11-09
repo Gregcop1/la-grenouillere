@@ -62,7 +62,7 @@ class ArrowManager
     return @
 
   clickOnItem: (el) ->
-    target = el.closest('li')
+    target = jQuery(el).closest('li').get(0)
     row = window.cb.getCurrentRow()
     nextArticle = row.querySelector('article:nth-child(' + (target.index() + 1) + ')')
 
@@ -131,13 +131,13 @@ class ArrowManager
     return @
 
   bind: ()  =>
-    body = document.body
-    body.addEventListener(ContentBuilder::event.GOTO_ROW, @prepareContent)
-    body.addEventListener(ContentBuilder::event.GOTO_ARTICLE, @setActiveContent)
-    body.addEventListener(window.mainMenuManager.event.OPEN_MENU, @openMenu)
-    body.addEventListener(window.mainMenuManager.event.CLOSE_MENU, @closeMenu)
-    body.addEventListener(ContentBuilder::event.FOOTER_SHOW, @openFooterMenu)
-    body.addEventListener(ContentBuilder::event.FOOTER_HIDE, @closeFooterMenu)
+    body = jQuery('body')
+    body.bind(ContentBuilder::event.GOTO_ROW, @prepareContent)
+    body.bind(ContentBuilder::event.GOTO_ARTICLE, @setActiveContent)
+    body.bind(window.mainMenuManager.event.OPEN_MENU, @openMenu)
+    body.bind(window.mainMenuManager.event.CLOSE_MENU, @closeMenu)
+    body.bind(ContentBuilder::event.FOOTER_SHOW, @openFooterMenu)
+    body.bind(ContentBuilder::event.FOOTER_HIDE, @closeFooterMenu)
 
     return @
 

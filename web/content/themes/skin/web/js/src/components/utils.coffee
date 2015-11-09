@@ -18,13 +18,13 @@ class Utils
     return @
 
   getArticleFromMenuItem: (node) ->
-    articleItem = node.closest('.menu-item')
+    articleItem = jQuery(node).closest('.menu-item').get(0)
     # check if it's a first or second level item
     if(articleItem.classList.contains('nav-item'))
       rowItem = articleItem
       articleItem = articleItem.querySelector('li')
     else
-      rowItem = node.closest('.nav-item')
+      rowItem = jQuery(node).closest('.nav-item').get(0)
 
     content = document.querySelector('#content')
     rowIndex = rowItem.index() + 1
