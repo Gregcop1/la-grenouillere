@@ -77,12 +77,13 @@ class ArrowManager
 
   prepareArrowOnce: () =>
     @prepareArrow()
-    document.body.removeEventListener(ContentBuilder::event.ARTICLES_LOADED, @prepareArrowOnce)
+    jQuery('body').unbind(ContentBuilder::event.ARTICLES_LOADED, @prepareArrowOnce)
+#    document.body.removeEventListener(ContentBuilder::event.ARTICLES_LOADED, @prepareArrowOnce)
 
     return @
 
   hover: (event) =>
-    target = event.target.closest('a')
+    target = jQuery(event.target).closest('a').get(0)
 
     if(target && target.querySelector(@selector.preview).innerHTML != '')
       target.classList.add(@selector.hover)
@@ -98,7 +99,8 @@ class ArrowManager
   goToPrevArticle: () =>
     @out()
     setTimeout((->
-      document.body.dispatchEvent(new Event(ContentBuilder::event.PREVIOUS_ARTICLE))
+      jQuery('body').trigger(ContentBuilder::event.PREVIOUS_ARTICLE)
+#      document.body.dispatchEvent(new Event(ContentBuilder::event.PREVIOUS_ARTICLE))
     ), 600)
 
     return @
@@ -106,23 +108,27 @@ class ArrowManager
   goToNextArticle: () =>
     @out()
     setTimeout((->
-      document.body.dispatchEvent(new Event(ContentBuilder::event.NEXT_ARTICLE))
+      jQuery('body').trigger(ContentBuilder::event.NEXT_ARTICLE)
+#      document.body.dispatchEvent(new Event(ContentBuilder::event.NEXT_ARTICLE))
     ), 600)
 
     return @
 
   bind: ()  =>
-    body = document.body
-    body.addEventListener(ContentBuilder::event.GOTO_ARTICLE, @prepareArrow)
-    body.addEventListener(ContentBuilder::event.FOOTER_SHOW, @prepareArrow)
-    body.addEventListener(ContentBuilder::event.ARTICLES_LOADED, @prepareArrowOnce)
+    body = jQuery('body')
+    body.bind(ContentBuilder::event.GOTO_ARTICLE, @prepareArrow)
+    body.bind(ContentBuilder::event.FOOTER_SHOW, @prepareArrow)
+    body.bind(ContentBuilder::event.ARTICLES_LOADED, @prepareArrowOnce)
+#    body.addEventListener(ContentBuilder::event.GOTO_ARTICLE, @prepareArrow)
+#    body.addEventListener(ContentBuilder::event.FOOTER_SHOW, @prepareArrow)
+#    body.addEventListener(ContentBuilder::event.ARTICLES_LOADED, @prepareArrowOnce)
 
     [@prev, @next].map(((item) =>
-      item.addEventListener('mouseover', @hover)
-      item.addEventListener('mouseout', @out)
+      jQuery(item).bind('mouseover', @hover)
+      jQuery(item).bind('mouseout', @out)
     ))
-    @prev.addEventListener('click', @goToPrevArticle)
-    @next.addEventListener('click', @goToNextArticle)
+    jQuery(@prev).bind('click', @goToPrevArticle)
+    jQuery(@next).bind('click', @goToNextArticle)
 
     return @
 

@@ -58,7 +58,7 @@ class FooterManager
     return @
 
   clickOnNextRow: (event) =>
-    document.body.dispatchEvent(new Event(ContentBuilder::event.NEXT_ROW))
+    jQuery('body').dispatchEvent(ContentBuilder::event.NEXT_ROW)
     return @
 
   clickOnMenuItem: (event) =>
@@ -67,15 +67,15 @@ class FooterManager
     return @
 
   bind: () ->
-    body = document.body
-    body.addEventListener(ContentBuilder::event.FOOTER_SHOW, @show)
-    body.addEventListener(ContentBuilder::event.FOOTER_HIDE, @close)
-    body.addEventListener(ContentBuilder::event.GOTO_ROW, @prepareNextRow)
-    @nextRow.addEventListener('click', @clickOnNextRow)
+    body = jQuery('body')
+    body.bind(ContentBuilder::event.FOOTER_SHOW, @show)
+    body.bind(ContentBuilder::event.FOOTER_HIDE, @close)
+    body.bind(ContentBuilder::event.GOTO_ROW, @prepareNextRow)
+    jQuery(@nextRow).bind('click', @clickOnNextRow)
 
     # bind links
     [].forEach.call(@nav.querySelectorAll('a'), (node) =>
-      node.addEventListener('click', @clickOnMenuItem)
+      jQuery(node).bind('click', @clickOnMenuItem)
       return @
     )
 

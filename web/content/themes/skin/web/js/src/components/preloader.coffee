@@ -30,7 +30,7 @@ class Preloader
 
 
   bind: () =>
-    document.body.addEventListener('ARTICLES_DISPLAYED', @hide)
+    jQuery('body').bind('ARTICLES_DISPLAYED', @hide)
 
     return @
 

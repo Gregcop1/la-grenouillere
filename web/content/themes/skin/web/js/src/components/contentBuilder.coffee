@@ -84,7 +84,7 @@ module.exports = class ContentBuilder
         response = @setViewportSizeToContent(html.querySelector('#content'))
         console.log('response', response)
         @buildArticle(index, response.innerHTML)
-        document.body.dispatchEvent(new Event(@event.ARTICLES_LOADED))
+        jQuery('body').trigger(@event.ARTICLES_LOADED)
       )
     return @
 
@@ -208,7 +208,7 @@ module.exports = class ContentBuilder
       row.style.left = 0
       row.classList.add(@selector.currentRow)
 
-      document.body.dispatchEvent(new Event(@event.GOTO_ROW))
+      jQuery('body').trigger(@event.GOTO_ROW)
 
       # show row
       Velocity(row, 'fadeIn', {duration: @transitionDuration.fade, delay: cumulatedDelay, easing: 'easeInOutCubic'})
@@ -239,11 +239,11 @@ module.exports = class ContentBuilder
     if(!article.classList.contains(@selector.currentArticle))
       cumulatedDelay = 0
       cumulatedDelay = @prepareSwitchOfArticle(cumulatedDelay)
-      row = article.closest('.' + @selector.row)
+      row = jQuery(article).closest('.' + @selector.row).get(0)
       cumulatedDelay = @goToRow(row, cumulatedDelay)
 
       article.classList.add(@selector.currentArticle)
-      document.body.dispatchEvent(new Event(@event.GOTO_ARTICLE))
+      jQuery('body').trigger(@event.GOTO_ARTICLE)
       # move slide
       newLeft = -(article.index() * parseInt(@viewport.width))
       Velocity(row,
@@ -322,9 +322,9 @@ module.exports = class ContentBuilder
   showFooter: () =>
     article = @getCurrentArticle()
     article.classList.add(@selector.cutByFooter)
-    row = article.closest('.' + @selector.row)
+    row = jQuery(article).closest('.' + @selector.row).get(0)
 
-    document.body.dispatchEvent(new Event(@event.FOOTER_SHOW))
+    jQuery('body').trigger(@event.FOOTER_SHOW)
     newLeft = -((row.children.length - 1) * parseInt(@viewport.width)) - @footer.width
     Velocity(row,
       {left: newLeft + 'px'},
@@ -340,9 +340,9 @@ module.exports = class ContentBuilder
     if(currentArticle.classList.contains(@selector.cutByFooter))
       currentArticle.classList.remove(@selector.currentArticle)
       currentArticle.classList.remove(@selector.cutByFooter)
-      row = currentArticle.closest('.' + @selector.row)
+      row = jQuery(currentArticle).closest('.' + @selector.row).get(0)
 
-      document.body.dispatchEvent(new Event(@event.FOOTER_HIDE))
+      jQuery('body').trigger(@event.FOOTER_HIDE)
       newLeft = -((row.children.length - 1) * parseInt(@viewport.width))
       Velocity(row,
         {left: newLeft + 'px'},
@@ -355,8 +355,8 @@ module.exports = class ContentBuilder
   showFirstArticle: () =>
     if(@articlesLoaded == 10)
       @goToArticle(@container.querySelector('.' + @selector.article))
-      document.body.removeEventListener(@event.ARTICLES_LOADED, @showFirstArticle)
-      document.body.dispatchEvent(new Event(@event.ARTICLES_DISPLAYED))
+      jQuery('body').unbind(@event.ARTICLES_LOADED, @showFirstArticle)
+      jQuery('body').trigger(@event.ARTICLES_DISPLAYED)
     @articlesLoaded++
     return @
 
@@ -372,11 +372,11 @@ module.exports = class ContentBuilder
 
   bind: () ->
     window.addEventListener('resize', @resizeRowAndArticles)
-    body = document.body
-    body.addEventListener(@event.NEXT_ARTICLE, @goToNextArticle)
-    body.addEventListener(@event.PREVIOUS_ARTICLE, @goToPrevArticle)
-    body.addEventListener(@event.NEXT_ROW, @goToNextRow)
-    body.addEventListener(@event.PREVIOUS_ROW, @goToPrevRow)
-    body.addEventListener(@event.ARTICLES_LOADED, @showFirstArticle)
-    body.addEventListener(window.mainMenuManager.event.OPEN_MENU, @hideFooter)
+    body = jQuery('body')
+    body.bind(@event.NEXT_ARTICLE, @goToNextArticle)
+    body.bind(@event.PREVIOUS_ARTICLE, @goToPrevArticle)
+    body.bind(@event.NEXT_ROW, @goToNextRow)
+    body.bind(@event.PREVIOUS_ROW, @goToPrevRow)
+    body.bind(@event.ARTICLES_LOADED, @showFirstArticle)
+    body.bind(window.mainMenuManager.event.OPEN_MENU, @hideFooter)
     return @
