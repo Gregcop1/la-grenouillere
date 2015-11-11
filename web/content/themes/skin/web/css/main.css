@@ -135,6 +135,10 @@ footer.shown { display: block; }
 
 .introduction { font-size: 1.7em; }
 
+.header .logo { transition: -webkit-transform 200ms linear; transition: transform 200ms linear; -webkit-transform: translateY(-200%); -ms-transform: translateY(-200%); transform: translateY(-200%); }
+
+.header .logo.shown { -webkit-transform: translateY(0); -ms-transform: translateY(0); transform: translateY(0); }
+
 .btn-twitter { position: absolute; bottom: 10%; width: 62px; height: 44px; background: url("../img/twitter_off.gif") 50% 50% no-repeat; }
 
 .btn-twitter:hover { background-image: url("../img/twitter_hover.gif"); }
