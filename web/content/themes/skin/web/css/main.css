@@ -135,6 +135,10 @@ footer.shown { display: block; }
 
 .introduction { font-size: 1.7em; }
 
+.btn-twitter { position: absolute; bottom: 10%; width: 62px; height: 44px; background: url("../img/twitter_off.gif") 50% 50% no-repeat; }
+
+.btn-twitter:hover { background-image: url("../img/twitter_hover.gif"); }
+
 .site-content { position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 10px solid #fff; overflow: hidden; z-index: 2; }
 
 .nav-block { position: absolute; top: 30px; right: 30px; bottom: 30px; left: 30px; overflow: auto; }

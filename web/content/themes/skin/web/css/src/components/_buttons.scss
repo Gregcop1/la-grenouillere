@@ -1,0 +1,5 @@
+.btn-twitter {
+  position: absolute; bottom: 10%; width: 62px; height: 44px; background: url('../img/twitter_off.gif') 50% 50% no-repeat;
+
+  &:hover { background-image: url('../img/twitter_hover.gif'); }
+}
