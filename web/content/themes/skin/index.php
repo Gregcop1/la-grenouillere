@@ -18,6 +18,7 @@ if ( ! class_exists( 'Timber' ) ) {
 	return;
 }
 $context = Timber::get_context();
+$context['l18n'] = SkinSite::getL18nStrings();
 $context['posts'] = Timber::get_posts();
 
 //$template = SkinSite::isReallyHome()  ? 'Templates/home.twig' : 'Templates/index.twig';

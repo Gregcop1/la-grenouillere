@@ -10,6 +10,8 @@ class SkinSite extends TimberSite
         $this->removeAction();
         $this->registerScripts();
         $this->register_menus();
+        $this->registerL18nStrings();
+
         parent::__construct();
     }
 
@@ -66,6 +68,19 @@ class SkinSite extends TimberSite
         register_nav_menus(array(
             'first-level' => __('Niveau 1', 'skin-dummy')
         ));
+    }
+
+    public function registerL18nStrings() {
+        pll_register_string('otherSites', 'Les autres établissements d\'Alexandre Gauthier');
+        pll_register_string('nextStep', 'prochaine étape...');
+    }
+
+    public static function getL18nStrings() {
+        $context = array();
+        $context['nextStep'] = pll__('prochaine étape...');
+        $context['otherSites'] = pll__('Les autres établissements d\'Alexandre Gauthier');
+        
+        return $context;
     }
 }
 
