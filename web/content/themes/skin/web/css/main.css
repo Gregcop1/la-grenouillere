@@ -348,7 +348,7 @@ footer.shown { display: block; }
 
 .preloader svg { position: absolute; top: 0; right: 0; bottom: 0; left: 0; margin: auto; width: 150px; height: 150px; z-index: 2; }
 
-.other-sites { display: inline-block; margin: 0; padding: 0; width: 235px; vertical-align: top; }
+.other-sites { display: inline-block; margin: 0; padding: 0; width: 235px; height: 60px; vertical-align: top; }
 
 .other-sites:hover .hideable { -webkit-transform: translateY(0); -ms-transform: translateY(0); transform: translateY(0); }
 
