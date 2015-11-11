@@ -44,7 +44,6 @@ class MainMenuManager
     return @
 
   toggleMenu: () =>
-    console.log('toggle', @header.classList)
     if(@header.classList.contains('open'))
       @close()
     else

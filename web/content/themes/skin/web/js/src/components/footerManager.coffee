@@ -58,7 +58,7 @@ class FooterManager
     return @
 
   clickOnNextRow: (event) =>
-    jQuery('body').dispatchEvent(ContentBuilder::event.NEXT_ROW)
+    jQuery('body').trigger(ContentBuilder::event.NEXT_ROW)
     return @
 
   clickOnMenuItem: (event) =>

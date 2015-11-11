@@ -79,7 +79,7 @@ class SkinSite extends TimberSite
         $context = array();
         $context['nextStep'] = pll__('prochaine étape...');
         $context['otherSites'] = pll__('Les autres établissements d\'Alexandre Gauthier');
-        
+
         return $context;
     }
 }

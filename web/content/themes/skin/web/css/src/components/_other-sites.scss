@@ -1,0 +1,18 @@
+.other-sites {
+  display: inline-block; margin: 0; padding: 0; width: 235px;
+  vertical-align: top;
+
+  &:hover .hideable { transform: translateY(0); }
+
+  .site { position: relative; margin: 0; border-top: 1px solid $grey2; padding: 0; height: 60px; list-style-type: none; }
+  .item-link { position: absolute; top: 0; right: 0; bottom: 0; left: 0; background-color: $grey5; }
+  .item-content { position: absolute; top: 0; right: 0; bottom: 0; left: 0; margin: auto; }
+  .hideable { transition: transform 500ms linear; transform: translateY(-500%); }
+
+  .site-default { border: none; background-color: $grey2; z-index: 2;
+    .item-content {
+      padding-left: 40px; height: 35px; background: url('../img/arrow_bas.png') 15px 50% no-repeat;
+      font-weight: $fw-medium; text-align: left; color: $grey5;
+    }
+  }
+}
