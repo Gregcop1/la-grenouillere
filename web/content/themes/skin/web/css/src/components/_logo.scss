@@ -1,0 +1,6 @@
+.header {
+  .logo { transition: transform $tr-default linear; transform: translateY(-200%);
+
+    &.shown { transform: translateY(0); }
+  }
+}

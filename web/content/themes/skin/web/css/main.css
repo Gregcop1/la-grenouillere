@@ -135,6 +135,10 @@ footer.shown { display: block; }
 
 .introduction { font-size: 1.7em; }
 
+.header .logo { transition: -webkit-transform 200ms linear; transition: transform 200ms linear; -webkit-transform: translateY(-200%); -ms-transform: translateY(-200%); transform: translateY(-200%); }
+
+.header .logo.shown { -webkit-transform: translateY(0); -ms-transform: translateY(0); transform: translateY(0); }
+
 .btn-twitter { position: absolute; bottom: 10%; width: 62px; height: 44px; background: url("../img/twitter_off.gif") 50% 50% no-repeat; }
 
 .btn-twitter:hover { background-image: url("../img/twitter_hover.gif"); }
@@ -275,9 +279,11 @@ footer.shown { display: block; }
 
 .nav-slit .next div { right: 0; -webkit-transform: translateX(100%); -ms-transform: translateX(100%); transform: translateX(100%); text-align: right; }
 
-.nav-slit .next .hover .icon { -webkit-transform: translateX(100%); -ms-transform: translateX(100%); transform: translateX(100%); }
+.nav-slit .next.hover-empty .icon-wrap { padding-right: 60px; }
 
-.nav-slit .icon-wrap { display: block; position: relative; padding: 84px 29px; background-color: #2f3031; }
+.nav-slit .next.hover-empty .icon { -webkit-transform: translateX(100%); -ms-transform: translateX(100%); transform: translateX(100%); }
+
+.nav-slit .icon-wrap { display: block; position: relative; padding: 84px 29px; background-color: #2f3031; transition: padding 200ms linear; }
 
 .nav-slit .icon-wrap img { position: absolute; top: 0; right: 0; bottom: 0; left: 0; margin: auto; width: 25px; height: 70px; }
 
@@ -345,6 +351,22 @@ footer.shown { display: block; }
 .preloader img { position: absolute; top: 0; right: 0; bottom: 0; left: 0; margin: auto; height: 38px; z-index: 3; }
 
 .preloader svg { position: absolute; top: 0; right: 0; bottom: 0; left: 0; margin: auto; width: 150px; height: 150px; z-index: 2; }
+
+.other-sites { display: inline-block; margin: 0; padding: 0; width: 235px; height: 60px; vertical-align: top; }
+
+.other-sites:hover .hideable { -webkit-transform: translateY(0); -ms-transform: translateY(0); transform: translateY(0); }
+
+.other-sites .site { position: relative; margin: 0; border-top: 1px solid #2f3031; padding: 0; height: 60px; list-style-type: none; }
+
+.other-sites .item-link { position: absolute; top: 0; right: 0; bottom: 0; left: 0; background-color: #d2d5da; }
+
+.other-sites .item-content { position: absolute; top: 0; right: 0; bottom: 0; left: 0; margin: auto; }
+
+.other-sites .hideable { transition: -webkit-transform 500ms linear; transition: transform 500ms linear; -webkit-transform: translateY(-500%); -ms-transform: translateY(-500%); transform: translateY(-500%); }
+
+.other-sites .site-default { border: none; background-color: #2f3031; z-index: 2; }
+
+.other-sites .site-default .item-content { padding-left: 40px; height: 35px; background: url("../img/arrow_bas.png") 15px 50% no-repeat; font-weight: 500; text-align: left; color: #d2d5da; }
 
 @media print { .no-print, [id="header"], [id="footer"] { display: none !important; } }
 /*# sourceMappingURL=main.css.map */

@@ -12,9 +12,12 @@
     div { right: 0; transform: translateX(100%);
       text-align: right;
     }
-    .hover .icon { transform: translateX(100%); }
+    &.hover-empty {
+      .icon-wrap { padding-right: 60px; }
+      .icon { transform: translateX(100%); }
+    }
   }
-  .icon-wrap { display: block; position: relative; padding: 84px 29px; background-color: $grey2;
+  .icon-wrap { display: block; position: relative; padding: 84px 29px; background-color: $grey2; transition: padding $tr-default linear;
     img { position: absolute; top: 0; right: 0; bottom: 0; left: 0; margin: auto; width: 25px; height: 70px; }
     @media screen and (max-width: $vw-small) {
       padding: 50px 15px;

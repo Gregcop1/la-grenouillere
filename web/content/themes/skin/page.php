@@ -22,6 +22,7 @@
  */
 
 $context = Timber::get_context();
+$context['l18n'] = SkinSite::getL18nStrings();
 $post = new TimberPost();
 $context['post'] = $post;
 

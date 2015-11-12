@@ -4,6 +4,7 @@ utils = require('./utils.coffee')
 
 class MainMenuManager
   selector:
+    logo: '#logo'
     siteContent: '#site-content'
     header: '#header'
     icon: '#menu-icon'
@@ -21,6 +22,7 @@ class MainMenuManager
     return @
 
   setVariables: () =>
+    @logo = document.querySelector(@selector.logo)
     @siteContent = document.querySelector(@selector.siteContent)
     @header = document.querySelector(@selector.header)
     @button = document.querySelector(@selector.button)
@@ -44,7 +46,6 @@ class MainMenuManager
     return @
 
   toggleMenu: () =>
-    console.log('toggle', @header.classList)
     if(@header.classList.contains('open'))
       @close()
     else
@@ -93,14 +94,24 @@ class MainMenuManager
 
     return @
 
+  manageLogoDisplay: () =>
+    row = window.cb.getCurrentRow()
+    if(row.index() + 1 == 1)
+      @logo.classList.remove('shown')
+    else
+      @logo.classList.add('shown')
+    return @
+
   clickOnMenuItem: (event) =>
     utils.linkToSlide(event)
     @close()
+
     return @
 
   bind: () =>
     jQuery(@button).bind('click', @toggleMenu)
     body = jQuery('body')
+    body.bind(ContentBuilder::event.GOTO_ARTICLE, @manageLogoDisplay)
     body.bind(ContentBuilder::event.GOTO_ARTICLE, @close)
     body.bind(ContentBuilder::event.FOOTER_SHOW, @close)
 

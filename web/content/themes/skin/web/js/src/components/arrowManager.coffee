@@ -7,6 +7,7 @@ class ArrowManager
     next: '#arrow-next'
     preview: '.preview'
     hover: 'hover'
+    hoverEmpty: 'hover-empty'
 
   constructor: () ->
     @setVariables()
@@ -78,21 +79,24 @@ class ArrowManager
   prepareArrowOnce: () =>
     @prepareArrow()
     jQuery('body').unbind(ContentBuilder::event.ARTICLES_LOADED, @prepareArrowOnce)
-#    document.body.removeEventListener(ContentBuilder::event.ARTICLES_LOADED, @prepareArrowOnce)
 
     return @
 
   hover: (event) =>
     target = jQuery(event.target).closest('a').get(0)
 
-    if(target && target.querySelector(@selector.preview).innerHTML != '')
-      target.classList.add(@selector.hover)
+    if(target)
+      if(target.querySelector(@selector.preview).innerHTML != '')
+        target.classList.add(@selector.hover)
+      else
+        target.classList.add(@selector.hoverEmpty)
 
     return @
 
   out: () =>
     @prev.classList.remove(@selector.hover)
     @next.classList.remove(@selector.hover)
+    @next.classList.remove(@selector.hoverEmpty)
 
     return @
 
@@ -100,7 +104,6 @@ class ArrowManager
     @out()
     setTimeout((->
       jQuery('body').trigger(ContentBuilder::event.PREVIOUS_ARTICLE)
-#      document.body.dispatchEvent(new Event(ContentBuilder::event.PREVIOUS_ARTICLE))
     ), 600)
 
     return @
@@ -109,7 +112,6 @@ class ArrowManager
     @out()
     setTimeout((->
       jQuery('body').trigger(ContentBuilder::event.NEXT_ARTICLE)
-#      document.body.dispatchEvent(new Event(ContentBuilder::event.NEXT_ARTICLE))
     ), 600)
 
     return @
@@ -119,9 +121,6 @@ class ArrowManager
     body.bind(ContentBuilder::event.GOTO_ARTICLE, @prepareArrow)
     body.bind(ContentBuilder::event.FOOTER_SHOW, @prepareArrow)
     body.bind(ContentBuilder::event.ARTICLES_LOADED, @prepareArrowOnce)
-#    body.addEventListener(ContentBuilder::event.GOTO_ARTICLE, @prepareArrow)
-#    body.addEventListener(ContentBuilder::event.FOOTER_SHOW, @prepareArrow)
-#    body.addEventListener(ContentBuilder::event.ARTICLES_LOADED, @prepareArrowOnce)
 
     [@prev, @next].map(((item) =>
       jQuery(item).bind('mouseover', @hover)
