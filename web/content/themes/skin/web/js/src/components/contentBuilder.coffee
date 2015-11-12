@@ -75,13 +75,13 @@ module.exports = class ContentBuilder
   loadContent: (index, link) ->
     jQuery.get(link.getAttribute('href'))
       .success((data) =>
-        parser = new DOMParser()
-        html = parser.parseFromString(data, 'text/html')
+        html = jQuery(data)
+#        html = parser.parseFromString(data, 'text/html')
 
 #        headerScripts = html.querySelectorAll('head script')
 #        @mergeHeaders(headerScripts)
 
-        response = @setViewportSizeToContent(html.querySelector('#content'))
+        response = @setViewportSizeToContent(html.find('#content').get(0))
         @buildArticle(index, response.innerHTML)
         jQuery('body').trigger(@event.ARTICLES_LOADED)
       )
