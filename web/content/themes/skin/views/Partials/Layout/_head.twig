@@ -9,6 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="pingback" href="{{site.pingback_url}}">
     {{function('wp_head')}}
+    <!--[if lte IE 9]>
+        <script type="text/javascript" src="{{site.theme.link}}/web/js/vendors/class-list-polyfill.min.js"></script>
+    <![endif]-->
     <link rel="stylesheet" href="{{site.theme.link}}/web/css/main.css" type="text/css" media="screen">
 
 </head>

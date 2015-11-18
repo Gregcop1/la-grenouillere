@@ -23,6 +23,9 @@ web/content/themes/*
 
 # Theme
 node_modules
+skin/web/css/*.css
+skin/web/css/*.css.map
+skin/web/js/*.js
 
 # empty directory
 !.gitkeep
