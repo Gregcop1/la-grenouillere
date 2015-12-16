@@ -1,8 +1,3 @@
-<style>
-.update-nag, .updated, .error {
-	display:none;
-}
-</style>
 <?php
 $tab = '';
 if(isset($_POST['bsf-advanced-form-btn'])) {
@@ -40,7 +35,7 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
 								$url .= '#'.$hashname;
 							}
 					?>
-                    	<a href="<?php echo (is_multisite()) ? network_admin_url($url) : admin_url($url) ?>"><?php echo __('Manage '.$txt.' here','bsf') ?></a> | <a href="<?php echo (is_multisite()) ? network_admin_url('admin.php?page=bsf-registration') : admin_url('admin.php?page=bsf-registration') ?>"><?php echo __('Back to Registration','bsf') ?></a>
+                    	<a href="<?php echo (is_multisite()) ? network_admin_url($url) : admin_url($url) ?>"><?php echo __('Manage '.$txt.' here','bsf') ?></a> | <a href="<?php echo (is_multisite()) ? network_admin_url('index.php?page=bsf-registration') : admin_url('index.php?page=bsf-registration') ?>"><?php echo __('Back to Registration','bsf') ?></a>
                     <?php endif; ?>
             	</div>
          	<?php
@@ -62,9 +57,9 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
 		delete_option('brainstrom_bundled_products');
 		delete_site_transient('bsf_get_bundled_products');
 		if(is_multisite())
-			$redirect = network_admin_url('admin.php?page=bsf-registration');
+			$redirect = network_admin_url('index.php?page=bsf-registration');
 		else
-			$redirect = admin_url('admin.php?page=bsf-registration');
+			$redirect = admin_url('index.php?page=bsf-registration');
 		echo '<script type="text/javascript">window.location = "'.$redirect.'";</script>';
 		//wp_redirect($redirect);
 	}
@@ -75,9 +70,9 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
 		delete_option('brainstrom_bundled_products');
 		delete_site_transient('bsf_get_bundled_products');
 		if(is_multisite())
-			$redirect = network_admin_url('admin.php?page=bsf-registration');
+			$redirect = network_admin_url('index.php?page=bsf-registration');
 		else
-			$redirect = admin_url('admin.php?page=bsf-registration');
+			$redirect = admin_url('index.php?page=bsf-registration');
 		echo '<script type="text/javascript">window.location = "'.$redirect.'";</script>';
 		//wp_redirect($redirect);
 	}
@@ -283,7 +278,6 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
                 	<div class="bsf-ur-wrap">
                         <form action="" method="post" id="bsf-user-form" class="bsf-pr-form">
                             <input type="hidden" name="action" value="bsf_register_user"/>
-                            <input type="hidden" name="mx" value="<?php echo (isset($_GET['nomx'])) ? 'false' : 'true'; ?>"/>
                             <div class="bsf-pr-form-row">
                                 <input type="text" id="bsf_username" name="bsf_username" value="" spellcheck="false" placeholder="<?php echo __('Your Name','bsf'); ?>" class="bsf-pr-input stored" data-required="true"/>
                             </div>
@@ -326,6 +320,10 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
 
 	$brainstrom_products = (get_option('brainstrom_products')) ? get_option('brainstrom_products') : array();
 
+	/*echo '<pre>';
+	print_r($brainstrom_products);
+	echo '</pre>';*/
+
 	$bsf_product_plugins = $bsf_product_themes = array();
 
 	if(!empty($brainstrom_products)) :
@@ -354,6 +352,8 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
 							$temp = array();
 							if(!isset($bsf_product_plugin['template']))
 								continue;
+							if(isset($bsf_product_plugin['is_product_free']) && $bsf_product_plugin['is_product_free'] === 'true')
+								continue;
 							$bsf_template = $bsf_product_plugin['template'];
 							if($plugin == $bsf_template)
 							{
@@ -377,6 +377,8 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
 						{
 							$temp = array();
 							if(!isset($bsf_product_theme['template']))
+								continue;
+							if(isset($bsf_product_theme['is_product_free']) && $bsf_product_theme['is_product_free'] === 'true')
 								continue;
 							$bsf_template = $bsf_product_theme['template'];
 							if($theme == $bsf_template)
@@ -638,9 +640,9 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
                                 <span class="bsf-span"><?php echo __('Check if there are updates available of plugins by Brainstorm Force.','bsf'); ?></span>
                                 <?php
                                     if(is_multisite())
-                                        $reset_url = network_admin_url('admin.php?page=bsf-registration&force-check-update');
+                                        $reset_url = network_admin_url('index.php?page=bsf-registration&force-check-update');
                                     else
-                                        $reset_url = admin_url('admin.php?page=bsf-registration&force-check-update');
+                                        $reset_url = admin_url('index.php?page=bsf-registration&force-check-update');
                                 ?>
                                 <a class="button-primary bsf-cp-update-btn" href="<?php echo $reset_url ?>"><?php echo __('Check Updates Now','bsf') ?></a>
                             </div>
@@ -680,9 +682,9 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
                 	<div class="bsf-cp-res-user">
                     	<?php
 							if(is_multisite())
-								$reset_url = network_admin_url('admin.php?page=bsf-registration&reset-bsf-users');
+								$reset_url = network_admin_url('index.php?page=bsf-registration&reset-bsf-users');
 							else
-								$reset_url = admin_url('admin.php?page=bsf-registration&reset-bsf-users');
+								$reset_url = admin_url('index.php?page=bsf-registration&reset-bsf-users');
 						?>
 						<a class="button-primary" href="<?php echo $reset_url ?>"><?php echo __('Reset Site','bsf') ?></a>
                     </div>
@@ -690,9 +692,9 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
                 	<div class="bsf-cp-rem-bundle">
 	                	<?php
 							if(is_multisite())
-								$url = network_admin_url('admin.php?page=bsf-registration&remove-bundled-products');
+								$url = network_admin_url('index.php?page=bsf-registration&remove-bundled-products');
 							else
-								$url = admin_url('admin.php?page=bsf-registration&remove-bundled-products');
+								$url = admin_url('index.php?page=bsf-registration&remove-bundled-products');
 						?>
 						<a class="button-primary" href="<?php echo $url ?>"><?php echo __('Check Bundled Products','bsf') ?></a>
                     </div>

@@ -47,7 +47,7 @@ if(!class_exists('Ultimate_BoxShadow'))
 
     function ultimate_boxshadow_callback($settings, $value) {
 
-        $dependency = (function_exists('vc_generate_dependencies_attributes')) ? vc_generate_dependencies_attributes($settings) : '';
+        $dependency = '';
         $positions = $settings['positions'];
         $enable_color = isset($settings['enable_color']) ? $settings['enable_color'] : true;
         //$enable_radius = isset($settings['enable_radius']) ? $settings['enable_radius'] : true ;

@@ -35,7 +35,7 @@ if(!class_exists('Ultimate_Margin_Param'))
 
 		function ultimate_margins_param($settings, $value)
 		{
-			$dependency = (function_exists('vc_generate_dependencies_attributes')) ? vc_generate_dependencies_attributes($settings) : '';
+			$dependency = '';
 			$positions = $settings['positions'];
 			$html = '<div class="ultimate-margins">
 						<input type="hidden" name="'.$settings['param_name'].'" class="wpb_vc_param_value ultimate-margin-value '.$settings['param_name'].' '.$settings['type'].'_field" value="'.$value.'" '.$dependency.'/>';

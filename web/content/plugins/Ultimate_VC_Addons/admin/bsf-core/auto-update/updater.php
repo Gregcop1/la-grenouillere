@@ -245,9 +245,9 @@ if(!function_exists('get_bsf_product_upgrade_link')) {
 			$not_registered_msg = 'This is bundled with '.$product_name.', Activate '.$product_name.'\'s licence for one click update.';
 		}
 
-		if($status === 'registered')
+		if($status === 'registered' || ($free === true || $free === 'true'))
 		{
-			$request = 'admin.php?page=bsf-registration&action=upgrade&id='.$original_id;
+			$request = 'index.php?page=bsf-registration&action=upgrade&id='.$original_id;
 			if($product['bundled'])
 				$request .= '&bundled='.$id;
 			if(is_multisite()) {
@@ -260,9 +260,9 @@ if(!function_exists('get_bsf_product_upgrade_link')) {
 		else
 		{
 			if(is_multisite())
-				$link = '<a href="'.wp_nonce_url( network_admin_url('admin.php?page=bsf-registration&id='.$id)).'">'.__($not_registered_msg, 'bsf').'</a>';
+				$link = '<a href="'.wp_nonce_url( network_admin_url('index.php?page=bsf-registration&id='.$id)).'">'.__($not_registered_msg, 'bsf').'</a>';
 			else
-				$link = '<a href="'.wp_nonce_url( admin_url('admin.php?page=bsf-registration&id='.$id)).'">'.__($not_registered_msg, 'bsf').'</a>';
+				$link = '<a href="'.wp_nonce_url( admin_url('index.php?page=bsf-registration&id='.$id)).'">'.__($not_registered_msg, 'bsf').'</a>';
 		}
 
 		return $link;

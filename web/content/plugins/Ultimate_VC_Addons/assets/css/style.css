@@ -2,7 +2,7 @@
  * Plugin Name: Ultimate Addons for Visual Composer
  * Plugin URI: http://codecanyon.net/item/ultimate-addons-for-visual-composer/6892199
  * Description: All in one plugin for your Visual Composer needs!
- * Version: 3.13.7
+ * Version: 3.14.0
  * Author: BrainstormForce
  * Author URI: http://codecanyon.net/user/BrainstormForce
  */
@@ -143,15 +143,12 @@
     width: auto;
     max-width: 100%
 }
-.smile_icon_list_wrap,
-.wpb_row .wpb_column .wpb_wrapper .smile_icon_list_wrap {
-    margin-bottom: 30px
-}
 .smile_icon_list {
     list-style: none !important;
     padding: 0 !important;
     margin-left: 0 !important;
-    margin-right: 0 !important
+    margin-right: 0 !important;
+    margin-bottom: 0 !important;
 }
 .smile_icon_list li.icon_list_item {
     padding: 0 !important;
@@ -209,10 +206,10 @@ a.ulimate-info-list-link {
     text-decoration: none
 }
 .smile_icon_list li .icon_description p {
-    font-size: inherit !important;
+    /*font-size: inherit !important;*/
     font-weight: inherit !important;
     font-style: inherit !important;
-    line-height: inherit !important;
+    /*line-height: inherit !important;*/
     color: inherit !important
 }
 .smile_icon_list li .icon_description div.icon_description_text {
@@ -329,9 +326,9 @@ a.ulimate-info-list-link {
     left: auto
 }
 .info-wrapper .smile_icon_list li .icon_description p {
-    font-size: 13px !important;
+    /*font-size: 13px !important;*/
     font-weight: normal !important;
-    line-height: 1.64em !important;
+    /*line-height: 1.64em !important;*/
     color: inherit !important
 }
 @media only screen and (max-width: 768px) {
@@ -444,10 +441,6 @@ a.ulimate-info-list-link {
     margin-bottom: 15px;
     line-height: 1
 }
-.uavc-icons:last-child,
-.wpb_column .wpb_wrapper .uavc-icons:last-child {
-    margin-bottom: 0
-}
 .uavc-icons-left.uavc-icons {
     text-align: left
 }
@@ -524,8 +517,6 @@ a.ulimate-info-list-link {
 .uvc-ctaction-data div,
 .uvc-sub-heading p,
 .uvc-sub-heading div,
-.ultimate-ticker-prefix,
-.ultimate-ticker-suffix,
 .ultimate-vticker p,
 .ultimate-vticker div,
 .ult_modal-body p,
@@ -536,6 +527,11 @@ a.ulimate-info-list-link {
     font-style: inherit !important;
     color: inherit !important;
     line-height: inherit !important;
+}
+.ultimate-ticker-prefix,
+.ultimate-ticker-suffix{
+    font-size: inherit;
+    line-height: inherit;
 }
 .ubtn-text,
 span.middle-text p,
@@ -565,4 +561,35 @@ a.ult_colorlink div {
 /* Advanced Tab */
 li.ult_tab_li > a.ult_a span {
     color: inherit;
+}
+/* vc 4.9 compatible */
+
+.ubtn-img-container,
+.ubtn-ctn-center,
+.ubtn-ctn-left,
+.ubtn-ctn-right,
+.ult_dual_button.ult-adjust-bottom-margin,
+html .ult_exp_section_layer.ult-adjust-bottom-margin,
+.uvc-type-wrap.ult-adjust-bottom-margin,
+.ultimate-map-wrapper.ult-adjust-bottom-margin,
+.ultimate-google-trends.ult-adjust-bottom-margin,
+.uvc-heading.ult-adjust-bottom-margin,
+.ultimate-call-to-action.ult-adjust-bottom-margin,
+.ultb3-box.ult-adjust-bottom-margin,
+.info-circle-wrapper.ult-adjust-bottom-margin,
+.smile_icon_list_wrap.ult-adjust-bottom-margin,
+.ult-banner-block.ult-adjust-bottom-margin,
+.uavc-list-icon-wrapper.ult-adjust-bottom-margin,
+.ult-modal-input-wrapper.ult-adjust-bottom-margin,
+html .ult-ih-container.ult-adjust-bottom-margin,
+html .ult_main_cl.ult-adjust-bottom-margin,
+html .ult_hotspot_container.ult-adjust-bottom-margin {
+    margin-bottom: 35px;
+}
+/*html .vc_col-has-fill a.ubtn-link.ult-adjust-bottom-margin {
+    margin-bottom: 50px;
+}
+*/
+html .vc_col-has-fill a.ubtn-link.ult-adjust-bottom-margin .ubtn.ult-adjust-bottom-margin {
+    margin-bottom: 0;
 }

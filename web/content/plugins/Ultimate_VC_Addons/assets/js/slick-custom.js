@@ -3,6 +3,8 @@
 		$(".ult-carousel-wrapper").each(function(){
 			var $this = $(this);
 			if($this.hasClass("ult_full_width")){
+				$this.css('left',0);
+				$this.css('right',0);
 				var rtl = $this.attr('data-rtl');
 				var w = $("html").outerWidth();
 				var al = 0;
@@ -49,6 +51,7 @@
 			var $this = $(this);
 			if($this.hasClass("ult_full_width")){
 				$this.css('left',0);
+				$this.css('right',0);
 				var al = 0;
 				var bl = $this.offset().left;
 				var xl = Math.abs(al-bl);

@@ -23,7 +23,7 @@ if(!class_exists('Ultimate_Font_Manager_Param'))
 
 		function ultimate_google_fonts_settings($settings, $value)
 		{
-			$dependency = (function_exists('vc_generate_dependencies_attributes')) ? vc_generate_dependencies_attributes($settings) : '';
+			$dependency = '';
 			$fonts = get_option('ultimate_selected_google_fonts');
 			$html = '<div class="ultimate_google_font_param_block">';
 				$html .= '<input type="hidden" name="'.$settings['param_name'].'" class="wpb_vc_param_value vc-ultimate-google-font '.$settings['param_name'].' '.$settings['type'].'_field" value="'.$value.'" '.$dependency.'/>';
@@ -47,7 +47,7 @@ if(!class_exists('Ultimate_Font_Manager_Param'))
 
 		function ultimate_google_fonts_style_settings($settings, $value)
 		{
-			$dependency = (function_exists('vc_generate_dependencies_attributes')) ? vc_generate_dependencies_attributes($settings) : '';
+			$dependency = '';
 			$html = '<input type="hidden" name="'.$settings['param_name'].'" class="wpb_vc_param_value ugfont-style-value '.$settings['param_name'].' '.$settings['type'].'_field" value="'.$value.'" '.$dependency.'/>';
 			$html .= '<div class="ultimate_fstyle"></div>';
 			return $html;

@@ -166,6 +166,9 @@ $divider_style = $divider_text = $divider_text_color = $divider_bg_color = $divi
 
 			),$atts));
 
+			$vc_version = (defined('WPB_VC_VERSION')) ? WPB_VC_VERSION : 0;
+			$is_vc_49_plus = (version_compare(4.9, $vc_version, '<=')) ? 'ult-adjust-bottom-margin' : '';
+
 			$extraclass=$el_class;
 			$el_class1=$css_trans=$button2_bstyle=$button1_bstyle=$target1=$url1=$btn_color_hoverborder='';
 			$iconoutput= $style = $link_sufix = $link_prefix = $target = $href = $icon_align_style = '';
@@ -381,34 +384,51 @@ if($btn_hover_style=='Style 3'){
 
 /*--------css for title1------------*/
  $btn1_padding;
+ $dual_btn_id = 'dualbtn-'.rand(1000, 9999);
 $title1_style='';
 if (function_exists('get_ultimate_font_family')) {
 		$mhfont_family = get_ultimate_font_family($btn1_font_family);
-		$title1_style .= 'font-family:'.$mhfont_family.';';
+		if($mhfont_family !== '')
+			$title1_style .= 'font-family:'.$mhfont_family.';';
 	}
 	if (function_exists('get_ultimate_font_style')) {
 		$title1_style .= get_ultimate_font_style($btn1_heading_style);
 	}
-	$title1_style .= 'font-size:'.$title_font_size.'px;';//style
+	if (is_numeric($title_font_size)) {
+        $title_font_size = 'desktop:'.$title_font_size.'px;';
+    }
+    if (is_numeric($title_line_ht)) {
+        $title_line_ht = 'desktop:'.$title_line_ht.'px;';
+    }
+	// $title1_style .= 'font-size:'.$title_font_size.'px;';//style
 	$title1_style .= 'color:'.$btn1_text_color.';';//color
-	if($title_line_ht!=''){
-	$title1_style .= 'line-height:'.$title_line_ht.'px;';//line-height
-	}
+	// if($title_line_ht!=''){
+	// $title1_style .= 'line-height:'.$title_line_ht.'px;';//line-height
+	// }
+	$dualbtn_args = array(
+                'target' => '#'.$dual_btn_id . ' .ult-dual-button-title', // set targeted element e.g. unique class/id etc.
+                'media_sizes' => array(
+                    'font-size' => $title_font_size, // set 'css property' & 'ultimate_responsive' sizes. Here $title_responsive_font_size holds responsive font sizes from user input.
+                   	'line-height' => $title_line_ht
+                ),
+            );
+	$data_list1 = get_ultimate_vc_responsive_media_css($dualbtn_args);
 /*--------css for title2------------*/
 
 $title2_style='';
 if (function_exists('get_ultimate_font_family')) {
 		$mhfont_family1 = get_ultimate_font_family($btn2_font_family);
-		$title2_style .= 'font-family:'.$mhfont_family1.';';
+		if($mhfont_family1 !== '')
+			$title2_style .= 'font-family:'.$mhfont_family1.';';
 	}
 	if (function_exists('get_ultimate_font_style')) {
 		$title2_style .= get_ultimate_font_style($btn2_heading_style);
 	}
-	$title2_style .= 'font-size:'.$title_font_size.'px;';//style
+	// $title2_style .= 'font-size:'.$title_font_size.'px;';//style
 	$title2_style .= 'color:'.$btn2_text_color.';';//color
-	if($title_line_ht!=''){
-	$title2_style .= 'line-height:'.$title_line_ht.'px;';//line-height
-    }
+	// if($title_line_ht!=''){
+	// $title2_style .= 'line-height:'.$title_line_ht.'px;';//line-height
+ //    }
 /*--------css for button1------------*/
 
 $btncolor_style='';
@@ -588,9 +608,9 @@ if($iconoutput2==''){
 //echo $btn_width;
 		$subop='';
 		$subop .='
-			<div class="ult_dual_button to-'.$btn_alignment.'  '.$extraclass.'"  '.$resp_data.' id="'.$id.'">
+			<div class="ult_dual_button '.$is_vc_49_plus.' to-'.$btn_alignment.'  '.$extraclass.'"  '.$resp_data.' id="'.$id.'">
 
-			<div class="ulitmate_dual_buttons '.$hoverstyle.' ult_main_dualbtn " '.$mainbtn.'>
+			<div id="'.$dual_btn_id.'" class="ulitmate_dual_buttons '.$hoverstyle.' ult_main_dualbtn " '.$mainbtn.'>
 
 			<div class="ult_dualbutton-wrapper btn-inline place-template bt1 ">';
 			$is_no_icon_first = (trim($iconoutput) === '') ? 'ult-dual-btn-no-icon' : '';
@@ -599,7 +619,7 @@ if($iconoutput2==''){
 			$subop .='<a href = "'.$url1.'" '.$target.' class="ult_ivan_button   round-square  with-icon icon-after with-text place-template ult_dual1" style=" '.$icon1_lineht2.';margin-right:px;'.$size.';'.$btncolor_style.$button1_bstyle.'; '.$btnmain_style.';">
 			<span class="ult-dual-btn-1 ' .$btn_hover_style. '" style=""  '.$btn_hover.'>
 
-			<span class="text-btn ult-dual-button-title title_left" style="'.$title1_style.'">'.$button1_text.'</span>
+			<span class="text-btn ult-dual-button-title title_left "  style="'.$title1_style.'">'.$button1_text.'</span>
 			<span class="icon-simple icon-right1 ult_btn1span '.$is_no_icon_first.'"  style="'.$icnsize1.';'.$emptyicon.' ">'.$iconoutput.'</span
 			</span>
 			</a>';
@@ -609,7 +629,7 @@ if($iconoutput2==''){
 			$subop .='<a href = "'.$url1.'" '.$target.'class="ult_ivan_button   round-square  with-icon icon-before with-text place-template ult_dual1" style="'.$icon1_lineht2.';margin-right:px;'.$size.';'.$btncolor_style.$button1_bstyle.'; '.$btnmain_style.';">
 			<span class="ult-dual-btn-1 ' .$btn_hover_style. '" style=""  '.$btn_hover.'>
 			<span class="icon-simple icon-left1 ult_btn1span '.$is_no_icon_first.'"  style="'.$icnsize1.';'.$emptyicon.' ">'.$iconoutput.'</span>
-			<span class="text-btn ult-dual-button-title" style="'.$title1_style.'">'.$button1_text.'</span>
+			<span class="text-btn ult-dual-button-title ult-responsive" '.$data_list1.' style="'.$title1_style.'">'.$button1_text.'</span>
 
 			</span>
 			</a>';
@@ -689,24 +709,54 @@ if($iconoutput2==''){
 								"description" => __("Select the Hover style for Button.","ultimate_vc"),
 
 							),
+							// array(
+							// 	"type" => "number",
+							// 	"param_name" => "title_font_size",
+							// 	"heading" => __("Text Font size","ultimate_vc"),
+							// 	"value" => "",
+							// 	"suffix" => "px",
+							// 	'edit_field_class' => 'vc_column vc_col-sm-4',
+							// ),
 							array(
-								"type" => "number",
-								"param_name" => "title_font_size",
-								"heading" => __("Text Font size","ultimate_vc"),
-								"value" => "",
-								"suffix" => "px",
-								'edit_field_class' => 'vc_column vc_col-sm-4',
-							),
+                                "type" => "ultimate_responsive",
+                                "class" => "",
+                                "heading" => __("Text Font size", 'ultimate_vc'),
+                                "param_name" => "title_font_size",
+                                "unit" => "px",
+                                "media" => array(
+                                    /*"Large Screen"      => '',*/
+                                    "Desktop" => '',
+                                    "Tablet" => '',
+                                    "Tablet Portrait" => '',
+                                    "Mobile Landscape" => '',
+                                    "Mobile" => '',
+                                ),
+                            ),
 
+							// array(
+							// 	"type" => "number",
+							// 	"param_name" => "title_line_ht",
+							// 	"heading" => __("Text Line Height","ultimate_vc"),
+							// 	"value" => "",
+							// 	"suffix" => "px",
+							// 	'edit_field_class' => 'vc_column vc_col-sm-4',
+
+							// ),
 							array(
-								"type" => "number",
-								"param_name" => "title_line_ht",
-								"heading" => __("Text Line Height","ultimate_vc"),
-								"value" => "",
-								"suffix" => "px",
-								'edit_field_class' => 'vc_column vc_col-sm-4',
-
-							),
+                                "type" => "ultimate_responsive",
+                                "class" => "",
+                                "heading" => __("Text Line Height", 'ultimate_vc'),
+                                "param_name" => "title_line_ht",
+                                "unit" => "px",
+                                "media" => array(
+                                    /*"Large Screen"      => '',*/
+                                    "Desktop" => '',
+                                    "Tablet" => '',
+                                    "Tablet Portrait" => '',
+                                    "Mobile Landscape" => '',
+                                    "Mobile" => '',
+                                ),
+                            ),
 							array(
 								"type" => "number",
 								"class" => "",
@@ -899,7 +949,7 @@ if($iconoutput2==''){
 								"heading" => __("Select Icon ","ultimate_vc"),
 								"param_name" => "icon",
 								"value" => "",
-								"description" => __("Click and select icon of your choice. If you can't find the one that suits for your purpose","ultimate_vc").", ".__("you can","ultimate_vc")." <a href='admin.php?page=font-icon-Manager' target='_blank'>".__("add new here","ultimate_vc")."</a>.",
+								"description" => __("Click and select icon of your choice. If you can't find the one that suits for your purpose","ultimate_vc").", ".__("you can","ultimate_vc")." <a href='admin.php?page=bsf-font-icon-manager' target='_blank'>".__("add new here","ultimate_vc")."</a>.",
 								"dependency" => Array("element" => "icon_type","value" => array("selector")),
 								"group" => "Button1",
 							),
@@ -1188,7 +1238,7 @@ if($iconoutput2==''){
 								"heading" => __("Select Icon ","ultimate_vc"),
 								"param_name" => "btn_icon",
 								"value" => "",
-								"description" => __("Click and select icon of your choice. If you can't find the one that suits for your purpose","ultimate_vc").", ".__("you can","ultimate_vc")." <a href='admin.php?page=font-icon-Manager' target='_blank'>".__("add new here","ultimate_vc")."</a>.",
+								"description" => __("Click and select icon of your choice. If you can't find the one that suits for your purpose","ultimate_vc").", ".__("you can","ultimate_vc")." <a href='admin.php?page=bsf-font-icon-manager' target='_blank'>".__("add new here","ultimate_vc")."</a>.",
 								"dependency" => Array("element" => "btn_icon_type","value" => array("selector")),
 								"group" => "Button2",
 							),
@@ -1442,7 +1492,7 @@ if($iconoutput2==''){
 								"heading" => __("Select Icon ","ultimate_vc"),
 								"param_name" => "divider_icon",
 								"value" => "",
-								"description" => __("Click and select icon of your choice. If you can't find the one that suits for your purpose","ultimate_vc").", ".__("you can","ultimate_vc")." <a href='admin.php?page=font-icon-Manager' target='_blank'>".__("add new here","ultimate_vc")."</a>.",
+								"description" => __("Click and select icon of your choice. If you can't find the one that suits for your purpose","ultimate_vc").", ".__("you can","ultimate_vc")." <a href='admin.php?page=bsf-font-icon-manager' target='_blank'>".__("add new here","ultimate_vc")."</a>.",
 								"dependency" => Array("element" => "divider_style","value" => array("icon")),
 								"group" => "Divider",
 							),
@@ -1535,7 +1585,7 @@ if($iconoutput2==''){
 								"type" => "ultimate_google_fonts",
 								"heading" => __("Title Font Family", "ultimate_vc"),
 								"param_name" => "btn1_font_family",
-								"description" => __("Select the font of your choice. ","ultimate_vc").", ".__("you can","ultimate_vc")." <a href='admin.php?page=ultimate-font-manager' target='_blank'>".__("add new in the collection here","ultimate_vc")."</a>.",
+								"description" => __("Select the font of your choice. ","ultimate_vc").", ".__("you can","ultimate_vc")." <a href='admin.php?page=bsf-google-font-manager' target='_blank'>".__("add new in the collection here","ultimate_vc")."</a>.",
 								"group" => "Typography",
 								),
 
@@ -1583,7 +1633,7 @@ if($iconoutput2==''){
 								"type" => "ultimate_google_fonts",
 								"heading" => __("Title Font Family", "ultimate_vc"),
 								"param_name" => "btn2_font_family",
-								"description" => __("Select the font of your choice. ","ultimate_vc").", ".__("you can","ultimate_vc")." <a href='admin.php?page=ultimate-font-manager' target='_blank'>".__("add new in the collection here","ultimate_vc")."</a>.",
+								"description" => __("Select the font of your choice. ","ultimate_vc").", ".__("you can","ultimate_vc")." <a href='admin.php?page=bsf-google-font-manager' target='_blank'>".__("add new in the collection here","ultimate_vc")."</a>.",
 								"group" => "Typography",
 								),
 

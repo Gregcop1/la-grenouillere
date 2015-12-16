@@ -4,7 +4,7 @@ Plugin Name: Ultimate Addons for Visual Composer
 Plugin URI: https://brainstormforce.com/demos/ultimate/
 Author: Brainstorm Force
 Author URI: https://www.brainstormforce.com
-Version: 3.13.7
+Version: 3.14.0
 Description: Includes Visual Composer premium addon elements like Icon, Info Box, Interactive Banner, Flip Box, Info List & Counter. Best of all - provides A Font Icon Manager allowing users to upload / delete custom icon fonts.
 Text Domain: ultimate_vc
 */
@@ -12,7 +12,7 @@ if(!defined('__ULTIMATE_ROOT__')){
 	define('__ULTIMATE_ROOT__', dirname(__FILE__));
 }
 if(!defined('ULTIMATE_VERSION')){
-	define('ULTIMATE_VERSION', '3.13.7');
+	define('ULTIMATE_VERSION', '3.14.0');
 }
 
 register_activation_hook( __FILE__, 'uvc_plugin_activate');
@@ -124,7 +124,7 @@ if(!class_exists('Ultimate_VC_Addons'))
 			$this->admin_css = plugins_url('admin/css/',__FILE__);
 			$this->paths = wp_upload_dir();
 			$this->paths['fonts'] 	= 'smile_fonts';
-			$this->paths['fonturl'] = $this->paths['baseurl'].'/'.$this->paths['fonts'];
+			$this->paths['fonturl'] = set_url_scheme($this->paths['baseurl'].'/'.$this->paths['fonts']);
 			add_action('after_setup_theme',array($this,'aio_init'));
 			add_action('admin_enqueue_scripts',array($this,'aio_admin_scripts'));
 			add_action('wp_enqueue_scripts',array($this,'aio_front_scripts'),99);
@@ -135,8 +135,30 @@ if(!class_exists('Ultimate_VC_Addons'))
 			if(!get_option('ultimate_animation')){
 				update_option('ultimate_animation','disable');
 			}
+			add_action('wp_head',array($this, 'ultimate_init_vars'));
 			//add_action('admin_init', array($this, 'aio_move_templates'));
 		}// end constructor
+
+		function ultimate_init_vars() {
+			$ultimate_smooth_scroll_compatible = get_option('ultimate_smooth_scroll_compatible');
+			if($ultimate_smooth_scroll_compatible === 'enable')
+				return false;
+
+			$ultimate_smooth_scroll = get_option('ultimate_smooth_scroll');
+			if($ultimate_smooth_scroll !== 'enable')
+				return false;
+
+			$ultimate_smooth_scroll_options = get_option('ultimate_smooth_scroll_options');
+			$step = (isset($ultimate_smooth_scroll_options['step']) && $ultimate_smooth_scroll_options['step'] != '') ? $ultimate_smooth_scroll_options['step'] : 80;
+			$speed = (isset($ultimate_smooth_scroll_options['speed']) && $ultimate_smooth_scroll_options['speed'] != '') ? $ultimate_smooth_scroll_options['speed'] : 480;
+			echo "<script type='text/javascript'>
+				jQuery(document).ready(function($) {
+				var ult_smooth_speed = ".$speed.";
+				var ult_smooth_step = ".$step.";
+				$('html').attr('data-ult_smooth_speed',ult_smooth_speed).attr('data-ult_smooth_step',ult_smooth_step);
+				});
+			</script>";
+		}
 
 		function load_vc_translation()
 		{
@@ -267,6 +289,7 @@ if(!class_exists('Ultimate_VC_Addons'))
 					|| stripos( $post_content, '[ultimate_exp_section')
 					|| stripos( $post_content, '[info_circle')
 					|| stripos( $post_content, '[ultimate_modal')
+					|| stripos( $post_content, '[ult_team')
 					|| stripos( $post_content, '[ultimate_fancytext')
 					|| $found_ultimate_backgrounds
 				) {
@@ -297,12 +320,20 @@ if(!class_exists('Ultimate_VC_Addons'))
 				$ext = '.min';
 			}
 
+			$ultimate_smooth_scroll_compatible = get_option('ultimate_smooth_scroll_compatible');
+
 			// register js
 			wp_register_script('ultimate-script',plugins_url('assets/min-js/ultimate.min.js',__FILE__),array('jquery'), ULTIMATE_VERSION, false);
 			wp_register_script('ultimate-appear',plugins_url($js_path.'jquery-appear'.$ext.'.js',__FILE__),array('jquery'), ULTIMATE_VERSION);
 			wp_register_script('ultimate-custom',plugins_url($js_path.'custom'.$ext.'.js',__FILE__),array('jquery'), ULTIMATE_VERSION);
 			wp_register_script('ultimate-vc-params',plugins_url($js_path.'ultimate-params'.$ext.'.js',__FILE__),array('jquery'), ULTIMATE_VERSION);
-			wp_register_script('ultimate-smooth-scroll',plugins_url($js_path.'SmoothScroll.min.js',__FILE__),array('jquery'),ULTIMATE_VERSION,true);
+			if($ultimate_smooth_scroll_compatible === 'enable') {
+				$smoothScroll = 'SmoothScroll-compatible.min.js';
+			}
+			else {
+				$smoothScroll = 'SmoothScroll.min.js';
+			}
+			wp_register_script('ultimate-smooth-scroll',plugins_url('assets/min-js/'.$smoothScroll,__FILE__),array('jquery'),ULTIMATE_VERSION,true);
 			wp_register_script("ultimate-modernizr",plugins_url($js_path.'modernizr-custom'.$ext.'.js',__FILE__),array('jquery'),ULTIMATE_VERSION);
 			wp_register_script("ultimate-tooltip",plugins_url($js_path.'tooltip'.$ext.'.js',__FILE__),array('jquery'),ULTIMATE_VERSION);
 
@@ -312,10 +343,10 @@ if(!class_exists('Ultimate_VC_Addons'))
 			wp_register_style('ultimate-style-min',plugins_url('assets/min-css/ultimate.min.css',__FILE__),array(),ULTIMATE_VERSION);
 			wp_register_style('ultimate-tooltip',plugins_url($css_path.'tooltip'.$ext.'.css',__FILE__),array(),ULTIMATE_VERSION);
 
-
 			$ultimate_smooth_scroll = get_option('ultimate_smooth_scroll');
-			if($ultimate_smooth_scroll == "enable")
+			if($ultimate_smooth_scroll == "enable" || $ultimate_smooth_scroll_compatible === 'enable') {
 				wp_enqueue_script('ultimate-smooth-scroll');
+			}
 
 			if(function_exists('vc_is_editor')){
 				if(vc_is_editor()){
@@ -353,7 +384,7 @@ if(!class_exists('Ultimate_VC_Addons'))
 				wp_enqueue_script('jquery.ytplayer',plugins_url($js_path.'mb-YTPlayer'.$ext.'.js',__FILE__));
 
 				$Ultimate_Google_Font_Manager = new Ultimate_Google_Font_Manager;
-				$Ultimate_Google_Font_Manager->enqueue_ultimate_google_fonts();
+				$Ultimate_Google_Font_Manager->enqueue_selected_ultimate_google_fonts();
 
 				return false;
 			}
@@ -423,7 +454,9 @@ if(!class_exists('Ultimate_VC_Addons'))
 					if(
 						stripos( $post_content, '[ultimate_spacer')
 						|| stripos( $post_content, '[ult_buttons')
+						|| stripos( $post_content, '[ult_team')
 						|| stripos( $post_content, '[ultimate_icon_list')
+
 					) {
 						wp_enqueue_script('ultimate-custom');
 					}
@@ -537,6 +570,10 @@ if(!class_exists('Ultimate_VC_Addons'))
 						//else
 							wp_enqueue_script('ultimate-modal-all');
 					}
+					if( stripos( $post_content, '[ult_team') ) {
+						wp_enqueue_script('ultimate-team');
+					}
+
 				}
 
 				$ultimate_css = get_option('ultimate_css');
@@ -547,6 +584,9 @@ if(!class_exists('Ultimate_VC_Addons'))
 						wp_enqueue_style("ult-icons");
 					}
 				} else {
+
+					$ib_2_found = $ib_found = false;
+
 					wp_enqueue_style('ultimate-style');
 
 					if( stripos( $post_content, '[ult_animation_block') ) {
@@ -614,13 +654,31 @@ if(!class_exists('Ultimate_VC_Addons'))
 						wp_enqueue_style('ultimate-animate');
 						wp_enqueue_style('ultimate-tooltip');
 					}
+
 					if( stripos( $post_content, '[interactive_banner_2') ) {
-						wp_enqueue_style('ult-ib2-style');
+						$ib_2_found = true;
 					}
-					if( stripos( $post_content, '[interactive_banner') && !stripos( $post_content, '[interactive_banner_2') ) {
+					if(stripos( $post_content, '[interactive_banner') && !stripos( $post_content, '[interactive_banner_2')) {
+						$ib_found = true;
+					}
+					if(stripos( $post_content, '[interactive_banner ') && stripos( $post_content, '[interactive_banner_2')) {
+						$ib_found = true;
+						$ib_2_found = true;
+					}
+
+					if( $ib_found && !$ib_2_found ) {
 						wp_enqueue_style('ultimate-animate');
 						wp_enqueue_style('ult-interactive-banner');
 					}
+					else if( !$ib_found && $ib_2_found ) {
+						wp_enqueue_style('ult-ib2-style');
+					}
+					else if($ib_found && $ib_2_found) {
+						wp_enqueue_style('ultimate-animate');
+						wp_enqueue_style('ult-interactive-banner');
+						wp_enqueue_style('ult-ib2-style');
+					}
+
 					if( stripos( $post_content, '[info_list') ) {
 						wp_enqueue_style('ultimate-animate');
 					}
@@ -663,6 +721,9 @@ if(!class_exists('Ultimate_VC_Addons'))
 					if( stripos( $post_content, '[ultimate_exp_section') ) {
 						wp_enqueue_style('style_ultimate_expsection');
 
+					}
+					if( stripos( $post_content, '[ult_team') ) {
+						wp_enqueue_style('ultimate-team');
 					}
 				}
 			}
@@ -741,6 +802,7 @@ if(!class_exists('Ultimate_VC_Addons'))
 				'ultimate_image_separator',
 				'ultimate_expandable_section',
 				'ultimate_tab',
+				'ultimate_team',
 			);
 			$ultimate_modules = get_option('ultimate_modules');
 			if(!$ultimate_modules && !is_array($ultimate_modules)){
@@ -792,174 +854,10 @@ if(!function_exists('ultimate_hex2rgb')){
 	   return $rgba; // returns an array with the rgb values
 	}
 }
-
-$brainstrom_products = (get_option('brainstrom_products')) ? get_option('brainstrom_products') : array();
-$bsf_product_info = array(
-	'id' => '6892199',
-	'type' => 'plugin',
-);
-$type = $bsf_product_info['type'];
-if($type == 'theme')
-	$bsf_product_info['template'] = get_template();
-elseif($type == 'plugin')
-	$bsf_product_info['template'] = plugin_basename(__FILE__);
-
-if(!empty($brainstrom_products)) :
-	$bsf_product_plugins = (isset($brainstrom_products['plugins'])) ? $brainstrom_products['plugins'] : array();
-	$bsf_product_themes = (isset($brainstrom_products['themes'])) ? $brainstrom_products['themes'] : array();
-	if($type == 'plugin' || $type == 'theme') :
-		$bsf_products_array = array();
-		if($type == 'plugin')
-			$bsf_products_array = $bsf_product_plugins;
-		elseif($type == 'theme')
-			$bsf_products_array = $bsf_product_themes;
-		if(empty($bsf_products_array))
-			$brainstrom_products[$type.'s'][$bsf_product_info['id']] = $bsf_product_info;
-		else
-		{
-			foreach($bsf_products_array as $key => $product) :
-				if(!isset($product['id']))
-					continue;
-				$is_product_found = false;
-				$template = $product['template'];
-				if($bsf_product_info['template'] === $template) {
-					$is_product_found = true;
-					foreach($bsf_product_info as $akey => $val)
-					{
-						$brainstrom_products[$type.'s'][$key][$akey] = $val;
-					}
-					break;
-				}
-			endforeach;
-			if(!$is_product_found)
-				$brainstrom_products[$type.'s'][$bsf_product_info['id']] = $bsf_product_info;
-		}
-	endif;
-else :
-	$brainstrom_products[$type.'s'][$bsf_product_info['id']] = $bsf_product_info;
-endif;
-
-update_option('brainstrom_products', $brainstrom_products);
-
-/*
-	Instrunctions - Plugin Registration and Updater
-	# Copy "auto-upadater" folder to admin folder
-	# Check "include_once" and "require_once" directory path
-*/
-
-/* product registration */
-if(is_multisite())
-	add_action('network_admin_menu', 'register_bsf_products_registration_page',98);
-else
-	add_action('admin_menu', 'register_bsf_products_registration_page',98);
-if(!function_exists('register_bsf_products_registration_page')) {
-	function register_bsf_products_registration_page() {
-		if(defined('BSF_UNREG_MENU') && (BSF_UNREG_MENU === true || BSF_UNREG_MENU === 'true'))
-			return false;
-		if(empty ( $GLOBALS['admin_page_hooks']['bsf-registration'] )) {
-			$place = bsf_get_free_menu_position(200,1);
-			if(!defined('BSF_MENU_POS'))
-				define('BSF_MENU_POS', $place);
-			$page = add_menu_page('Brainstorm Force', 'Brainstorm', 'administrator', 'bsf-registration', 'bsf_registration','',$place);
-		}
+// bsf core
+add_action('init','load_bsf_core');
+if(!function_exists('load_bsf_core')) {
+	function load_bsf_core() {
+		include_once realpath(dirname(__FILE__)).'/admin/bsf-core/index.php';
 	}
 }
-if(!function_exists('bsf_registration'))
-{
-	function bsf_registration() {
-		include_once 'admin/auto-update/index.php';
-	}
-}
-add_action('init', 'init_bsf_auto_updater');
-if(!function_exists('init_bsf_auto_updater')) {
-	function init_bsf_auto_updater() {
-		require_once 'admin/auto-update/admin-functions.php';
-		require_once 'admin/auto-update/updater.php';
-	}
-}
-
-/*if(version_compare(ULTIMATE_VERSION, '3.11.1', '>') && version_compare(ULTIMATE_VERSION, '3.12.1', '<')) {
-	if(get_option('brainstrom_products'))
-		return false;
-	if(get_option('brainstrom_users'))
-		return false;
-	$ultimate_keys = get_option('ultimate_keys');
-
-	if(empty($ultimate_keys))
-		return false;
-
-	$new_status = 'not-registered';
-	$step = $envato_username = '';
-
-	$activation_check = get_option('ultimate_license_activation');
-	if(!empty($activation_check)) {
-
-		$current_status = (isset($activation_check['status'])) ? $activation_check['status'] : 'not-registered';
-		if($current_status === 'Activated') {
-			$new_status = 'registered';
-		}
-
-		if(isset($ultimate_keys['ultimate_user_email']) && $ultimate_keys['ultimate_user_email'] != '') {
-			$envato_useremail = $ultimate_keys['ultimate_user_email'];
-			$step = 'step-all-success';
-		}
-		else
-			$new_status = 'not-registered';
-
-		if(isset($ultimate_keys['envato_username']) && $ultimate_keys['envato_username'] != '')
-			$envato_username = $ultimate_keys['envato_username'];
-
-		$is_update = false;
-
-		$brainstrom_products = (get_option('brainstrom_products')) ? get_option('brainstrom_products') : array();
-		if(!empty($brainstrom_products)) :
-			$bsf_product_plugins = (isset($brainstrom_products['plugins'])) ? $brainstrom_products['plugins'] : array();
-			if(!empty($bsf_product_plugins)) :
-				foreach($bsf_product_plugins as $key => $plugin) :
-					if($plugin['id'] === '6892199') :
-						$brainstrom_products['plugins'][$key]['envato_username'] = (isset($ultimate_keys['envato_username'])) ? $ultimate_keys['envato_username'] : '';
-						$brainstrom_products['plugins'][$key]['purchase_key'] = (isset($ultimate_keys['ultimate_purchase_code'])) ? $ultimate_keys['ultimate_purchase_code'] : '';
-						$brainstrom_products['plugins'][$key]['status'] = $new_status;
-						$brainstrom_products['plugins'][$key]['step'] = $step;
-						$is_update = true;
-					endif;
-				endforeach;
-			endif;
-		endif;
-
-		if($is_update)
-			update_option('brainstrom_products', $brainstrom_products);
-
-		$brainstrom_users = (get_option('brainstrom_users')) ? get_option('brainstrom_users') : array();
-		$token = get_option('bsf-support-profile-access-token');
-
-		$user_array = array(
-			'username' => $envato_username,
-			'email' => $envato_useremail,
-			'token' => $token
-		);
-		if(!empty($brainstrom_users)) {
-			$is_find = false;
-			foreach($brainstrom_users as $buser) {
-				if($buser['username'] === $envato_username)
-				{
-					if($envato_useremail !== '')
-						$brainstrom_users[$key]['email'] = $envato_useremail;
-					if($token !== '')
-						$brainstrom_users[$key]['token'] = $token;
-					$is_find = true;
-					break;
-				}
-			}
-			if(!$is_find)
-				array_push($brainstrom_users, $user_array);
-		}
-		else
-		{
-			array_push($brainstrom_users, $user_array);
-		}
-
-		update_option('brainstrom_users', $brainstrom_users);
-
-	}
-}*/

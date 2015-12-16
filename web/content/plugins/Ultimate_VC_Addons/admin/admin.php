@@ -1,4 +1,77 @@
 <?php
+// BSF CORE commom functions
+if(!function_exists('bsf_get_option')) {
+	function bsf_get_option($request = false) {
+		$bsf_options = get_option('bsf_options');
+		if(!$request)
+			return $bsf_options;
+		else
+			return (isset($bsf_options[$request])) ? $bsf_options[$request] : false;
+	}
+}
+if(!function_exists('bsf_update_option')) {
+	function bsf_update_option($request, $value) {
+		$bsf_options = get_option('bsf_options');
+		$bsf_options[$request] = $value;
+		return update_option('bsf_options', $bsf_options);
+	}
+}
+add_action( 'wp_ajax_bsf_dismiss_notice', 'bsf_dismiss_notice');
+if(!function_exists('bsf_dismiss_notice')) {
+	function bsf_dismiss_notice() {
+		$notice = $_POST['notice'];
+		$x = bsf_update_option($notice, true);
+		echo ($x) ? true : false;
+		die();
+	}
+}
+
+add_action('admin_init', 'bsf_core_check',10);
+if(!function_exists('bsf_core_check')) {
+	function bsf_core_check() {
+		if(!defined('BSF_CORE')) {
+			if(!bsf_get_option('hide-bsf-core-notice'))
+				add_action( 'admin_notices', 'bsf_core_admin_notice' );
+		}
+	}
+}
+
+if(!function_exists('bsf_core_admin_notice')) {
+	function bsf_core_admin_notice() {
+		?>
+		<script type="text/javascript">
+		(function($){
+			$(document).ready(function(){
+				$(document).on( "click", ".bsf-notice", function() {
+					var bsf_notice_name = $(this).attr("data-bsf-notice");
+				    $.ajax({
+				        url: ajaxurl,
+				        method: 'POST',
+				        data: {
+				            action: "bsf_dismiss_notice",
+				            notice: bsf_notice_name
+				        },
+				        success: function(response) {
+				        	console.log(response);
+				        }
+				    })
+				})
+			});
+		})(jQuery);
+		</script>
+		<div class="bsf-notice update-nag notice is-dismissible" data-bsf-notice="hide-bsf-core-notice">
+            <p><?php _e( 'License registration and extensions are not part of plugin/theme anymore. Kindly download and install "BSF CORE" plugin to manage your licenses and extensins.', 'bsf' ); ?></p>
+        </div>
+		<?php
+	}
+}
+
+if(isset($_GET['hide-bsf-core-notice']) && $_GET['hide-bsf-core-notice'] === 're-enable') {
+	$x = bsf_update_option('hide-bsf-core-notice', false);
+}
+
+// end of common functions
+
 if(!class_exists('Ultimate_Admin_Area')){
 	class Ultimate_Admin_Area{
 		function __construct(){
@@ -12,26 +85,13 @@ if(!class_exists('Ultimate_Admin_Area')){
 			//add_action( 'network_admin_menu', array( $this, 'register_brainstorm_network_menu' ) );
 
 			add_action('admin_enqueue_scripts', array($this, 'bsf_admin_scripts_updater'), 1);
-
 			add_action( 'wp_ajax_update_ultimate_options', array($this,'update_settings'));
 			add_action( 'wp_ajax_update_ultimate_debug_options', array($this,'update_debug_settings'));
 			add_action( 'wp_ajax_update_ultimate_modules', array($this,'update_modules'));
 			add_action( 'wp_ajax_update_css_options', array($this,'update_css_options'));
-
-			//add_action( 'wp_ajax_update_ultimate_keys', array($this,'update_verification'));
-			//add_action( 'wp_ajax_grant_access', array($this,'grant_developer_access'));
-			//add_action( 'wp_ajax_update_access', array($this,'update_developer_access'));
 			add_action( 'wp_ajax_update_dev_notes', array($this,'update_dev_notes'));
-			//add_action( 'wp_ajax_ultimate_activation', 'process_license_activation');
-			//add_action( 'wp_ajax_ultimate_skip_registration', 'ultimate_skip_registration_callback');
-
-			//add_action( 'wp_ajax_update_client_license', array( &$this, 'server_update_client_license' ) );
-			//add_action( 'wp_ajax_nopriv_update_client_license', array( &$this, 'server_update_client_license' ) );
-
-			//add_action( 'init', array($this,'process_developer_login'),1);
-			//add_action( 'admin_init', array( $this, 'check_developer_access') );
-			//add_filter( 'custom_menu_order', array($this,'bsf_submenu_order' ),999);
 		}
+
 		function bsf_admin_scripts_updater($hook){
 			if(defined('OPN_VERSION')) {
 				echo "<style>
@@ -63,7 +123,7 @@ if(!class_exists('Ultimate_Admin_Area')){
 						font-weight: normal;
 						font-style: normal;
 					}
-					.toplevel_page_ultimate-dashboard > div.wp-menu-image:before {
+					.toplevel_page_about-ultimate > div.wp-menu-image:before {
 						content: \"\\e600\" !important;
 						font-family: 'ultimate' !important;
 						speak: none;
@@ -76,9 +136,15 @@ if(!class_exists('Ultimate_Admin_Area')){
 						-moz-osx-font-smoothing: grayscale;
 						font-size:24px;
 					}
+					.toplevel_page_about-ultimate a[href=\"admin.php?page=font-icon-Manager\"] {
+					    display: none !important;
+					}
+					.toplevel_page_about-ultimate a[href=\"admin.php?page=ultimate-font-manager\"] {
+					    display: none !important;
+					}
 				</style>
 			";
-			if($hook == "post.php" || $hook == "post-new.php" || $hook == 'ultimate_page_about-ultimate' || $hook == 'visual-composer_page_vc-roles'){
+			if($hook == "post.php" || $hook == "post-new.php" || $hook == 'ultimate_page_about-ultimate' || $hook == 'visual-composer_page_vc-roles' || $hook == 'toplevel_page_about-ultimate'){
 				$bsf_dev_mode = bsf_get_option('dev_mode');
 
 				wp_register_style("ultimate-admin-style",plugins_url("../admin/css/style.css",__FILE__));
@@ -109,15 +175,54 @@ if(!class_exists('Ultimate_Admin_Area')){
 			else
 				$required_place = 200;
 
-			$place = bsf_get_free_menu_position($required_place,1);
+			if(function_exists('bsf_get_free_menu_position'))
+				$place = bsf_get_free_menu_position($required_place,1);
+			else
+				$place = null;
 
 			$page = add_menu_page(
 				'Ultimate',
 				'Ultimate',
 				'administrator',
-				'ultimate-dashboard',
-				array($this,'load_modules'),
+				'about-ultimate',
+				array($this,'load_about'),
 				'', $place );
+
+			add_submenu_page(
+				"about-ultimate",
+				__("Modules","ultimate_vc"),
+				__("Modules","ultimate_vc"),
+				"administrator",
+				"ultimate-dashboard",
+				array($this,'load_modules')
+			);
+
+			add_submenu_page(
+				"about-ultimate",
+				__("Smooth Scroll","ultimate_vc"),
+				__("Smooth Scroll","ultimate_vc"),
+				"administrator",
+				"ultimate-smoothscroll",
+				array($this,'load_smoothscroll')
+			);
+
+			add_submenu_page(
+				"about-ultimate",
+				__("Scripts & Styles","ultimate_vc"),
+				__("Scripts & Styles","ultimate_vc"),
+				"administrator",
+				"ultimate-scripts-and-styles",
+				array($this,'load_scripts_styles')
+			);
+
+			add_submenu_page(
+				"NOATTACH",
+				__("Debug","ultimate_vc"),
+				__("Debug","ultimate_vc"),
+				"administrator",
+				"ultimate-debug-settings",
+				array($this,'load_debug_settings')
+			);
 
 			//	Add sub-menu for OPN if OPN in installed - {One Page Navigator}.
 			if( defined('OPN_VERSION') ){
@@ -126,7 +231,10 @@ if(!class_exists('Ultimate_Admin_Area')){
 				else
 					$required_place = 200;
 
-				$place = bsf_get_free_menu_position($required_place,1);
+				if(function_exists('bsf_get_free_menu_position'))
+					$place = bsf_get_free_menu_position($required_place,1);
+				else
+					$place = null;
 
 				$page = add_menu_page(
 					'OPN',
@@ -138,12 +246,29 @@ if(!class_exists('Ultimate_Admin_Area')){
 					$place );
 			}
 
+			$resources_page = add_submenu_page(
+				"about-ultimate",
+				__("Resources","ultimate_vc"),
+				__("Resources","ultimate_vc"),
+				"administrator",
+				"ultimate-resources",
+				array($this, 'ultimate_resources')
+			);
+
+			// section wise menu
+			global $bsf_section_menu;
+			$section_menu = array(
+				'menu' => 'ultimate-resources',
+				'is_down_arrow' => true
+			);
+			$bsf_section_menu[] = $section_menu;
+
 			$icon_manager_page = add_submenu_page(
-				"ultimate-dashboard",
+				"about-ultimate",
 				__("Icon Manager","ultimate_vc"),
 				__("Icon Manager","ultimate_vc"),
 				"administrator",
-				"font-icon-Manager",
+				"bsf-font-icon-manager",
 				array($this, 'ultimate_icon_manager_menu')
 			);
 
@@ -152,28 +277,19 @@ if(!class_exists('Ultimate_Admin_Area')){
 
 			$Ultimate_Google_Font_Manager = new Ultimate_Google_Font_Manager;
 			$google_font_manager_page = add_submenu_page(
-				"ultimate-dashboard",
+				"about-ultimate",
 				__("Google Font Manager","ultimate_vc"),
 				__("Google Fonts","ultimate_vc"),
 				"administrator",
-				"ultimate-font-manager",
+				"bsf-google-font-manager",
 				array($Ultimate_Google_Font_Manager,'ultimate_font_manager_dashboard')
 			);
 			add_action( 'admin_print_scripts-' . $google_font_manager_page, array($Ultimate_Google_Font_Manager,'admin_google_font_scripts'));
 
-
-
 			// must be at end of all sub menu
-			add_submenu_page(
-				"ultimate-dashboard",
-				__("About Ultimate","ultimate_vc"),
-				__("About Ultimate","ultimate_vc"),
-				"administrator",
-				"about-ultimate",
-				array($this,'load_about')
-			);
 
-			$submenu['ultimate-dashboard'][0][0] = __("Modules","ultimate_vc");
+
+			$submenu['about-ultimate'][0][0] = __("About","ultimate_vc");
 		}
 		function load_opn(){
 			if(class_exists('OPN_Navigator')) {
@@ -194,24 +310,27 @@ if(!class_exists('Ultimate_Admin_Area')){
 		}
 
 		function load_about() {
-			wp_enqueue_style('js_composer');
 			require_once(plugin_dir_path(__FILE__).'/about.php');
 		}
 
-		function update_modules(){
-			$ultimate_modules = array();
-			if(isset($_POST['ultimate_modules'])){
-				$ultimate_modules = $_POST['ultimate_modules'];
-			}
-			$result = update_option('ultimate_modules',$ultimate_modules);
-			if($result){
-				echo 'success';
-			} else {
-				echo 'failed';
-			}
-			die();
+		function load_smoothscroll() {
+			require_once(plugin_dir_path(__FILE__).'/smooth-scroll-setting.php');
 		}
-		function update_settings(){
+
+		function load_scripts_styles() {
+			require_once(plugin_dir_path(__FILE__).'/script-styles.php');
+		}
+
+		function load_debug_settings() {
+			require_once(plugin_dir_path(__FILE__).'/debug.php');
+		}
+
+		function ultimate_resources() {
+			$connects = false;
+			require_once(plugin_dir_path(__FILE__).'/resources.php');
+		}
+
+		function update_modules(){
 			if(isset($_POST['ultimate_row'])){
 				$ultimate_row = $_POST['ultimate_row'];
 			} else {
@@ -219,21 +338,13 @@ if(!class_exists('Ultimate_Admin_Area')){
 			}
 			$result1 = update_option('ultimate_row',$ultimate_row);
 
-			if(isset($_POST['ultimate_animation'])){
-				$ultimate_animation = $_POST['ultimate_animation'];
-			} else {
-				$ultimate_animation = 'disable';
+			$ultimate_modules = array();
+			if(isset($_POST['ultimate_modules'])){
+				$ultimate_modules = $_POST['ultimate_modules'];
 			}
-			$result2 = update_option('ultimate_animation',$ultimate_animation);
+			$result2 = update_option('ultimate_modules',$ultimate_modules);
 
-			if(isset($_POST['ultimate_smooth_scroll'])){
-				$ultimate_smooth_scroll = $_POST['ultimate_smooth_scroll'];
-			} else {
-				$ultimate_smooth_scroll = 'disable';
-			}
-			$result3 = update_option('ultimate_smooth_scroll',$ultimate_smooth_scroll);
-
-			if($result1 || $result2 || $result3 || $result4){
+			if($result1 || $result2 ){
 				echo 'success';
 			} else {
 				echo 'failed';
@@ -303,15 +414,55 @@ if(!class_exists('Ultimate_Admin_Area')){
 
 			foreach ($bsf_options_array as $key => $key_value) {
 				$result8 = bsf_update_option($key_value, '');
+				if($result8)
+					$check_update_option_8 = true;
 				$result8 = true;
 			}
 
-			if($result1 || $result2 || $result3 || $result4 || $result5 || $result6 || $result7 || $result8){
+			if(isset($_POST['ultimate_smooth_scroll_compatible'])){
+				$ultimate_smooth_scroll_compatible = $_POST['ultimate_smooth_scroll_compatible'];
+			} else {
+				$ultimate_smooth_scroll_compatible = 'disable';
+			}
+			$result9 = update_option('ultimate_smooth_scroll_compatible',$ultimate_smooth_scroll_compatible);
+
+			if(isset($_POST['ultimate_animation'])){
+				$ultimate_animation = $_POST['ultimate_animation'];
+			} else {
+				$ultimate_animation = 'disable';
+			}
+			$result10 = update_option('ultimate_animation',$ultimate_animation);
+
+			if($result1 || $result2 || $result3 || $result4 || $result5 || $result6 || $result7 || $result8 || $result9 || $result10){
 				echo 'success';
 			} else {
 				echo 'failed';
 			}
 
+			die();
+		}
+
+		function update_settings(){
+
+			if(isset($_POST['ultimate_smooth_scroll'])){
+				$ultimate_smooth_scroll = $_POST['ultimate_smooth_scroll'];
+			} else {
+				$ultimate_smooth_scroll = 'disable';
+			}
+			$result1 = update_option('ultimate_smooth_scroll',$ultimate_smooth_scroll);
+
+			if(isset($_POST['ultimate_smooth_scroll_options'])){
+				$ultimate_smooth_scroll_options = $_POST['ultimate_smooth_scroll_options'];
+			} else {
+				$ultimate_smooth_scroll_options = '';
+			}
+			$result2 = update_option('ultimate_smooth_scroll_options',$ultimate_smooth_scroll_options);
+
+			if($result1 || $result2){
+				echo 'success';
+			} else {
+				echo 'failed';
+			}
 			die();
 		}
 
@@ -472,4 +623,29 @@ function ultimate_remote_get($path){
 	} else {
 		return false;
 	}
+}
+
+// hooks to add bsf-core stylesheet
+add_filter('bsf_core_style_screens', 'ultimate_bsf_core_style_hooks');
+function ultimate_bsf_core_style_hooks($hooks) {
+	$array = array(
+		'ultimate_page_ultimate-resources',
+		'ultimate_page_about-ultimate',
+		'toplevel_page_about-ultimate'
+	);
+	foreach ($array as $hook) {
+		array_push($hooks, $hook);
+	}
+	return $hooks;
+}
+// hooks to add frosty script
+add_filter('bsf_core_frosty_screens', 'ultimate_bsf_core_frosty_hooks');
+function ultimate_bsf_core_frosty_hooks($hooks) {
+	$array = array(
+		'ultimate_page_ultimate-smoothscroll'
+	);
+	foreach ($array as $hook) {
+		array_push($hooks, $hook);
+	}
+	return $hooks;
 }

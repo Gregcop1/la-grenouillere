@@ -58,7 +58,7 @@ if(!class_exists("Ultimate_Headings")){
 								"type" => "ultimate_google_fonts",
 								"heading" => __("Font Family", "ultimate_vc"),
 								"param_name" => "main_heading_font_family",
-								"description" => __("Select the font of your choice.","ultimate_vc")." ".__("You can","ultimate_vc")." <a target='_blank' href='".admin_url('admin.php?page=ultimate-font-manager')."'>".__("add new in the collection here","ultimate_vc")."</a>.",
+								"description" => __("Select the font of your choice.","ultimate_vc")." ".__("You can","ultimate_vc")." <a target='_blank' href='".admin_url('admin.php?page=bsf-google-font-manager')."'>".__("add new in the collection here","ultimate_vc")."</a>.",
 								//"dependency" => Array("element" => "main_heading", "not_empty" => true),
 								"group" => "Typography"
 							),
@@ -168,7 +168,7 @@ if(!class_exists("Ultimate_Headings")){
 								"type" => "ultimate_google_fonts",
 								"heading" => __("Font Family", "ultimate_vc"),
 								"param_name" => "sub_heading_font_family",
-								"description" => __("Select the font of your choice.","ultimate_vc")." ".__("You can","ultimate_vc")." <a target='_blank' href='".admin_url('admin.php?page=ultimate-font-manager')."'>".__("add new in the collection here","ultimate_vc")."</a>.",
+								"description" => __("Select the font of your choice.","ultimate_vc")." ".__("You can","ultimate_vc")." <a target='_blank' href='".admin_url('admin.php?page=bsf-google-font-manager')."'>".__("add new in the collection here","ultimate_vc")."</a>.",
 								//"dependency" => Array("element" => "content", "not_empty" => true),
 								"group" => "Typography",
 							),
@@ -358,7 +358,7 @@ if(!class_exists("Ultimate_Headings")){
 								"heading" => __("Select Icon ","ultimate_vc"),
 								"param_name" => "icon",
 								"value" => "",
-								"description" => __("Click and select icon of your choice. If you can't find the one that suits for your purpose","ultimate_vc").", ".__("you can","ultimate_vc")." <a href='admin.php?page=font-icon-Manager' target='_blank'>".__("add new here","ultimate_vc")."</a>.",
+								"description" => __("Click and select icon of your choice. If you can't find the one that suits for your purpose","ultimate_vc").", ".__("you can","ultimate_vc")." <a href='admin.php?page=bsf-font-icon-manager' target='_blank'>".__("add new here","ultimate_vc")."</a>.",
 								"dependency" => Array("element" => "icon_type","value" => array("selector")),
 							),
 							array(
@@ -568,6 +568,8 @@ if(!class_exists("Ultimate_Headings")){
 				"heading_tag" 				=> "",
 				"el_class" => "",
 			),$atts));
+			$vc_version = (defined('WPB_VC_VERSION')) ? WPB_VC_VERSION : 0;
+			$is_vc_49_plus = (version_compare(4.9, $vc_version, '<=')) ? 'ult-adjust-bottom-margin' : '';
 			$wrapper_class = $spacer;
 
 			if($heading_tag == '')
@@ -707,7 +709,7 @@ if(!class_exists("Ultimate_Headings")){
 		  	);
 			$sub_heading_responsive = get_ultimate_vc_responsive_media_css($args);
 
-			$output = '<div id="'.$id.'" class="uvc-heading '.$id.' '.$uid.' '.$el_class.'" data-hspacer="'.$spacer.'" '.$data.' data-halign="'.$alignment.'" style="text-align:'.$alignment.'">';
+			$output = '<div id="'.$id.'" class="uvc-heading '.$is_vc_49_plus.' '.$id.' '.$uid.' '.$el_class.'" data-hspacer="'.$spacer.'" '.$data.' data-halign="'.$alignment.'" style="text-align:'.$alignment.'">';
 				if($spacer_position == 'top')
 					$output .= $this->ultimate_heading_spacer($wrapper_class, $wrapper_style, $icon_inline);
 				if($main_heading != '')

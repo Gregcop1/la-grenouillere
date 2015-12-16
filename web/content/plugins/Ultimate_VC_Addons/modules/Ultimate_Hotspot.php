@@ -30,7 +30,7 @@ if(!class_exists('ULT_HotSpot')) {
 
 		function ultimate_hotspot_param_callback($settings, $value)
 		{
-			$dependency = (function_exists('vc_generate_dependencies_attributes')) ? vc_generate_dependencies_attributes($settings) : '';
+			$dependency = '';
 			$class = isset($settings['class']) ? $settings['class'] : '';
 			$output = '<div class="ult-hotspot-image-wrapper '.$class.'">';
 				$output .= '<img src="" class="ult-hotspot-image" alt="image"/>';
@@ -62,6 +62,9 @@ if(!class_exists('ULT_HotSpot')) {
 				'el_class'        => '',
 			), $atts ) );
 
+			$vc_version = (defined('WPB_VC_VERSION')) ? WPB_VC_VERSION : 0;
+			$is_vc_49_plus = (version_compare(4.9, $vc_version, '<=')) ? 'ult-adjust-bottom-margin' : '';
+
 			$content = wpb_js_remove_wpautop($content, true); // fix unclosed/unwanted paragraph tags in $content
 
 			$mnimg = apply_filters('ult_get_img_single', $main_img, 'url');
@@ -71,7 +74,7 @@ if(!class_exists('ULT_HotSpot')) {
 					$cust_size .= "width:".$main_img_width."px;";
 				}
 			}
-			$output  = "<div class='ult_hotspot_container ult-hotspot-tooltip-wrapper ".$el_class."' style=".$cust_size.">";
+			$output  = "<div class='ult_hotspot_container ".$is_vc_49_plus." ult-hotspot-tooltip-wrapper ".$el_class."' style=".$cust_size.">";
 			$output .= "  <img class='ult_hotspot_image' src=".$mnimg." />";
 			$output .= "     <div class='utl-hotspot-items ult-hotspot-item'>".do_shortcode($content)."</div>";
 			$output .= "     <div style='color:#000;' data-image='".$GLOBALS['hotspot_icon']." ".$GLOBALS['hotspot_icon_bg_color']." ".$GLOBALS['hotspot_icon_color']." ".$GLOBALS['hotspot_icon_size']." ".$GLOBALS['tooltip_continuous_animation']."'></div>";
@@ -149,15 +152,35 @@ if(!class_exists('ULT_HotSpot')) {
 			$font_args = array();
 			$tooltip_content_style = '';
 			$tooltip_base_style = '';
-
+			$hotspot_tooltip_id = '';
 			if($tooltip_font != '') {
 				$font_family = get_ultimate_font_family($tooltip_font);
 				$tooltip_content_style .= 'font-family:'.$font_family.';';
 				array_push($font_args, $tooltip_font);
 			}
 			if($tooltip_font_style != '') { $tooltip_content_style .= get_ultimate_font_style($tooltip_font_style); }
-			if($tooltip_font_size != '') { $tooltip_content_style .= 'font-size:'.$tooltip_font_size.'px;'; }
-			if($tooltip_font_line_height != '') { $tooltip_content_style .= 'line-height:'.$tooltip_font_line_height.'px;'; }
+			// if($tooltip_font_size != '') { $tooltip_content_style .= 'font-size:'.$tooltip_font_size.'px;'; }
+			// if($tooltip_font_line_height != '') { $tooltip_content_style .= 'line-height:'.$tooltip_font_line_height.'px;'; }
+
+			if(is_numeric($tooltip_font_size)){
+				$tooltip_font_size = 'desktop:'.$tooltip_font_size.'px;';
+			}
+
+			if(is_numeric($tooltip_font_line_height)){
+				$tooltip_font_line_height = 'desktop:'.$tooltip_font_line_height.'px;';
+			}
+
+			$hotspot_tooltip_id = 'hotspot-tooltip-'.rand(1000, 9999);
+
+			$hotspot_tooltip_args = array(
+                'target' => '#'.$hotspot_tooltip_id.' .ult-tooltipster-content', // set targeted element e.g. unique class/id etc.
+                'media_sizes' => array(
+                    'font-size' => $tooltip_font_size, // set 'css property' & 'ultimate_responsive' sizes. Here $title_responsive_font_size holds responsive font sizes from user input.
+                   	'line-height' => $tooltip_font_line_height
+                ),
+            );
+
+            $hotspot_tooltip_data_list = get_ultimate_vc_responsive_media_css($hotspot_tooltip_args);
 
 			//  Width
 			if($tooltip_width!=''){ $tooltip_content_style .= 'width:' .$tooltip_width. 'px;'; }
@@ -186,6 +209,9 @@ if(!class_exists('ULT_HotSpot')) {
 
 
 			$data = '';
+
+			if($hotspot_tooltip_id !='')    { $data .= 'data-mycust-id="'.$hotspot_tooltip_id.'" ';}
+			if($hotspot_tooltip_data_list !='')		{ $data .=$hotspot_tooltip_data_list;}
 			if($tooltip_content_style!='')  { $data .= 'data-tooltip-content-style="'.$tooltip_content_style. '"'; }
 			if($tooltip_base_style!='')     { $data .= 'data-tooltip-base-style="'.$tooltip_base_style. '"'; }
 
@@ -359,7 +385,7 @@ if(!class_exists('ULT_HotSpot')) {
 								"heading" => __("Select Icon ","ultimate_vc"),
 								"param_name" => "icon",
 								"value" => "",
-								"description" => __("Click and select icon of your choice. If you can't find the one that suits for your purpose","ultimate_vc").", ".__("you can","ultimate_vc")." <a href='admin.php?page=font-icon-Manager' target='_blank'>".__("add new here","ultimate_vc")."</a>.",
+								"description" => __("Click and select icon of your choice. If you can't find the one that suits for your purpose","ultimate_vc").", ".__("you can","ultimate_vc")." <a href='admin.php?page=bsf-font-icon-manager' target='_blank'>".__("add new here","ultimate_vc")."</a>.",
 								"dependency" => Array("element" => "icon_type","value" => array("selector")),
 								"group" => "Icon",
 							),
@@ -699,7 +725,7 @@ if(!class_exists('ULT_HotSpot')) {
 							  "param_name" => "tooltip_font",
 							  "value" => "",
 							  "group" => "Typography",
-							  "dependency" => Array("element" => "link_style","value" => "tooltip"),
+							  //"dependency" => Array("element" => "link_style","value" => "tooltip"),
 							),
 							array(
 							  "type" => "ultimate_google_fonts_style",
@@ -707,28 +733,58 @@ if(!class_exists('ULT_HotSpot')) {
 							  "param_name" => "tooltip_font_style",
 							  "value" => "",
 							  "group" => "Typography",
-							  "dependency" => Array("element" => "link_style","value" => "tooltip"),
+							  //"dependency" => Array("element" => "link_style","value" => "tooltip"),
 							),
+							// array(
+							//   "type" => "number",
+							//   "param_name" => "tooltip_font_size",
+							//   "heading" => __("Font size","ultimate_vc"),
+							//   "value" => "12",
+							//   "suffix" => "px",
+							//   "min" => 10,
+							//   "group" => "Typography",
+							//   "dependency" => Array("element" => "link_style","value" => "tooltip"),
+							// ),
+							// array(
+							//   "type" => "number",
+							//   "param_name" => "tooltip_font_line_height",
+							//   "heading" => __("Line Height","ultimate_vc"),
+							//   "value" => "18",
+							//   "suffix" => "px",
+							//   "min" => 10,
+							//   "group" => "Typography",
+							//   "dependency" => Array("element" => "link_style","value" => "tooltip"),
+							// ),
 							array(
-							  "type" => "number",
-							  "param_name" => "tooltip_font_size",
-							  "heading" => __("Font size","ultimate_vc"),
-							  "value" => "12",
-							  "suffix" => "px",
-							  "min" => 10,
-							  "group" => "Typography",
-							  "dependency" => Array("element" => "link_style","value" => "tooltip"),
-							),
-							array(
-							  "type" => "number",
-							  "param_name" => "tooltip_font_line_height",
-							  "heading" => __("Line Height","ultimate_vc"),
-							  "value" => "18",
-							  "suffix" => "px",
-							  "min" => 10,
-							  "group" => "Typography",
-							  "dependency" => Array("element" => "link_style","value" => "tooltip"),
-							),
+		                    "type" => "ultimate_responsive",
+		                    "class" => "",
+		                    "heading" => __("Font size", 'ultimate_vc'),
+		                    "param_name" => "tooltip_font_size",
+		                    "unit" => "px",
+		                    "media" => array(
+		                        "Desktop" => '',
+		                        "Tablet" => '',
+		                        "Tablet Portrait" => '',
+		                        "Mobile Landscape" => '',
+		                        "Mobile" => '',
+			                    ),
+			                    "group" => "Typography",
+			                ),
+			                array(
+		                    "type" => "ultimate_responsive",
+		                    "class" => "",
+		                    "heading" => __("Line Height", 'ultimate_vc'),
+		                    "param_name" => "tooltip_font_line_height",
+		                    "unit" => "px",
+		                    "media" => array(
+		                        "Desktop" => '',
+		                        "Tablet" => '',
+		                        "Tablet Portrait" => '',
+		                        "Mobile Landscape" => '',
+		                        "Mobile" => '',
+			                    ),
+			                    "group" => "Typography",
+			                ),
 							array(
 								"type" => "dropdown",
 								"class" => "",
@@ -741,7 +797,7 @@ if(!class_exists('ULT_HotSpot')) {
 									__("Justify","ultimate_vc") 	=> "justify"
 								),
 								"group" => "Typography",
-								"dependency" => Array("element" => "link_style","value" => "tooltip"),
+								//"dependency" => Array("element" => "link_style","value" => "tooltip"),
 							),
 							array(
 								"type" => "dropdown",

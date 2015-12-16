@@ -25,12 +25,12 @@ if(!class_exists('Ultimate_Icon_Manager_Param'))
 
 		function icon_manager($settings, $value)
 		{
-			$GLOBALS['pid'] = $GLOBALS['pid'] +1;
+			$GLOBALS['pid'] = $GLOBALS['pid'] + 1;
 			$pcnt=$GLOBALS['pid'];
 
 			$AIO_Icon_Manager = new AIO_Icon_Manager;
 			$font_manager = $AIO_Icon_Manager->get_font_manager($pcnt);
-			$dependency = (function_exists('vc_generate_dependencies_attributes')) ? vc_generate_dependencies_attributes($settings) : '';
+			$dependency = '';
 
 			$params = parse_url($_SERVER['HTTP_REFERER']);
 			$vc_is_inline = false;
@@ -41,8 +41,9 @@ if(!class_exists('Ultimate_Icon_Manager_Param'))
 
 			$output = '<div class="my_param_block">'
 					 .'<input name="'.$settings['param_name'].'"
-					  class="wpb_vc_param_value wpb-textinput '.$settings['param_name'].'
-					  '.$settings['type'].'_field" type="hidden"
+					  class="wpb_txt_icon_value wpb_vc_param_value wpb-textinput '.$settings['param_name'].' 
+					  '.$settings['type'].'_field" type="hidden" 
+
 					  value="'.$value.'" ' . $dependency . ' id="'.$pcnt.'"/>'
 					 .'</div>';
 			if($vc_is_inline){
@@ -97,7 +98,6 @@ if(!class_exists('Ultimate_Icon_Manager_Param'))
 					jQuery(".icon-list-'.$pcnt.' li[data-icons=\'"+ val+"\']").addClass("selected");
 				});
 				jQuery(".icons-list li").click(function() {
-
 					var id=jQuery(this).attr("id");
 					//alert(id);
                     jQuery(this).attr("class","selected").siblings().removeAttr("class");
@@ -108,7 +108,7 @@ if(!class_exists('Ultimate_Icon_Manager_Param'))
                 });
 				</script>';
 					}
-			$output .= $font_manager;
+			$output .= '<div class="wpb_txt_icons_block" data-old-icon-value="'.$pcnt.'">'.$font_manager.'</div>';
 			return $output;
 		}
 

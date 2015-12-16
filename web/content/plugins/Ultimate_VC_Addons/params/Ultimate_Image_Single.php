@@ -66,7 +66,7 @@ if(!class_exists('Ult_Image_Single'))
 
     function ult_img_single_callback($settings, $value)
     {
-        $dependency = (function_exists('vc_generate_dependencies_attributes')) ? vc_generate_dependencies_attributes($settings) : '';
+        $dependency = '';
 
         $uid = 'ult-image_single-'. rand(1000, 9999);
 

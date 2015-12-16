@@ -24,7 +24,7 @@ if(!class_exists('Ult_Spacing'))
 
     function ultimate_spacing_callback($settings, $value)
     {
-        $dependency = (function_exists('vc_generate_dependencies_attributes')) ? vc_generate_dependencies_attributes($settings) : '';
+        $dependency = '';
         $positions = $settings['positions'];
         $mode = $settings['mode'];
 

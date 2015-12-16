@@ -286,7 +286,7 @@ if(!class_exists('AIO_Icon_Manager'))
 			</script>';
 			echo $script;
 		}
-		function add_zipped_font()
+		public function add_zipped_font()
 		{
 			//check if referer is ok
 			//if(function_exists('check_ajax_referer')) { check_ajax_referer('smile_nonce_save_backend'); }
@@ -313,7 +313,7 @@ if(!class_exists('AIO_Icon_Manager'))
 			}
 			die(__('smile_font_added:','ultimate_vc').$this->font_name);
 		}
-		function remove_zipped_font()
+		public function remove_zipped_font()
 		{
 			//get the file path of the zip file
 			$font 		= $_POST['del_font'];
@@ -659,5 +659,8 @@ if(!class_exists('AIO_Icon_Manager'))
 		}
 	}
 	// Instantiate the Icon Manager
-	new AIO_Icon_Manager;
 }
+$AIO_Icon_Manager = new AIO_Icon_Manager;
+
+add_action('wp_ajax_smile_ajax_add_zipped_font', array( $AIO_Icon_Manager, 'add_zipped_font'));
+add_action('wp_ajax_smile_ajax_remove_zipped_font', array($AIO_Icon_Manager, 'remove_zipped_font'));

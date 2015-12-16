@@ -175,10 +175,30 @@ $border_Style=$mhfont_family=$border_style ='';
 
 $tabs_nav_style='';
 
-if($title_font_size!='')
-$tabs_nav_style .= 'font-size:'.$title_font_size.'px;';
-if($title_line_ht!='')
-$tabs_nav_style .='line-height:'.$title_line_ht.'px;';
+// if($title_font_size!='')
+// $tabs_nav_style .= 'font-size:'.$title_font_size.'px;';
+// if($title_line_ht!='')
+// $tabs_nav_style .='line-height:'.$title_line_ht.'px;';
+
+if(is_numeric($title_font_size)){
+			$title_font_size = 'desktop:'.$title_font_size.'px;';
+		}
+
+		if(is_numeric($title_line_ht)){
+			$title_line_ht = 'desktop:'.$title_line_ht.'px;';
+		}
+
+		$advanced_tabs_id = 'advanced-tabs-wrap-'.rand(1000, 9999);
+
+		$advanced_tabs_args = array(
+            'target' => '#'.$advanced_tabs_id.' .ult-span-text', // set targeted element e.g. unique class/id etc.
+            'media_sizes' => array(
+                'font-size' => $title_font_size, // set 'css property' & 'ultimate_responsive' sizes. Here $title_responsive_font_size holds responsive font sizes from user input.
+               	'line-height' => $title_line_ht
+            ),
+        );
+
+        $advanced_tabs_data_list = get_ultimate_vc_responsive_media_css($advanced_tabs_args);
 
 if (function_exists('get_ultimate_font_family')) {
 
@@ -272,10 +292,33 @@ $tab_border .='border-bottom-width:0px;';
 $contain_bg='';
 
 /*---------------- description font family-----------*/
-if($desc_font_size!='')
-$contain_bg .= 'font-size:'.$desc_font_size.'px;';
-if($title_line_ht!='')
-$contain_bg .='line-height:'.$desc_line_ht.'px;';
+// if($desc_font_size!='')
+// $contain_bg .= 'font-size:'.$desc_font_size.'px;';
+// if($title_line_ht!='')
+// $contain_bg .='line-height:'.$desc_line_ht.'px;';
+
+//responsive param
+
+if(is_numeric($desc_font_size)){
+			$desc_font_size = 'desktop:'.$desc_font_size.'px;';
+		}
+
+		if(is_numeric($desc_line_ht)){
+			$desc_line_ht = 'desktop:'.$desc_line_ht.'px;';
+		}
+
+		$advanced_tabs_desc_id = 'advanced-tabs-desc-wrap-'.rand(1000, 9999);
+
+		$advanced_tabs_desc_args = array(
+            'target' => '#'.$advanced_tabs_desc_id.' .ult_tabcontent .ult_tab_min_contain  p', // set targeted element e.g. unique class/id etc.
+            'media_sizes' => array(
+                'font-size' => $desc_font_size, // set 'css property' & 'ultimate_responsive' sizes. Here $title_responsive_font_size holds responsive font sizes from user input.
+               	'line-height' => $desc_line_ht
+            ),
+        );
+
+        $advanced_tabs_desc_data_list = get_ultimate_vc_responsive_media_css($advanced_tabs_desc_args);
+
 
 if (function_exists('get_ultimate_font_family')) {
 
@@ -444,8 +487,8 @@ else{
 				$newtab .='<li class="ult_tab_li '.$ult_style.' '.$ul_sub_class.' " data-iconcolor="'.$icon_color.'" data-iconhover="'.$icon_hover_color.'" style="'.$link_li_style.'">
 					<a href="#'.$tab_id.'" id="'.$tab_id.'" style="color:'.$tab_title_color.';'.$bgcolor.';'.$style5bgcolor.' '.$tab_css.'" class="ult_a '.$css_class .'">
 					   <span class="ult_tab_main  '.$resp_style.' ">
-					    <span class="ult_tab_section">
-					  		<span class="ult-span-text" style="'.$tabs_nav_style.'">'.$value['title'].'</span>
+					    <span id="'.$advanced_tabs_id.'" class="ult_tab_section">
+					  		<span '.$advanced_tabs_data_list.' class="ult-span-text ult-responsive" style="'.$tabs_nav_style.'">'.$value['title'].'</span>
 						   	<span class="aio-icon none ult_tab_icon'.$icon_position.'" style="'.$tab_icon_style.'">
 						   	<i class=" '.$tabicon.' ult_tab_icon"  ></i>
 						   </span>
@@ -580,13 +623,13 @@ $newtabcontain .='</div>';
 $newtabcontain .='</div>';
 
 $op='';
-$op .='<div class="ult_tabs '.$el_class.' " style="'.$container_style.'" data-tabsstyle="'.$style.'"
+$op .='<div id="'.$advanced_tabs_desc_id.'" class="ult_tabs '.$el_class.' " style="'.$container_style.'" data-tabsstyle="'.$style.'"
  data-titlebg="'.$tab_background_color.'" data-titlecolor="'.$tab_title_color.'" data-fullheight="'.$tab_max.'"
  data-titlehoverbg="'.$tab_hover_background_color.'" data-titlehovercolor="'.$tab_hover_title_color.'"
  data-rotatetabs="'.$interval.'" data-responsivemode="'.$resp_style.'" data-animation="'.$tab_animation.'"
 data-activetitle="'.$acttab_title.'" data-activeicon="'.$act_icon_color.'" data-activebg="'.$acttab_background.'"  data-respmode="'.$resp_type.'" data-respwidth="'.$resp_width.'">';
 $op .=$newtab;
-$op .='<div class="ult_tabcontent '.$style.'" style="'.$contain_bg.'">';
+$op .='<div '.$advanced_tabs_desc_data_list.'class="ult_tabcontent ult-responsive '.$style.'" style="'.$contain_bg.'">';
 $tabanimatclass="";
 if($tab_animation=='Slide-Zoom'){
 
@@ -635,7 +678,7 @@ function ult_tab_init() {
 		'name'    => __('Advanced Tabs') ,
 		'base'    => 'ult_tab_element',
 		"category" => __("Ultimate VC Addons","ultimate_vc"),
-		"description" => __("Create nice looking tabs .","ultimate_vc"),
+		"description" => __("Create nice looking tabs.","ultimate_vc"),
 		 "class" => "ult_tab_eleicon",
 		//'show_settings_on_create' => false,
 		'is_container' => true,
@@ -1043,7 +1086,7 @@ function ult_tab_init() {
 			"type" => "ultimate_google_fonts",
 			"heading" => __("Title Font Family", "imedica"),
 			"param_name" => "main_heading_font_family",
-			"description" => __("Select the font of your choice. You can <a target='_blank' href='".admin_url('admin.php?page=ultimate-font-manager')."'>add new in the collection here</a>.", "imedica"),
+			"description" => __("Select the font of your choice. You can <a target='_blank' href='".admin_url('admin.php?page=bsf-google-font-manager')."'>add new in the collection here</a>.", "imedica"),
 			"group" => "Typography",
 			),
 
@@ -1055,23 +1098,54 @@ function ult_tab_init() {
 			),
 
 
+		// array(
+		// 	"type" => "number",
+		// 	"param_name" => "title_font_size",
+		// 	"heading" => " Font size",
+		// 	"value" => "",
+		// 	"suffix" => "px",
+		// 	"group" => "Typography"
+		// 	),
+		// array(
+		// 	"type" => "number",
+		// 	"param_name" => "title_line_ht",
+		// 	"heading" => " Line Height",
+		// 	"value" => "",
+		// 	"suffix" => "px",
+		// 	"group" => "Typography",
+		// 	"edit_field_class" => "vc_col-sm-12 vc_column ult_space_border",
+		// 	),
+
 		array(
-			"type" => "number",
-			"param_name" => "title_font_size",
-			"heading" => " Font size",
-			"value" => "",
-			"suffix" => "px",
-			"group" => "Typography"
-			),
-		array(
-			"type" => "number",
-			"param_name" => "title_line_ht",
-			"heading" => " Line Height",
-			"value" => "",
-			"suffix" => "px",
-			"group" => "Typography",
-			"edit_field_class" => "vc_col-sm-12 vc_column ult_space_border",
-			),
+            "type" => "ultimate_responsive",
+            "class" => "",
+            "heading" => __("Font size", 'ultimate_vc'),
+            "param_name" => "title_font_size",
+            "unit" => "px",
+            "media" => array(
+                "Desktop" => '',
+                "Tablet" => '',
+                "Tablet Portrait" => '',
+                "Mobile Landscape" => '',
+                "Mobile" => '',
+                ),
+                "group" => "Typography",
+            ),
+            array(
+            "type" => "ultimate_responsive",
+            "class" => "",
+            "heading" => __("Line Height", 'ultimate_vc'),
+            "param_name" => "title_line_ht",
+            "unit" => "px",
+            "media" => array(
+                "Desktop" => '',
+                "Tablet" => '',
+                "Tablet Portrait" => '',
+                "Mobile Landscape" => '',
+                "Mobile" => '',
+                ),
+                "group" => "Typography",
+            ),
 
 		array(
 			"type" => "text",
@@ -1084,7 +1158,7 @@ function ult_tab_init() {
 			"type" => "ultimate_google_fonts",
 			"heading" => __(" Font Family", "smile"),
 			"param_name" => "desc_font_family",
-			"description" => __("Select the font of your choice. You can <a target='_blank' href='".admin_url('admin.php?page=ultimate-font-manager')."'>add new in the collection here</a>.", "smile"),
+			"description" => __("Select the font of your choice. You can <a target='_blank' href='".admin_url('admin.php?page=bsf-google-font-manager')."'>add new in the collection here</a>.", "smile"),
 			"group" => "Typography",
 			),
 
@@ -1094,23 +1168,53 @@ function ult_tab_init() {
 			"param_name"	=>	"desc_font_style",
 			"group" => "Typography",
 			),
-		array(
-			"type" => "number",
-			"param_name" => "desc_font_size",
-			"heading" => " Font size",
-			"value" => "",
-			"suffix" => "px",
-			"group" => "Typography"
-			),
+		// array(
+		// 	"type" => "number",
+		// 	"param_name" => "desc_font_size",
+		// 	"heading" => " Font size",
+		// 	"value" => "",
+		// 	"suffix" => "px",
+		// 	"group" => "Typography"
+		// 	),
 
+		// array(
+		// 	"type" => "number",
+		// 	"param_name" => "desc_line_ht",
+		// 	"heading" => " Line Height",
+		// 	"value" => "",
+		// 	"suffix" => "px",
+		// 	"group" => "Typography",
+		// 	),
 		array(
-			"type" => "number",
-			"param_name" => "desc_line_ht",
-			"heading" => " Line Height",
-			"value" => "",
-			"suffix" => "px",
-			"group" => "Typography",
-			),
+            "type" => "ultimate_responsive",
+            "class" => "",
+            "heading" => __("Font size", 'ultimate_vc'),
+            "param_name" => "desc_font_size",
+            "unit" => "px",
+            "media" => array(
+                "Desktop" => '',
+                "Tablet" => '',
+                "Tablet Portrait" => '',
+                "Mobile Landscape" => '',
+                "Mobile" => '',
+                ),
+                "group" => "Typography",
+            ),
+            array(
+            "type" => "ultimate_responsive",
+            "class" => "",
+            "heading" => __("Line Height", 'ultimate_vc'),
+            "param_name" => "desc_line_ht",
+            "unit" => "px",
+            "media" => array(
+                "Desktop" => '',
+                "Tablet" => '',
+                "Tablet Portrait" => '',
+                "Mobile Landscape" => '',
+                "Mobile" => '',
+                ),
+                "group" => "Typography",
+            ),
 
 		/*----------end----------*/
 		),
@@ -1169,7 +1273,7 @@ vc_map( array(
 			"param_name" => "icon",
 			"value" => "",
 			"group" =>"Icon",
-			"description" => __("Click and select icon of your choice. If you can't find the one that suits for your purpose, you can <a href='admin.php?page=font-icon-Manager' target='_blank'>add new here</a>.", "smile"),
+			"description" => __("Click and select icon of your choice. If you can't find the one that suits for your purpose, you can <a href='admin.php?page=bsf-font-icon-manager' target='_blank'>add new here</a>.", "smile"),
 			//"dependency" => Array("element" => "font_icons_position","value" => array("Right","Left","Top","Bottom")),
 		),
 

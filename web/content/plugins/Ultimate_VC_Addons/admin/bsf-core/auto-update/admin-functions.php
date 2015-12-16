@@ -254,7 +254,6 @@ if(!function_exists('bsf_register_user_callback')) {
 		$bsf_username = isset($_POST['bsf_username']) ? $_POST['bsf_username'] : '';
 		$bsf_useremail = isset($_POST['bsf_useremail']) ? $_POST['bsf_useremail'] : '';
 		$bsf_useremail_reenter = isset($_POST['bsf_useremail_reenter']) ? $_POST['bsf_useremail_reenter'] : '';
-		$mx = isset($_POST['mx']) ? $_POST['mx'] : true;
 
 		$subscribe = isset($_POST['ultimate_user_receive']) ? $_POST['ultimate_user_receive'] : '';
 
@@ -274,7 +273,7 @@ if(!function_exists('bsf_register_user_callback')) {
 		$domain = substr(strrchr($bsf_useremail, "@"), 1);
 		if($domain === '' || $domain === false)
 			$domain = $bsf_useremail;
-		if(function_exists('checkdnsrr') && ($mx === true || $mx === 'true')) {
+		if(function_exists('checkdnsrr')) {
 			$dns_check = checkdnsrr($domain, 'MX');
 			if(!$dns_check)
 			{
@@ -338,6 +337,8 @@ if(!function_exists('bsf_register_user_callback')) {
 					array_push($brainstrom_users, $user_array);
 
 				update_option('brainstrom_users', $brainstrom_users);
+
+				bsf_check_product_update();
 			}
 			echo json_encode($result);
 		}
@@ -513,6 +514,8 @@ if(!function_exists('bsf_notices')) {
 			foreach($mix as $product) :
 				if(!isset($product['id']))
 					continue;
+				if(isset($product['is_product_free']) && ($product['is_product_free'] === 'true' || $product['is_product_free'] === true))
+					continue;
 				$constant = strtoupper(str_replace('-', '_', $product['id']));
 				$constant_nag = 'BSF_'.$constant.'_NAG';
 				$constant_notice = 'BSF_'.$constant.'_NOTICES';
@@ -547,9 +550,9 @@ if(!function_exists('bsf_notices')) {
 
 				if($status !== 'registered') :
 					if(is_multisite())
-						$url = admin_url('admin.php?page=bsf-registration');
+						$url = admin_url('index.php?page=bsf-registration');
 					else
-						$url = network_admin_url('admin.php?page=bsf-registration');
+						$url = network_admin_url('index.php?page=bsf-registration');
 
 					$message = __('Please','bsf').' <a href="'.$url.'">'.__('activate','bsf').'</a> '.__('your copy of the','bsf').' '.$product['product_name'].' '.__('to get update notifications, access to support features & other resources!','bsf');
 
@@ -968,9 +971,7 @@ if(!function_exists('bsf_update_counter')) {
 			}
 		}
 
-		//echo '<pre style="margin-left:350">';
-		//print_r($update_ready);
-		//echo '</pre>';
+
 
 		// for theme check
 		if(!empty($bsf_product_themes)) {
@@ -985,6 +986,10 @@ if(!function_exists('bsf_update_counter')) {
 		$theme_update_ready_counter = count($temp_theme_update_ready);
 
 		$update_ready_counter = count($update_ready);
+
+		/*echo '<pre style="margin-left:350px">';
+		print_r($update_ready);
+		echo '</pre>';*/
 		?>
         	<script type="text/javascript">
             	(function($) {
@@ -1008,7 +1013,9 @@ if(!function_exists('bsf_update_counter')) {
 								<?php
 									$message_changelog = '';
 
-									$plugin_data = get_plugin_data( WP_PLUGIN_DIR.'/'.$ur["init"] );
+									$template = (isset($ur['bundled']) && ($ur['bundled'] === true)) ? $ur["init"] : $ur['template'];
+
+									$plugin_data = get_plugin_data( WP_PLUGIN_DIR.'/'.$template );
 									$plugin_main_name = $plugin_data['Name'];
 
 									$changelog_url = (isset($ur['changelog_url'])) ? $ur['changelog_url'] : '';
@@ -1223,7 +1230,7 @@ if(!function_exists('bsf_theme_deactivation')) {
 	}
 }
 // check custom css and js
-add_action('wp_footer', 'bsf_custom_js');
+/*add_action('wp_footer', 'bsf_custom_js');
 if(!function_exists('bsf_custom_js')) {
 	function bsf_custom_js() {
 		$bsf_settings = get_option('bsf_settings');
@@ -1244,7 +1251,7 @@ if(!function_exists('bsf_custom_css')) {
 			</style>';
 		}
 	}
-}
+}*/
 if(!function_exists('bsf_get_free_menu_position')) {
 	function bsf_get_free_menu_position($start, $increment = 0.3) {
 		foreach ($GLOBALS['menu'] as $key => $menu) {
@@ -1306,61 +1313,6 @@ if(!function_exists('bsf_product_status')) {
 		return false;
 	}
 }
-add_action( 'admin_enqueue_scripts', 'register_bsf_core_admin_styles', 1 );
-if(!function_exists('register_bsf_core_admin_styles')) {
-	function register_bsf_core_admin_styles($hook) {
-		//echo '--------------------------------------........'.$hook;
-		$hook_array = array(
-			'toplevel_page_bsf-registration',
-			'imedica_page_bsf-extensions',
-			'brainstorm_page_bsf-extensions',
-			'update-core.php',
-			'dashboard_page_bsf-registration'
-		);
-		$hook_array = apply_filters('bsf_core_style_screens',$hook_array);
-		if(!in_array($hook, $hook_array))
-			return false;
-		if(is_file(get_template_directory().'/admin/auto-update/css/style.css'))
-			$path = get_template_directory_uri().'/admin/auto-update/css/style.css';
-		else
-			$path = plugin_dir_url( __FILE__ ).'css/style.css';
-		wp_register_style( 'bsf-core-admin', $path );
-		wp_enqueue_style( 'bsf-core-admin' );
-	}
-}
-add_action('admin_print_scripts', 'print_bsf_styles');
-if(!function_exists('print_bsf_styles')) {
-	function print_bsf_styles() {
-		if(is_dir(get_template_directory().'/admin/auto-update/fonts'))
-			$path = get_template_directory_uri().'/admin/auto-update/fonts';
-		else
-			$path = plugin_dir_url( __FILE__ ).'fonts';
-		echo "<style>
-			@font-face {
-				font-family: 'brainstorm';
-				src:url('".$path."/brainstorm.eot');
-				src:url('".$path."/brainstorm.eot') format('embedded-opentype'),
-					url('".$path."/brainstorm.woff') format('woff'),
-					url('".$path."/brainstorm.ttf') format('truetype'),
-					url('".$path."/brainstorm.svg') format('svg');
-				font-weight: normal;
-				font-style: normal;
-			}
-			.toplevel_page_bsf-registration > div.wp-menu-image:before {
-				content: \"\\e603\" !important;
-				font-family: 'brainstorm' !important;
-				speak: none;
-				font-style: normal;
-				font-weight: normal;
-				font-variant: normal;
-				text-transform: none;
-				line-height: 1;
-				-webkit-font-smoothing: antialiased;
-				-moz-osx-font-smoothing: grayscale;
-			}
-		</style>";
-	}
-}
 add_action( 'wp_ajax_bsf_upgrade', 'bsf_upgrade_callback' );
 add_action( 'wp_ajax_nopriv_bsf_upgrade', 'bsf_upgrade_callback' );
 if(!function_exists('bsf_upgrade_callback')) {
@@ -1384,5 +1336,58 @@ if(!function_exists('bsf_sort')) {
     {
         return strcmp(strtolower($a->short_name), strtolower($b->short_name));
     }
+}
+// admin footer
+add_action('admin_footer', 'bsf_admin_footer');
+if(!function_exists('bsf_admin_footer')){
+	function bsf_admin_footer() {
+		global $bsf_section_menu;
+		if(!is_array($bsf_section_menu) && !empty($bsf_section_menu))
+			return false;
+		$json = json_encode($bsf_section_menu);
+		?>
+		<script type='text/javascript'>
+		(function($){
+			$(document).ready(function(){
+				var section_menu = '<?php echo $json ?>';
+				var smenu = jQuery.parseJSON(section_menu);
+				$.each(smenu, function(i,section){
+					$('a[href$="'+section.menu+'"]').parent().addClass('bsf-menu-separator');
+					if(typeof section.is_down_arrow !== 'undefined') {
+						if(section.is_down_arrow === true || section.is_down_arrow === 'true') {
+							$('a[href$="'+section.menu+'"]').parent().addClass('bsf-menu-arrow-down');
+						}
+					}
+				});
+			});
+		})(jQuery);
+		</script>
+
+		<style type="text/css">
+			.bsf-menu-separator {
+				margin-bottom: 5px !important;
+				border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+				padding-bottom: 5px !important;
+				box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+			}
+			.bsf-menu-arrow-down {
+				position: relative;
+			}
+			.bsf-menu-arrow-down a:after {
+				content: "\f140";
+			    font-family: 'dashicons';
+			    display: block;
+			    float: right;
+			    width: 19px;
+			    height: 15px;
+			    font-size: 22px;
+			    line-height: 15px;
+			    text-align: center;
+			    color: #bbb;
+			    opacity: 0.30;
+			}
+		</style>
+		<?php
+	}
 }
 ?>

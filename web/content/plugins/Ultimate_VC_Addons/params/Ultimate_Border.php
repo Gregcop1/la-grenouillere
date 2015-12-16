@@ -24,7 +24,7 @@ if(!class_exists('Ultimate_Border'))
 
     function ultimate_border_callback($settings, $value)
     {
-        $dependency = (function_exists('vc_generate_dependencies_attributes')) ? vc_generate_dependencies_attributes($settings) : '';
+        $dependency = '';
         $positions = $settings['positions'];
         $enable_radius = isset($settings['enable_radius']) ? $settings['enable_radius'] : true ;
         $label = isset($settings['label_border']) ? $settings['label_border'] : 'Border Style';

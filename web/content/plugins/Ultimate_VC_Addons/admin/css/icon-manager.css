@@ -162,6 +162,10 @@
 	background-image: url(../img/icon-image-separator.png) !important;
 	background-position: 0 0 !important;
 }
+.vc_icon_team {
+	background-image: url(../img/icon-team.png) !important;
+	background-position: 0 0 !important;
+}
 a#ult_tab_element .vc_element-icon,
 .ult_tab_eleicon {
 	background-image: url(../img/tab-icon.png) !important;

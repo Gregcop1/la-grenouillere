@@ -22,7 +22,7 @@ if(!class_exists('Ultimate_ColorPicker_Param'))
 		function colorpicker_alpha_gen($settings, $value)
 		{
 			$base = $opacity = $output = '';
-			$dependency = (function_exists('vc_generate_dependencies_attributes')) ? vc_generate_dependencies_attributes($settings) : '';
+			$dependency = '';
 			$param_name = isset($settings['param_name']) ? $settings['param_name'] : '';
 			$type = isset($settings['type']) ? $settings['type'] : '';
 			$class = isset($settings['class']) ? $settings['class'] : '';

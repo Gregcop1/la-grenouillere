@@ -21,7 +21,7 @@ if(!class_exists('Ultimate_Gradient_Param'))
 
 		function gradient_picker($settings, $value)
 		{
-			$dependency = (function_exists('vc_generate_dependencies_attributes')) ? vc_generate_dependencies_attributes($settings) : '';
+			$dependency = '';
 			$param_name = isset($settings['param_name']) ? $settings['param_name'] : '';
 			$type = isset($settings['type']) ? $settings['type'] : '';
 			$color1 = isset($settings['color1']) ? $settings['color1'] : ' ';

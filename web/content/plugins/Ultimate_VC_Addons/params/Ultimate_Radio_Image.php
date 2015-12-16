@@ -46,7 +46,7 @@ if(!class_exists('Ultimate_Radio_Image_Param'))
 				'background-repeat' => 'repeat',
 				'background-size' => 'cover'
 			);
-			$dependency = (function_exists('vc_generate_dependencies_attributes')) ? vc_generate_dependencies_attributes($settings) : '';
+			$dependency = '';
 			$param_name = isset($settings['param_name']) ? $settings['param_name'] : '';
 			$type = isset($settings['type']) ? $settings['type'] : '';
 			$options = isset($settings['options']) ? $settings['options'] : '';

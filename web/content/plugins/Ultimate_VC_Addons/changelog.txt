@@ -1,3 +1,21 @@
+3.14.0
+- New element: Team
+- Improvement: Interactive Banner 2 - HTML Tag
+- Improvement: Smooth scroll - Compatible mode, Speed and steps options
+- Improvement: Flip box - ultFlipBoxClicked event added for developers 
+- Improvement: Font icon manager - Updated URL scheme fix using set_url_scheme while loading fonts
+- Improvement: BSF CORE - registration menu under dashboard, addon resources under resources page
+- Improvement: Responsive font size, line height and Google fonts added to all elements
+- Improvement: Row Separator - New "Multi triangle" separator
+- Improvement: Video Backgrounds - Placeholder position set to center
+- Fixed: VC 4.8 compatibility issue with vc_generate_dependencies_attributes
+- Fixed: Google font manager - subsets are not working if Load scripts globally option is enabled
+- Fixed: Advanced Carousel - navigation styles
+- Fixed: Hosted video background - Full height dimension causing text outside
+- Fixed: IB2 - Broken image tag removed if image not selected 
+- Fixed: Unoptimized JS+CSS Interactive banner not working if IB2 added on same page
+- VC 4.9 compatible for row backgrounds and margin bottom 
+
 3.13.7
 - Fixed: Headings - duplicate uniqid conflict in fast server execution time
 - Fixed: Fancy Text - Resources are not loading due optimized resources improvement in 3.13.5

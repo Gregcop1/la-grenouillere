@@ -21,7 +21,7 @@ if(!class_exists('Ultimate_ParamHeading_Param'))
 
 		function ult_param_heading_callback($settings, $value)
 		{
-			$dependency = (function_exists('vc_generate_dependencies_attributes')) ? vc_generate_dependencies_attributes($settings) : '';
+			$dependency = '';
 			$param_name = isset($settings['param_name']) ? $settings['param_name'] : '';
 			$class = isset($settings['class']) ? $settings['class'] : '';
 			$text = isset($settings['text']) ? $settings['text'] : '';

@@ -54,6 +54,7 @@ module.exports = function(grunt) {
 							'!assets/js/mb-YTPlayer.js',
 							'!assets/js/jquery.vhparallax.js',
 							'!assets/js/SmoothScroll.js',
+							'!assets/js/SmoothScroll-compatible.js',
 							'!assets/js/smoothscoll-mousewheel.js',
 							'!assets/js/smoothscroll-easing.js',
 							'!assets/js/smoothscroll-simplr-smoothscroll.js',
@@ -64,7 +65,7 @@ module.exports = function(grunt) {
 				{ // all smoothscroll .js to smoothscroll.min.js
 					src: [
 							'assets/js/smoothscoll-mousewheel.js',
-							//'assets/js/smoothscroll-easing.js',
+							'assets/js/smoothscroll-easing.js',
 							'assets/js/smoothscroll-simplr-smoothscroll.js',
 							'assets/js/SmoothScroll.js',
 						],

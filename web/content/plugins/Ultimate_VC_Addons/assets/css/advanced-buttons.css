@@ -9,7 +9,7 @@
     background: transparent;
     cursor: pointer;
     display: inline-block;
-    margin: 15px 0;
+    margin: 0px;
     padding: 25px 80px;
     outline: 0;
     text-align: center;
@@ -57,17 +57,24 @@ button.ubtn:visited {
     box-shadow: inherit;
     outline: 0
 }
-.ubtn-right {
+/*.ubtn-right {
     float: right
+}*/
+.ubtn-ctn-left {
+    display: block;
+    text-align: left
 }
 .ubtn-ctn-center {
-    margin: 0 auto;
     display: block;
     text-align: center
 }
+.ubtn-ctn-right {
+    display: block;
+    text-align: right
+}
 a.ubtn-link {
     display: inline-block;
-    margin: 15px 0;
+    margin:0px;
     color: inherit;
     text-decoration: none;
     max-width: 100%
@@ -161,18 +168,29 @@ button.ubtn-custom {
     transform: translate(0)
 }
 .ubtn-sep-icon.ubtn-sep-icon-at-left .ubtn-icon {
+    left: 10px;
+    opacity: 1
+}
+.ubtn-img-container .ubtn-sep-icon.ubtn-sep-icon-at-left .ubtn-icon {
     left: 20px;
     opacity: 1
 }
-.ubtn-sep-icon.ubtn-sep-icon-at-right .ubtn-icon {
+.ubtn-img-container .ubtn-sep-icon.ubtn-sep-icon-at-right .ubtn-icon {
     right: 20px;
+    opacity: 1
+}
+.ubtn-sep-icon.ubtn-sep-icon-at-right .ubtn-icon {
+    right: 5px;
     opacity: 1
 }
 .ubtn-sep-icon-left .ubtn-icon {
     left: -2em
 }
 .ubtn-sep-icon-left:hover .ubtn-icon {
-    left: 20px
+    left: 10px
+}
+.ubtn-img-container .ubtn-sep-icon-left:hover .ubtn-icon {
+    left: 10px
 }
 .ubtn-sep-icon-left-rev .ubtn-icon {
     left: 4em
@@ -183,8 +201,11 @@ button.ubtn-custom {
 .ubtn-sep-icon-right .ubtn-icon {
     right: -2em
 }
+.ubtn-img-container .ubtn-sep-icon-right:hover .ubtn-icon {
+    right: 30px
+}
 .ubtn-sep-icon-right:hover .ubtn-icon {
-    right: 20px
+    right: 5px
 }
 .ubtn-sep-icon-right-rev .ubtn-icon {
     right: 4em
@@ -1520,13 +1541,22 @@ button.ubtn-custom {
     height: 100%;
     position: absolute;
 }
-.ubtn-img-container .ubtn-data.ubtn-text {
+/*.ubtn-img-container .ubtn-data.ubtn-text {
     left: 15px;
-    /*Left to align space for icon*/
+    Left to align space for icon
 }
+*/
 .ubtn-hover {
     opacity: 0;
 }
 .ubtn-hover-active {
     opacity: 1;
+}
+/*swapnil*/
+.ubtn-img-container .ubtn-sep-icon-right .ubtn-data.ubtn-text{
+    left: -10px;
+}
+
+.ubtn-img-container .ubtn-sep-icon-at-left .ubtn-data.ubtn-text{
+    right: -15px;
 }

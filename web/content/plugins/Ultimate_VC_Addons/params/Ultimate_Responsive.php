@@ -2,20 +2,22 @@
 /*
 
 # Param Use -
-
 	array(
-		"type" => "ultimate_responsive",
-		"unit"  => "px",                                  // use '%' or 'px'
-		"media" => array(
-			"Large Screen"      => '',
-			"Desktop"           => '28',                  // Here '28' is default value set for 'Desktop'
-			"Tablet"            => '',
-			"Tablet Portrait"   => '',
-			"Mobile Landscape"  => '',
-			"Mobile"            => '',
-		),
+	  	"type" => "ultimate_responsive",
+	  	"class" => "",
+	  	"heading" => __("Font size", 'ultimate_vc'),
+	  	"param_name" => "YOUR_PARAM_NAME_FONT_SIZE",
+	  	"unit"  => "px",								// use '%' or 'px'
+	  	"media" => array(
+	  	    // "Large Screen"      => '',
+	  	    "Desktop"           => '28', 				// Here '28' is default value set for 'Desktop'
+	  	    "Tablet"            => '',
+	  	    "Tablet Portrait"   => '',
+	  	    "Mobile Landscape"  => '',
+	  	    "Mobile"            => '',
+	  	),
+	  	"group" => "Typography"
 	),
-
 
 # Module implementation -
 
@@ -23,15 +25,14 @@
 		$args = array(
         	'target'      =>  '#id .ult-ih-heading',  // set targeted element e.g. unique class/id etc.
            	'media_sizes' => array(
-				// set 'css property' & 'ultimate_responsive' sizes. Here $title_responsive_font_size holds responsive font sizes from user input.
-               'font-size' => $title_responsive_font_size,
-			   'line-height' => $title_responsive_line_height
+				font-size' => $YOUR_PARAM_NAME_FONT_SIZE, 		//	Your PARAM_NAME which you set in array
+			   'line-height' => $YOUR_PARAM_NAME_LINE_HEIGHT 	//	Your PARAM_NAME which you set in array
             ),
        	);
 		$data_list = get_ultimate_vc_responsive_media_css($args);
 
-	2] Set responsive class and data list
-		<div class='ult-ih-heading ult-responsive' '.$data_list.'  >     // add $data_list to targeted element and "ult-responsive" class
+	2] Add class '.ult-responsive' and set data attribute - $data_list to targeted element
+		<div class='YOUR_PARAM_TARGET_ELEMENT ult-responsive' '.$data_list.'  >
         	....
       	</div>
 
@@ -63,7 +64,7 @@ if(!class_exists('Ultimate_Responsive'))
 
 		function ultimate_responsive_callback($settings, $value)
 		{
-			$dependency = (function_exists('vc_generate_dependencies_attributes')) ? vc_generate_dependencies_attributes($settings) : '';
+			$dependency = '';
 			$unit = $settings['unit'];
 			$medias = $settings['media'];
 

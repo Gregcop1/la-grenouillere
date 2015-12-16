@@ -21,7 +21,7 @@ if(!class_exists('Ultimate_DateTime_Picker_Param'))
 
 		function datetimepicker($settings, $value)
 		{
-			$dependency = (function_exists('vc_generate_dependencies_attributes')) ? vc_generate_dependencies_attributes($settings) : '';
+			$dependency = '';
 			$param_name = isset($settings['param_name']) ? $settings['param_name'] : '';
 			$type = isset($settings['type']) ? $settings['type'] : '';
 			$class = isset($settings['class']) ? $settings['class'] : '';

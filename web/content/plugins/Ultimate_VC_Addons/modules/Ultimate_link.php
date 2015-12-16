@@ -66,6 +66,9 @@ if(!class_exists('AIO_creative_link'))
 
 			),$atts));
 
+			$vc_version = (defined('WPB_VC_VERSION')) ? WPB_VC_VERSION : 0;
+			$is_vc_49_plus = (version_compare(4.9, $vc_version, '<=')) ? 'ult-adjust-bottom-margin' : '';
+
  		$href=$target=$text=$url= $alt_text="";
 		if($btn_link !== ''){
 				 $href = vc_build_link($btn_link);
@@ -122,13 +125,11 @@ if($link_hover_style=='Style_2'){
 		$data_link .='data-bghover="'.$background_color.'"';
 		//$data_link .='data-texthover="'.$text_color.'"';
 	}
-
 	else{
 
 		$data_link .='data-bgcolor="'.$background_color.'"';
 		$data_link .='data-bghover="'.$bghovercolor.'"';
 	}
-	//echo$bghovercolor;
 }
 $data_link .='data-style="'.$link_hover_style.'"';
 
@@ -139,21 +140,16 @@ if($border_style!=''){
  $data_border .='border-color:'.$border_color.';';
  $data_border .='border-width:'.$border_size.'px;';
  $data_border .='border-style:'.$border_style.';';
-
-
 }
 
 $main_span=$before=$borderhover=$ult_style2css=$ult_style11css='';
 $after='';$style=$class=$id=$colorstyle=$borderstyle=$style11_css_class='';
 
-
 /*---- text typography----*/
-
 
 if($text_style!=''){
   $colorstyle.='float:'.$text_style.';';
 }
-
 
 if (function_exists('get_ultimate_font_family')) {
 		$mhfont_family = get_ultimate_font_family($font_family);  		//for font family
@@ -167,34 +163,49 @@ if (function_exists('get_ultimate_font_family')) {
 		$colorstyle .= get_ultimate_font_style($heading_style);
 		//$secondtitle_style .=get_ultimate_font_style($heading_style);
 	}
-	if($title_font_size!=''){
-		$colorstyle .= 'font-size:'.$title_font_size.'px;';
-	}
+	// if($title_font_size!=''){
+	// 	$colorstyle .= 'font-size:'.$title_font_size.'px;';
+	// }
+	// if($title_line_ht!=''){
+	// 		$colorstyle .= 'line-height:'.$title_line_ht.'px;';
+	// 		//$colorstyle .='color:'.$text_color.';';
+	// 	}
+
+	//Responsive param
+
+	if(is_numeric($title_font_size)){
+				$title_font_size = 'desktop:'.$title_font_size.'px;';
+		}
+		if(is_numeric($title_line_ht)){
+			$title_line_ht = 'desktop:'.$title_line_ht.'px;';
+		}
+		$creative_link_id = 'creative-link-wrap-'.rand(1000, 9999);
+		$creative_link_args = array(
+            'target' => '#'.$creative_link_id.' .ult_colorlink', // set targeted element e.g. unique class/id etc.
+            'media_sizes' => array(
+                'font-size' => $title_font_size, // set 'css property' & 'ultimate_responsive' sizes. Here $title_responsive_font_size holds responsive font sizes from user input.
+               	'line-height' => $title_line_ht
+            ),
+        );
+        $creative_link_data_list = get_ultimate_vc_responsive_media_css($creative_link_args);
+
 	//font-size
 	$title_style .= 'color:'.$text_color.';';//color
 
-	if($link_hover_style!='Style_2'){
-		if($title_line_ht!=''){
-			$colorstyle .= 'line-height:'.$title_line_ht.'px;';
-			//$colorstyle .='color:'.$text_color.';';
-		}
-			//font-line-height
-    }
-    else{
-    	if($title_line_ht!=''){
-			$colorstyle .= 'line-height:'.$title_line_ht.'px;';
-		}		//font-line-height
-    }
-
-	//$secondtitle_style .= 'font-size:'.$title_font_size.'px;';			//font-size for backend title
-	//$secondtitle_style .= 'line-height:'.$title_line_ht.'px;';
-
-
-
-
+	// if($link_hover_style!='Style_2'){
+	// 	if($title_line_ht!=''){
+	// 		$colorstyle .= 'line-height:'.$title_line_ht.'px;';
+	// 		//$colorstyle .='color:'.$text_color.';';
+	// 	}
+	// 		//font-line-height
+ //    }
+ //    else{
+ //    	if($title_line_ht!=''){
+	// 		$colorstyle .= 'line-height:'.$title_line_ht.'px;';
+	// 	}		//font-line-height
+ //    }
 
 /*-- hover style---*/
-
 
 $id='';
 if($link_hover_style=='Style_1'){               //style1
@@ -202,7 +213,7 @@ $class .='ult_cl_link_1';
 //$id .='ult_cl_link_1';
 $colorstyle .='color:'.$text_color.';'; //text color for bracket
 if($title_font_size!=''){
-$colorstyle .='font-size:'.$title_font_size.'px;';
+//$colorstyle .='font-size:'.$title_font_size.'px;';
 }
 
 }
@@ -219,7 +230,7 @@ $data_border .='border-color:'.$border_color.';';
 $data_border .='border-bottom-width:'.$border_size.'px;';
 $data_border .='border-style:'.$border_style.';';
 if($title_font_size!=''){
-$colorstyle .='font-size:'.$title_font_size.'px;';
+//$colorstyle .='font-size:'.$title_font_size.'px;';
 }
 $borderstyle .=$data_border; //text color for btm border
 $after .='<span class="ult_link_btm3 " style="'.$borderstyle.'"></span>';
@@ -233,7 +244,7 @@ $data_border .='border-color:'.$border_color.';';
 $data_border .='border-bottom-width:'.$border_size.'px;';
 $data_border .='border-style:'.$border_style.';';
 if($title_font_size!=''){
-$colorstyle .='font-size:'.$title_font_size.'px;';
+///$colorstyle .='font-size:'.$title_font_size.'px;';
 }
 $borderstyle .=$data_border; //text color for btm border
 $after .='<span class="ult_link_btm4 " style="'.$borderstyle.'"></span>';
@@ -243,7 +254,7 @@ $class .='ult_cl_link_6';
 //$id .='ult_cl_link_6';//
 $colorstyle .='color:'.$text_hovercolor.';';
 if($title_font_size!=''){
-$colorstyle .='font-size:'.$title_font_size.'px;';
+//$colorstyle .='font-size:'.$title_font_size.'px;';
 }
 $after .='<span class="ult_btn6_link_top " data-color="'.$dot_color.'">•</span>';
 }
@@ -251,7 +262,7 @@ else if($link_hover_style=='Style_5'){               //style5
 $class .='ult_cl_link_5';
 //$id .='ult_cl_link_5';//
 if($title_font_size!=''){
-$colorstyle .='font-size:'.$title_font_size.'px;';
+//$colorstyle .='font-size:'.$title_font_size.'px;';
 }
 $data_border='';
 $data_border .='border-color:'.$border_color.';';
@@ -277,7 +288,7 @@ else if($link_hover_style=='Style_8'){               //style8
 $class .='ult_cl_link_8';
 //$id .='ult_cl_link_8';//
 if($title_font_size!=''){
-$colorstyle .='font-size:'.$title_font_size.'px;';
+//$colorstyle .='font-size:'.$title_font_size.'px;';
 }
 $borderstyle .='outline-color:'.$border_color.';';
 $borderstyle .='outline-width:'.$border_size.'px;';
@@ -294,7 +305,7 @@ else if($link_hover_style=='Style_9'){               //style9
 $class .='ult_cl_link_9';
 //$id .='ult_cl_link_9';//
 if($title_font_size!=''){
-$colorstyle .='font-size:'.$title_font_size.'px;';
+//$colorstyle .='font-size:'.$title_font_size.'px;';
 }
 //$borderstyle .='background:'.$border_color.';';
 //$borderstyle .='height:'.$border_size.'px;';
@@ -311,7 +322,7 @@ else if($link_hover_style=='Style_10'){               //style10
 $class .='ult_cl_link_10';
 //$id .='ult_cl_link_10';//
 if($title_font_size!=''){
-$colorstyle .='font-size:'.$title_font_size.'px;';
+//$colorstyle .='font-size:'.$title_font_size.'px;';
 }
 $borderstyle .='background:'.$border_color.';';
 $borderstyle .='height:'.$border_size.'px;';
@@ -358,9 +369,9 @@ if($link_hover_style=='Style_2'){
 
 	if($link_hover_style!='Style_10'){
 
-			$output .='<span class=" ult_main_cl '.$el_class.' '.$style11_css_class.'" >
+			$output .='<span id="'.$creative_link_id.'" class="ult_main_cl '.$is_vc_49_plus.' '.$el_class.' '.$style11_css_class.'" >
 	 			<span class="'.$class.'  ult_crlink" >
-					<a  href = "'.esc_attr($url).'" '.$target.' class="ult_colorlink  '.$css_class .'" style="'.$colorstyle.' "  '.$data_link.' title="'.$alt_text.'">
+					<a '.$creative_link_data_list.' href = "'.esc_attr($url).'" '.$target.' class="ult_colorlink ult-responsive '.$css_class .'" style="'.$colorstyle.' "  '.$data_link.' title="'.$alt_text.'">
 						'.$before.'
 						<span data-hover="'.$text.'" style="'.$title_style.';'.$span_style.';'.$ult_style11css.'" class="ult_btn10_span  '.$ult_style2css.' ">'.$text.'</span>
 						'.$after.'
@@ -371,9 +382,9 @@ if($link_hover_style=='Style_2'){
 		}
 	  else if($link_hover_style=='Style_10'){
 
-			$output .='<span class=" ult_main_cl  '.$el_class.'" >
-	 			<span class="'.$class.'  ult_crlink" id="'.$id.'">
-					<a  href = "'.esc_attr($url).'" '.$target.' class="ult_colorlink   "  style="'.$colorstyle.' "  '.$data_link.' title="'.$alt_text.'">
+			$output .='<span id="'.$creative_link_id.'" class=" ult_main_cl  '.$el_class.'" >
+	 			<span  class="'.$class.'  ult_crlink" id="'.$id.'">
+					<a '.$creative_link_data_list.' href = "'.esc_attr($url).'" '.$target.' class="ult_colorlink  ult-responsive "  style="'.$colorstyle.' "  '.$data_link.' title="'.$alt_text.'">
 						<span   class="ult_btn10_span  '.$css_class .'" style="'.$span_style.'" data-color="'.$border_color.'"  data-bhover="'.$bghovercolor.'" data-bstyle="'.$border_style.'">
 							<span class="ult_link_btm  ult_btn10_link_top" style="'.$span_style1.'">
 								<span style="'.$title_style.';color:'.$text_hovercolor.'" class="style10-span">'.$text.'</span>
@@ -444,7 +455,7 @@ if($link_hover_style=='Style_2'){
 								"type" => "ultimate_google_fonts",
 								"heading" => __("Title Font Family", "ultimate_vc"),
 								"param_name" => "font_family",
-								"description" => __("Select the font of your choice. ","ultimate_vc").", ".__("you can","ultimate_vc")." <a href='admin.php?page=ultimate-font-manager' target='_blank'>".__("add new in the collection here","ultimate_vc")."</a>.",
+								"description" => __("Select the font of your choice. ","ultimate_vc").", ".__("you can","ultimate_vc")." <a href='admin.php?page=bsf-google-font-manager' target='_blank'>".__("add new in the collection here","ultimate_vc")."</a>.",
 								"group" => "Typography ",
 								),
 
@@ -455,24 +466,54 @@ if($link_hover_style=='Style_2'){
 
 								"group" => "Typography ",
 							),
-							array(
-								"type" => "number",
-								"param_name" => "title_font_size",
-								"heading" => __("Font size","ultimate_vc"),
-								"value" => "",
-								"suffix" => "px",
-								"group" => "Typography ",
-							),
+							// array(
+							// 	"type" => "number",
+							// 	"param_name" => "title_font_size",
+							// 	"heading" => __("Font size","ultimate_vc"),
+							// 	"value" => "",
+							// 	"suffix" => "px",
+							// 	"group" => "Typography ",
+							// ),
 
-							array(
-								"type" => "number",
-								"param_name" => "title_line_ht",
-								"heading" => __("Line Height","ultimate_vc"),
-								"value" => "",
-								"suffix" => "px",
-								"group" => "Typography ",
+							// array(
+							// 	"type" => "number",
+							// 	"param_name" => "title_line_ht",
+							// 	"heading" => __("Line Height","ultimate_vc"),
+							// 	"value" => "",
+							// 	"suffix" => "px",
+							// 	"group" => "Typography ",
 
-							),
+							// ),
+							array(
+		                    "type" => "ultimate_responsive",
+		                    "class" => "font-size",
+		                    "heading" => __("Font size", 'ultimate_vc'),
+		                    "param_name" => "title_font_size",
+		                    "unit" => "px",
+		                    "media" => array(
+		                        "Desktop" => '',
+		                        "Tablet" => '',
+		                        "Tablet Portrait" => '',
+		                        "Mobile Landscape" => '',
+		                        "Mobile" => '',
+		                    ),
+		                    "group" => "Typography ",
+		                ),
+		                array(
+		                    "type" => "ultimate_responsive",
+		                    "class" => "",
+		                    "heading" => __("Line Height", 'ultimate_vc'),
+		                    "param_name" => "title_line_ht",
+		                    "unit" => "px",
+		                    "media" => array(
+		                        "Desktop" => '',
+		                        "Tablet" => '',
+		                        "Tablet Portrait" => '',
+		                        "Mobile Landscape" => '',
+		                        "Mobile" => '',
+		                    ),
+		                    "group" => "Typography ",
+		                ),
 							/*-----------general------------*/
 							array(
 								"type" => "dropdown",

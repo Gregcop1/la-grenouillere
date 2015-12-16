@@ -20,7 +20,7 @@ if(!class_exists('Ultimate_Switch_Param'))
 		}
 
 		function checkbox_param($settings, $value){
-			$dependency = (function_exists('vc_generate_dependencies_attributes')) ? vc_generate_dependencies_attributes($settings) : '';
+			$dependency = '';
 			$param_name = isset($settings['param_name']) ? $settings['param_name'] : '';
 			$type = isset($settings['type']) ? $settings['type'] : '';
 			$options = isset($settings['options']) ? $settings['options'] : '';
