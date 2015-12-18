@@ -6,20 +6,20 @@ sitemap.xml.gz
 
 # composer
 composer.lock
-vendor/
+# vendor/
 
 # Wordpress
-web/*
-web/content/plugins/*
-web/content/themes/*
-!web/index.php
-!web/wp-config.php.dist
-!web/content
-!web/content/themes
-!web/content/themes/skin
-!web/content/plugins
-!web/content/plugins/Ultimate_VC_Addons
-!web/content/uploads/*
+# web/*
+# web/content/plugins/*
+# web/content/themes/*
+# !web/index.php
+# !web/wp-config.php.dist
+# !web/content
+# !web/content/themes
+# !web/content/themes/skin
+# !web/content/plugins
+# !web/content/plugins/Ultimate_VC_Addons
+# !web/content/uploads/*
 
 # Theme
 node_modules

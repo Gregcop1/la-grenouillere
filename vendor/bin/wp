@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+SRC_DIR="`pwd`"
+cd "`dirname "$0"`"
+cd "../wp-cli/wp-cli/bin"
+BIN_TARGET="`pwd`/wp"
+cd "$SRC_DIR"
+"$BIN_TARGET" "$@"

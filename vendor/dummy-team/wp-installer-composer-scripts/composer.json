@@ -1,0 +1,19 @@
+{
+    "name": "dummy-team/wp-installer-composer-scripts",
+    "description": "Composer scripts for dummy-team/wp-installer",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Grégory Copin",
+            "email": "gregcop1@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "DummyTeam\\WpInstallerComposerScripts\\": ""
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {}
+}
