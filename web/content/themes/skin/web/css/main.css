@@ -119,6 +119,10 @@ footer { position: fixed; top: 0; right: 0; bottom: 0; padding: 1% 0; width: 235
 
 footer.shown { display: block; }
 
+chambre { background-color: #161516; }
+
+chambre.shown { display: block; }
+
 .align-left { text-align: left; }
 
 .align-center { text-align: center; }

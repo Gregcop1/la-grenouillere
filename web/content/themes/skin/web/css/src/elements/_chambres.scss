@@ -1,0 +1,13 @@
+////
+/// chambres
+///
+/// @group Elements
+///
+////
+
+chambre {
+  //display: none;
+  background-color: $grey4;
+
+  &.shown { display: block; }
+}
