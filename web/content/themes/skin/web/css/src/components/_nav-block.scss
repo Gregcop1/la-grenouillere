@@ -14,12 +14,12 @@
       }
       &:last-child { margin-bottom: 0; }
 
-      > .nav-link { font-size: 20px; font-weight: $fw-medium; color: $grey5;
+      > .nav-link { font-size: 20px; font-weight: $fw-light; color: $grey5;
         &:hover { color: $white; }
       }
     }
   }
-  .nav-drop { border-right: 3px dotted $grey2; padding-right: 15px; }
+  .nav-drop { border-right: 2px dotted $grey2; padding-right: 15px; }
   .nav-drop-item { margin: 5px 0;
     font-family: $roboto-serif; font-size: 1em;
     @media screen and (max-width: $vw-small) {

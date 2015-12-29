@@ -23,3 +23,79 @@
     background: url(sliderRight.gif);
 	background-position: 0px 0px;
 }
+
+.ms-skin-default .ms-nav-next,
+.ms-skin-default .ms-nav-prev {
+	width: 50px;
+	background: url(sliderLeft.gif);
+	background-position: 0px 0px;
+	height: 50px;
+	cursor: pointer;
+	top: 92%;
+	left: 0px;
+	margin-top: 0px;
+	position: absolute;
+	z-index: 110;
+}
+.ms-skin-default .ms-nav-next {
+	left: 50px;
+    background: url(sliderRight.gif);
+	background-position: 0px 0px;
+}
+
+.ms-skin-default .ms-nav-next,
+.ms-skin-default .ms-nav-prev {
+	width: 50px;
+	background: url(sliderLeft.gif);
+	background-position: 0px 0px;
+	height: 50px;
+	cursor: pointer;
+	top: 92%;
+	left: 0px;
+	margin-top: 0px;
+	position: absolute;
+	z-index: 110;
+}
+.ms-skin-default .ms-nav-next {
+	left: 50px;
+    background: url(sliderRight.gif);
+	background-position: 0px 0px;
+}
+
+.ms-skin-default .ms-nav-next,
+.ms-skin-default .ms-nav-prev {
+	width: 50px;
+	background: url(sliderLeft.gif);
+	background-position: 0px 0px;
+	height: 50px;
+	cursor: pointer;
+	top: 92%;
+	left: 0px;
+	margin-top: 0px;
+	position: absolute;
+	z-index: 110;
+}
+.ms-skin-default .ms-nav-next {
+	left: 50px;
+    background: url(sliderRight.gif);
+	background-position: 0px 0px;
+}
+
+.ms-skin-default .ms-nav-next,
+.ms-skin-default .ms-nav-prev {
+	width: 50px;
+	background: url(sliderLeft.gif);
+	background-position: 0px 0px;
+	height: 50px;
+	cursor: pointer;
+	top: 92%;
+	left: 0px;
+	margin-top: 0px;
+	position: absolute;
+	z-index: 110;
+}
+.ms-skin-default .ms-nav-next {
+	left: 50px;
+    background: url(sliderRight.gif);
+	background-position: 0px 0px;
+}
