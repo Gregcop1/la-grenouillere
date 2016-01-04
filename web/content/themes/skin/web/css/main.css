@@ -183,7 +183,7 @@ chambre.shown { display: block; }
 
 .top-bar { position: absolute; top: 0; right: 0; left: 0; z-index: 3; text-align: right; }
 
-.top-bar .relais { margin: 10px; }
+.top-bar .relais { margin: 7px; }
 
 @media screen and (max-width: 480px) { .top-bar { display: none; } }
 
@@ -326,7 +326,7 @@ chambre.shown { display: block; }
 
 .breadcrumb .bc-progress .bc-grip { position: absolute; top: 0; left: 0; opacity: 0; -webkit-transform: translate(-50%, 0); -ms-transform: translate(-50%, 0); transform: translate(-50%, 0); }
 
-.breadcrumb .bc-progress svg { height: 4px; background-color: #2f3031; }
+.breadcrumb .bc-progress svg { height: 4px; background-color: #6f6150; }
 
 .breadcrumb .bc-progress path { height: 4px; stroke: #ebc390; }
 
