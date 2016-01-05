@@ -323,7 +323,7 @@ if(!class_exists("Ultimate_Google_Maps")){
 				"map_override" => "0",
 				"map_style" => "",
 				"el_class" => "",
-				"infowindow_open" => "off",
+				"infowindow_open" => "infowindow_open_value",
 				"map_vc_template" => "",
 				"map_border_style" => "",
 				"map_color_border" => "",

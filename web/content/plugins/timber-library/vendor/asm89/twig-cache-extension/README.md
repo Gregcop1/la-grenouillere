@@ -13,7 +13,7 @@ The extension is installable via composer:
 ```json
 {
     "require": {
-        "asm89/twig-cache-extension": "~0.1"
+        "asm89/twig-cache-extension": "~1.0"
     }
 }
 ```
@@ -93,6 +93,14 @@ will change as the value for which the key is generated changes.
 For example: entities containing a last update time, would include a timestamp
 in the key. For an interesting blog post about this type of caching see:
 http://37signals.com/svn/posts/3113-how-key-based-cache-expiration-works
+
+### Blackhole
+
+Strategy for development mode.
+
+In development mode it often not very useful to cache fragments. The blackhole
+strategy provides an easy way to not cache anything it all. It always generates
+a new key and does not fetch or save any fragments.
 
 #### Setup
 

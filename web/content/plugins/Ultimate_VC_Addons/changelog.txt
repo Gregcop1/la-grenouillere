@@ -1,3 +1,13 @@
+3.14.1
+- Fixed: Creative Link - Style 8 responsive typography not working
+- Fixed: Advanced Tabs - responsive typography not working
+- Fixed: Advanced Button - Clogged hover background color
+- Fixed: Fancy Text - Slide up/down alignment issue
+- Fixed: Google Maps - Open info window on marker click not working
+- Fixed: Backend collapse due JS error from Team module
+- Fixed: Advanced Tabs - responsive typography not working
+- Improvement: Modal Popup - Trigger on another element on click event
+
 3.14.0
 - New element: Team
 - Improvement: Interactive Banner 2 - HTML Tag

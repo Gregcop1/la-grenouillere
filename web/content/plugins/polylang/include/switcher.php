@@ -49,6 +49,7 @@ class PLL_Switcher {
 			$id = (int) $language->term_id;
 			$slug = $language->slug;
 			$classes = array('lang-item', 'lang-item-' . $id, 'lang-item-' . esc_attr($slug));
+			$url = null; // avoids potential notice
 
 			if ($current_lang = pll_current_language() == $slug) {
 				if ($args['hide_current'] && !$args['dropdown'])

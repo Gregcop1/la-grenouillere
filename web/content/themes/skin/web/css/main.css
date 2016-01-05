@@ -241,6 +241,32 @@ chambre.shown { display: block; }
 
 .section-row [id="post-161"] { background-image: url("../img/img161.jpg"); }
 
+.section-row [id="post-631"] { background-image: url("../img/img67.jpg"); }
+
+.section-row [id="post-633"] { background-image: url("../img/img69.jpg"); }
+
+.section-row [id="post-635"] { background-image: url("../img/img71.jpg"); }
+
+.section-row [id="post-623"] { background-image: url("../img/img73.jpg"); }
+
+.section-row [id="post-619"] { background-image: url("../img/img75.jpg"); }
+
+.section-row [id="post-604"] { background-image: url("../img/img81.jpg"); }
+
+.section-row [id="post-606"] { background-image: url("../img/img83.jpg"); }
+
+.section-row [id="post-610"] { background-image: url("../img/img85.jpg"); }
+
+.section-row [id="post-612"] { background-image: url("../img/img87.jpg"); }
+
+.section-row [id="post-576"] { background-image: url("../img/img128.jpg"); }
+
+.section-row [id="post-626"] { background-image: url("../img/img130.jpg"); }
+
+.section-row [id="post-616"] { background-image: url("../img/img141.jpg"); }
+
+.section-row [id="post-637"] { background-image: url("../img/img161.jpg"); }
+
 @media screen and (max-width: 480px) { .section-row [id="post-45"] { background-image: url("../img/img45b.jpg"); }
   .section-row [id="post-67"] { background-image: url("../img/img67b.jpg"); }
   .section-row [id="post-69"] { background-image: url("../img/img69b.jpg"); }
@@ -255,7 +281,20 @@ chambre.shown { display: block; }
   .section-row [id="post-130"] { background-image: url("../img/img130b.jpg"); }
   .section-row [id="post-132"] { background-image: url("../img/img132b.jpg"); }
   .section-row [id="post-141"] { background-image: url("../img/img141b.jpg"); }
-  .section-row [id="post-161"] { background-image: url("../img/img161b.jpg"); } }
+  .section-row [id="post-161"] { background-image: url("../img/img161b.jpg"); }
+  .section-row [id="post-631"] { background-image: url("../img/img67b.jpg"); }
+  .section-row [id="post-633"] { background-image: url("../img/img69b.jpg"); }
+  .section-row [id="post-635"] { background-image: url("../img/img71b.jpg"); }
+  .section-row [id="post-623"] { background-image: url("../img/img73b.jpg"); }
+  .section-row [id="post-619"] { background-image: url("../img/img75b.jpg"); }
+  .section-row [id="post-604"] { background-image: url("../img/img81b.jpg"); }
+  .section-row [id="post-606"] { background-image: url("../img/img83b.jpg"); }
+  .section-row [id="post-610"] { background-image: url("../img/img85b.jpg"); }
+  .section-row [id="post-612"] { background-image: url("../img/img87b.jpg"); }
+  .section-row [id="post-576"] { background-image: url("../img/img128b.jpg"); }
+  .section-row [id="post-626"] { background-image: url("../img/img130b.jpg"); }
+  .section-row [id="post-616"] { background-image: url("../img/img141b.jpg"); }
+  .section-row [id="post-637"] { background-image: url("../img/img161b.jpg"); } }
 
 .section-row h1, .section-row h2, .section-row h4, .section-row h5, .section-row h6 { text-shadow: 0 0 25px rgba(0, 0, 0, 0.6); color: #fff; }
 

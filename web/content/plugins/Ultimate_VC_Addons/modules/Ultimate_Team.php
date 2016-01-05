@@ -7,7 +7,7 @@ if(!class_exists("Ultimate_Team")){
 		function __construct(){
 			add_action( 'init', array($this, 'init_team') );
 			add_shortcode( 'ult_team',array($this,'ult_team_shortcode'));
-			add_action('admin_enqueue_scripts',array($this,'admin_scripts'));
+			//add_action('admin_enqueue_scripts',array($this,'admin_scripts'));
 			add_action("wp_enqueue_scripts", array($this, "register_team_assets"),1);
 		}
 
@@ -103,7 +103,7 @@ if(!class_exists("Ultimate_Team")){
 			    "team_css"							  	=> "",
 			    "team_member_responsive_enable"			=> "",
 			    "team_responsive_width"					=> "",
-			    
+
 			    "team_img_opacity"						=> "",
 			    "team_img_hover_opacity"				=> "",
 			    "team_img_hover_opacity_style3"			=> "",
@@ -112,10 +112,10 @@ if(!class_exists("Ultimate_Team")){
 			    "team_img_grayscale"					=> "on",
 
 			),$atts));
-			
+
 			// Grayscale Image
 			$team_img_grayscale_cls = ( $team_img_grayscale != 'off' ) ? 'ult-team-grayscale' : '';
-		        
+
 
 			// Style-2 Image Opacity
 			$team_img_opacity = ( isset( $team_img_opacity ) && trim( $team_img_opacity ) !== '' ) ? $team_img_opacity : '1';
@@ -123,7 +123,7 @@ if(!class_exists("Ultimate_Team")){
 			$team_img_hover_opacity_style3 = ( isset( $team_img_hover_opacity_style3 ) && trim( $team_img_hover_opacity_style3 ) !== '' ) ? $team_img_hover_opacity_style3 : '0.1';
 
 			$team_img_bg_color = ( isset( $team_img_bg_color ) && trim( $team_img_bg_color ) !== '' ) ? $team_img_bg_color : 'inherit';
-			
+
 			$team_member_style = ( isset( $team_member_style ) && trim( $team_member_style ) !== '' ) ? $team_member_style : 'style-1';
 			$custom_team_class = ( isset( $custom_team_class ) && trim( $custom_team_class ) !== '' ) ? $custom_team_class : '';
 
@@ -160,10 +160,10 @@ if(!class_exists("Ultimate_Team")){
 
 			if ( function_exists( 'get_ultimate_font_style' ) ) {
 				if( isset($team_member_name_font_style) && trim($team_member_name_font_style) != '') {
-					$team_member_name_font_styling .= get_ultimate_font_style($team_member_name_font_style);	
+					$team_member_name_font_styling .= get_ultimate_font_style($team_member_name_font_style);
 				}
 			}
-			
+
 			if ( ! ($team_member_name_color == '') && ! ($team_member_name_color == 'inherit') ) {
 
 			    $team_member_name_font_styling .= 'color:' . $team_member_name_color . ';';
@@ -179,7 +179,7 @@ if(!class_exists("Ultimate_Team")){
 			    $team_member_position_font_styling .= $team_member_position_font_style . ';';
 			}
 
-			
+
 			if ( ! ($team_member_org_color == '') && ! ($team_member_org_color == 'inherit') ) {
 			    $team_member_position_font_styling .= 'color:' . $team_member_org_color . ';';
 			}
@@ -193,7 +193,7 @@ if(!class_exists("Ultimate_Team")){
 			if ( ! $team_member_description_font_style == '' ) {
 			    $team_member_description_font_styling .= $team_member_description_font_style . ';';
 			}
-			
+
 			if ( ! ($team_member_desc_color == '') &&  ! ($team_member_desc_color == 'inherit') ) {
 
 			    $team_member_description_font_styling .= 'color:' . $team_member_desc_color . ';';
@@ -278,7 +278,7 @@ if(!class_exists("Ultimate_Team")){
 			ob_start();
 			//echo do_shortcode( $content );
 			if ( $team_member_style == 'style-3' ) {
-			
+
 				$team_desc_args = array(
 				                'target'        =>  '.ult-team-member-image.'. $id .' .ult-team-member-description',
 				                'media_sizes'   => array(
@@ -315,9 +315,9 @@ if(!class_exists("Ultimate_Team")){
 			    if ( $pos_in_org ) {
 			        echo '<div class="ult-team-member-position ult-responsive" ' . $team_member_position_responsive . ' style="' . $team_member_position_font_styling . '">' . $pos_in_org . '</div>';
 			    }
-			
-			    echo '<div style="margin-bottom:15px">'; 
-			    
+
+			    echo '<div style="margin-bottom:15px">';
+
 			    if ( $divider_effect == 'on') {
 
 			        $divider_margin = '';
@@ -328,16 +328,16 @@ if(!class_exists("Ultimate_Team")){
 			        echo '<hr align="'. $team_member_align_style .'" class="ult-team-divider" style="padding-top: ' . $team_member_divider_height . 'px; width: ' . $team_member_divider_width . '%; background-color: ' . $team_member_divider_color . '; ' . $divider_margin . '" />';
 			    }
 			    echo '</div>';
-			    
+
 			    $social_icons = json_decode (urldecode( $social_links ) );
-			    
+
 			    if ( count( $social_icons ) > 0 && $social_icon_effect == 'on' ) {
 
 			        $icon_styling = 'font-size:' . $social_icon_size .' ; margin-left:' . $social_icon_space .';margin-right:' . $social_icon_space .';';
 			        echo "<div class='ult-social-buttons'>";
-			            
+
 			            foreach ($social_icons as $social_link) {
-			                
+
 			                if ( isset( $social_link->selected_team_icon ) && $social_link->selected_team_icon !== '' ) {
 
 			                    $social_icon_url = ( isset( $social_link->social_icon_url ) && $social_link->social_icon_url !== '' ) ? $social_link->social_icon_url : '#';
@@ -349,7 +349,7 @@ if(!class_exists("Ultimate_Team")){
 			                }
 			            }
 
-			        echo "</div>";    
+			        echo "</div>";
 			    }
 			    echo '</div>'; //ult-team-member-name-wrap
 
@@ -509,6 +509,7 @@ if(!class_exists("Ultimate_Team")){
 						"controls" => "full",
 						"category" => "Ultimate VC Addons",
 						"description" => __("Show your awesome team.","ultimate_vc"),
+						"admin_enqueue_js"  => preg_replace( '/\s/', '%20', plugins_url('../admin/js/team-admin.js',__FILE__) ),
 						"params" => array(
 							// Custom Coding for new team styles
 							array(
@@ -519,7 +520,7 @@ if(!class_exists("Ultimate_Team")){
 								"value"       => array(
 									__( "Style 1", "ultimate_vc" )  => "style-1",
 									__( "Style 2", "ultimate_vc" )  => "style-2",
-									__( "Style 3", "ultimate_vc" )  => "style-3",									
+									__( "Style 3", "ultimate_vc" )  => "style-3",
 								),
 								"description" => __( "", "ultimate_vc" ),
 								"group"       => "Image",

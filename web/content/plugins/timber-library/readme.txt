@@ -1,9 +1,9 @@
 === Timber ===
-Contributors: jarednova
+Contributors: jarednova, lggorman
 Tags: template engine, templates, twig
 Requires at least: 3.7
-Stable tag: 0.21.10
-Tested up to: 4.2.3
+Stable tag: 0.22.4
+Tested up to: 4.3.1
 PHP version: 5.3.0 or greater
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -40,6 +40,32 @@ Timber is great for any WordPress developer who cares about writing good, mainta
 
 
 == Changelog ==
+
+= 0.22.4 =
+* Fixed [bug](https://github.com/jarednova/timber/issues/785) in get_calling_script file (thanks @gwagroves)
+* Added tons of new tests and docs (thanks @lggorman and @jarednova)
+
+= 0.22.3 =
+* Fix to comment threadding (thanks @josephbergdoll)
+* Fixed-up conditional for when comments are being moderated (thanks @lggorman)
+* Fixed hooks for when attachments are deleted (thanks @lgaechter)
+* Added a new filter for `list` (thanks @lggorman)
+
+= 0.22.2 =
+* New .time method for TimberPost and TimberComment (thanks @lggorman)
+* Added support for WordPress's quality filter when resizing (thanks @t-wright)
+* Added support for animated gifs
+
+= 0.22.1 =
+* Added better support for [post.get_terms](https://github.com/jarednova/timber/pull/737) (thanks @aaemnnosttv)
+* Fix for issue with ACF date field (thanks @rpkoller)
+* Fix for resizing jpEgs (thanks @eaton)
+
+= 0.22.0 =
+* Added fetch method to Timber (thanks @xavivars and @erik-landvall)
+* Added a total to the pagination data array (thanks @lggorman)
+* Threaded comments get some love! (thanks @josephbergdoll)
+* A fix to date parsing when handling numeric timestamps (thanks @xavivars)
 
 = 0.21.10 =
 * Removed deprecated twitterify function

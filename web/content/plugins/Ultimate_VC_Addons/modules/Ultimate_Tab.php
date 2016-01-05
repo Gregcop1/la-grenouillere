@@ -385,7 +385,7 @@ $acord ='';
 $array_count='';
 $array_count=sizeof($tabarr);
 $newtab='';
-$newtab .='<ul class="ult_tabmenu '.$style.' '.$tab_style_no.'" style="'.$tab_border.'">';
+$newtab .='<ul id='.$advanced_tabs_id.' class="ult_tabmenu '.$style.' '.$tab_style_no.'" style="'.$tab_border.'">';
 $cnt=0;
 //print_r($tabarr );
 
@@ -487,7 +487,7 @@ else{
 				$newtab .='<li class="ult_tab_li '.$ult_style.' '.$ul_sub_class.' " data-iconcolor="'.$icon_color.'" data-iconhover="'.$icon_hover_color.'" style="'.$link_li_style.'">
 					<a href="#'.$tab_id.'" id="'.$tab_id.'" style="color:'.$tab_title_color.';'.$bgcolor.';'.$style5bgcolor.' '.$tab_css.'" class="ult_a '.$css_class .'">
 					   <span class="ult_tab_main  '.$resp_style.' ">
-					    <span id="'.$advanced_tabs_id.'" class="ult_tab_section">
+					    <span class="ult_tab_section">
 					  		<span '.$advanced_tabs_data_list.' class="ult-span-text ult-responsive" style="'.$tabs_nav_style.'">'.$value['title'].'</span>
 						   	<span class="aio-icon none ult_tab_icon'.$icon_position.'" style="'.$tab_icon_style.'">
 						   	<i class=" '.$tabicon.' ult_tab_icon"  ></i>
@@ -504,7 +504,7 @@ else{
         	<a class="ult-tabto-actitle withBorder ult_a" id="'.$tab_id.'" style="color:'.$tab_title_color.';'.$style5bgcolor.';background-color:'.$tab_background_color.';'.$ult_ac_border.'" href="#'.$tab_id.'">
         		<i class="accordion-icon">+</i>
         			<span class="ult_tab_main ult_ac_main'.$resp_style.'">
-					   <span class="ult-span-text ult_acordian-text" style="'.$tabs_nav_style.';color:inherit " >'.$value['title'].'</span>
+					   <span '.$advanced_tabs_data_list.' class="ult-span-text ult_acordian-text ult-responsive" style="'.$tabs_nav_style.';color:inherit " >'.$value['title'].'</span>
 					</span>
 					   <div class="aio-icon none " style="'.$tab_icon_style.'" data-iconcolor="'.$icon_color.'" data-iconhover="'.$icon_hover_color.'">
 					   <i class="  '.$tabicon.' ult_tab_icon"  ></i>
@@ -526,7 +526,7 @@ else{
 						   <span class="aio-icon none ult_tab_icon'.$icon_position.'" style="'.$tab_icon_style.'">
 						   <i class="  '.$tabicon.' ult_tab_icon"  ></i>
 						   </span>
-						   <span class="ult-span-text " style="'.$tabs_nav_style.'">'.$value['title'].'</span>
+						   <span '.$advanced_tabs_data_list.' class="ult-span-text ult-responsive" style="'.$tabs_nav_style.'">'.$value['title'].'</span>
 						    </span >
 						</span>
 					</a>
@@ -541,7 +541,7 @@ else{
 					   <div class="aio-icon none " style="'.$tab_icon_style.'" data-iconcolor="'.$icon_color.'" data-iconhover="'.$icon_hover_color.'">
 					   <i class="  '.$tabicon.' ult_tab_icon"  ></i>
 					   </div>
-					<span class="ult-span-text ult_acordian-text" style="'.$tabs_nav_style.';color:inherit " >'.$value['title'].'</span>
+					<span '.$advanced_tabs_data_list.' class="ult-span-text ult_acordian-text ult-responsive" style="'.$tabs_nav_style.';color:inherit " >'.$value['title'].'</span>
 					</span></a></dt>
             		<dd class="ult-tabto-accordionItem ult-tabto-accolapsed">
 			            <div class="ult-tabto-acontent" style="'.$contain_bg.'">
@@ -558,7 +558,7 @@ else{
 					   <span class="aio-icon none icon-top ult_tab_icon'.$icon_position.'"  style="'.$tab_icon_style.'">
 					   <i class="  '.$tabicon.' ult_tab_icon" ></i>
 					   </span>
-					   <span class="ult-span-text" style="'.$tabs_nav_style.'">'.$value['title'].'</span>
+					   <span '.$advanced_tabs_data_list.' class="ult-span-text ult-responsive" style="'.$tabs_nav_style.'">'.$value['title'].'</span>
 					   </span>
 						</span>
 					</a>
@@ -573,7 +573,7 @@ else{
 						   <span class="aio-icon none icon-top" style="'.$tab_icon_style.'" data-iconcolor="'.$icon_color.'" data-iconhover="'.$icon_hover_color.'">
 						   <i class="  '.$tabicon.' ult_tab_icon"  ></i>
 						   </span>
-						<span class="ult-span-text ult_acordian-text" style="'.$tabs_nav_style.';color:inherit " >'.$value['title'].'</span>
+						<span '.$advanced_tabs_data_list.' class="ult-span-text ult_acordian-text ult-responsive" style="'.$tabs_nav_style.';color:inherit " >'.$value['title'].'</span>
 						</span></a></dt>
 	            		<dd class="ult-tabto-accordionItem ult-tabto-accolapsed">
 				            <div class="ult-tabto-acontent" style="'.$contain_bg.'">
@@ -588,7 +588,7 @@ else{
 					<a href="#'.$tab_id.'"  id="'.$tab_id.'"  style="color:'.$tab_title_color.';'.$bgcolor.';'.$style5bgcolor.' '.$tab_css.' " class="ult_a '.$ult_style.' '.$css_class .'">
 					     <span class="ult_tab_main '.$resp_style.' ">
 					 		 <span class="ult_tab_section">
-					   			<span class="ult-span-text no_icon ult_tab_display_text" style="'.$tabs_nav_style.';">'.$value['title'].'</span>
+					   			<span '.$advanced_tabs_data_list.' class="ult-span-text no_icon ult_tab_display_text ult-responsive" style="'.$tabs_nav_style.';">'.$value['title'].'</span>
 					   		</span>
 						</span>
 					</a>
@@ -600,8 +600,8 @@ else{
 	        	<a class="ult-tabto-actitle withBorder ult_a " id="'.$tab_id.'" style="color:'.$tab_title_color.';'.$style5bgcolor.';background-color:'.$tab_background_color.';'.$ult_ac_border.'" href="#'.$tab_id.'">
 	        		<i class="accordion-icon">+</i>
 	        			<span class="ult_tab_main ult_ac_main ult_noacordicn' .$resp_style.'">
-
-						<span class="ult-span-text no_icon ult_acordian-text" style="'.$tabs_nav_style.';color:inherit " >'.$value['title'].'</span>
+ 
+						<span '.$advanced_tabs_data_list.' class="ult-span-text no_icon ult_acordian-text ult-responsive" style="'.$tabs_nav_style.';color:inherit " >'.$value['title'].'</span>
 						</span></a></dt>
 	            		<dd class="ult-tabto-accordionItem ult-tabto-accolapsed">
 				            <div class="ult-tabto-acontent" style="'.$contain_bg.'">

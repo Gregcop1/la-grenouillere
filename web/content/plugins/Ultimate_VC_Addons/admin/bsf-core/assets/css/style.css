@@ -40,6 +40,7 @@
 	-webkit-transition: all 100ms linear;
 	-moz-transition: all 100ms linear;
 	transition: all 100ms linear;
+	text-shadow:none !important;
 }
 
 .bsf-sp-screen .button-primary:hover,
@@ -2043,6 +2044,7 @@ table.bsf-sys-info.bsf-table-active-plugin {
 	font-weight: 300 !important;
 	text-align: center !important;
 	text-decoration: none !important;
+	text-shadow: none !important;
 	line-height: 1em !important;
 	letter-spacing: 0 !important;
 	vertical-align: top !important;

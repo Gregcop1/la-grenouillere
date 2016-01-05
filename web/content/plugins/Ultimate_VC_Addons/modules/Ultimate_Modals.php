@@ -44,6 +44,7 @@ if(!class_exists('Ultimate_Modals'))
 				'icon' => '',
 				'icon_img' => '',
 				'modal_on' => 'ult-button',
+				'modal_on_selector' => '',
 				'modal_contain' => 'ult-html',
 				'onload_delay'=>'2',
 				'init_extra_class' => '',
@@ -267,6 +268,18 @@ if(!class_exists('Ultimate_Modals'))
 			elseif($modal_on == "onload"){
 				$html .= '<div data-class-id="content-'.$uniq.'" class="ult-onload '.$modal_class.' " '.$modal_data_class.' data-onload-delay="'.$onload_delay.'"></div>';
 			}
+			elseif($modal_on == "custom-selector") {
+				$html .= '<script type="text/javascript">
+				(function($){
+					$(document).ready(function(){
+						var selector = "'.$modal_on_selector.'";
+						$(selector).addClass("custom-ult-modal '.$modal_class.'");
+						$(selector).attr("data-class-id", "content-'.$uniq.'");
+						$(selector).attr("data-overlay-class", "'.$modal_style.'");
+					});
+				})(jQuery);
+				</script>';
+			}
 			else {
 				if($txt_color !== ''){
 					$style .= 'color:'.$txt_color.';';
@@ -427,8 +440,18 @@ if(!class_exists('Ultimate_Modals'))
 									__("Image","ultimate_vc") => "image",
 									__("Text","ultimate_vc") => "text",
 									__("On Page Load","ultimate_vc") => "onload",
+									__("Selector","ultimate_vc") => "custom-selector",
 								),
 								"description" => __("When should the popup be initiated?", "ultimate_vc"),
+								"group" => "General",
+							),
+							array(
+								"type" => "textfield",
+								"heading" => __("Class and/or ID", "ultimate_vc"),
+								"param_name" => "modal_on_selector",
+								"description" => __("Add .Class and/or #ID to open your modal. Multiple ID or Classes separated by comma","ultimate_vc"),
+								"value" => "",
+								"dependency"=>Array("element"=>"modal_on","value"=>array("custom-selector")),
 								"group" => "General",
 							),
 							array(

@@ -1,18 +1,21 @@
 [
     {
         "name": "composer/installers",
-        "version": "v1.0.21",
-        "version_normalized": "1.0.21.0",
+        "version": "v1.0.22",
+        "version_normalized": "1.0.22.0",
         "source": {
             "type": "git",
             "url": "https://github.com/composer/installers.git",
-            "reference": "d64e23fce42a4063d63262b19b8e7c0f3b5e4c45"
+            "reference": "bd9b14f094c89c8b5804a4e41edeb7853bb85046"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/composer/installers/zipball/d64e23fce42a4063d63262b19b8e7c0f3b5e4c45",
-            "reference": "d64e23fce42a4063d63262b19b8e7c0f3b5e4c45",
+            "url": "https://api.github.com/repos/composer/installers/zipball/bd9b14f094c89c8b5804a4e41edeb7853bb85046",
+            "reference": "bd9b14f094c89c8b5804a4e41edeb7853bb85046",
             "shasum": ""
+        },
+        "require": {
+            "composer-plugin-api": "1.0.0"
         },
         "replace": {
             "roundcube/plugin-installer": "*",
@@ -22,10 +25,10 @@
             "composer/composer": "1.0.*@dev",
             "phpunit/phpunit": "4.1.*"
         },
-        "time": "2015-02-18 17:17:01",
-        "type": "composer-installer",
+        "time": "2015-10-29 23:28:48",
+        "type": "composer-plugin",
         "extra": {
-            "class": "Composer\\Installers\\Installer",
+            "class": "Composer\\Installers\\Plugin",
             "branch-alias": {
                 "dev-master": "1.0-dev"
             }
@@ -98,27 +101,31 @@
     },
     {
         "name": "twig/twig",
-        "version": "v1.20.0",
-        "version_normalized": "1.20.0.0",
+        "version": "v1.23.1",
+        "version_normalized": "1.23.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/twigphp/Twig.git",
-            "reference": "1ea4e5f81c6d005fe84d0b38e1c4f1955eb86844"
+            "reference": "d9b6333ae8dd2c8e3fd256e127548def0bc614c6"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/twigphp/Twig/zipball/1ea4e5f81c6d005fe84d0b38e1c4f1955eb86844",
-            "reference": "1ea4e5f81c6d005fe84d0b38e1c4f1955eb86844",
+            "url": "https://api.github.com/repos/twigphp/Twig/zipball/d9b6333ae8dd2c8e3fd256e127548def0bc614c6",
+            "reference": "d9b6333ae8dd2c8e3fd256e127548def0bc614c6",
             "shasum": ""
         },
         "require": {
             "php": ">=5.2.7"
         },
-        "time": "2015-08-12 15:56:39",
+        "require-dev": {
+            "symfony/debug": "~2.7",
+            "symfony/phpunit-bridge": "~2.7"
+        },
+        "time": "2015-11-05 12:49:06",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.20-dev"
+                "dev-master": "1.23-dev"
             }
         },
         "installation-source": "dist",
@@ -157,27 +164,27 @@
     },
     {
         "name": "asm89/twig-cache-extension",
-        "version": "1.0.0",
-        "version_normalized": "1.0.0.0",
+        "version": "1.1.0",
+        "version_normalized": "1.1.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/asm89/twig-cache-extension.git",
-            "reference": "92edc2ab522997fd0a2a02b6b9e89b3e08ac5c60"
+            "reference": "127410728db193a88254c399e3455274fc05fa5d"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/asm89/twig-cache-extension/zipball/92edc2ab522997fd0a2a02b6b9e89b3e08ac5c60",
-            "reference": "92edc2ab522997fd0a2a02b6b9e89b3e08ac5c60",
+            "url": "https://api.github.com/repos/asm89/twig-cache-extension/zipball/127410728db193a88254c399e3455274fc05fa5d",
+            "reference": "127410728db193a88254c399e3455274fc05fa5d",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.2",
-            "twig/twig": "1.*"
+            "twig/twig": "~1.0"
         },
         "require-dev": {
-            "doctrine/cache": "1.*"
+            "doctrine/cache": "~1.0"
         },
-        "time": "2014-05-31 13:57:16",
+        "time": "2015-10-17 11:55:02",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -186,8 +193,8 @@
         },
         "installation-source": "dist",
         "autoload": {
-            "psr-0": {
-                "Asm89\\Twig\\CacheExtension\\": "lib/"
+            "psr-4": {
+                "": "lib/"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -197,11 +204,10 @@
         "authors": [
             {
                 "name": "Alexander",
-                "email": "iam.asm89@gmail.com",
-                "homepage": "http://asm89.github.io/"
+                "email": "iam.asm89@gmail.com"
             }
         ],
-        "description": "Caching template fragments with Twig.",
+        "description": "Cache fragments of templates directly within Twig.",
         "homepage": "https://github.com/asm89/twig-cache-extension",
         "keywords": [
             "cache",

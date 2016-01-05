@@ -6,4 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    '' => array($vendorDir . '/asm89/twig-cache-extension/lib'),
 );

@@ -1,4 +1,12 @@
-7.11.2015 - ver 4.9
+23.12.2015 - ver 4.9.1
+   - Improved: VC save action is fired on wp save_post instead of edit_post
+   - Improved: Some unneded files removed from package
+   - Fixed: Element is calling save method only if changes were made
+   - Fixed: svg image selection in single image element
+   - Fixed: image style in post grid is now applied correctly
+   - Fixed: Equal height in Safari
+
+7.12.2015 - ver 4.9
    - Improved: Now Visual Composer is faster at least for 30%
    - Added: Equal height columns
    - Added: Vertical alignment of element within a column

@@ -358,7 +358,14 @@
 				var $this = jQuery(this);
 				$this.find(".ubtn-text").css("color",$this.data('hover'));
 				$this.find(".ubtn-hover").css("background",$this.data('hover-bg')).addClass('ubtn-hover-active');
-				//$this.css("background",$this.data('hover-bg'));
+				var hover_bg = ($this.data('hover-bg') != '') ? $this.data('hover-bg') : false;
+				setTimeout(function(){
+					if(hover_bg !== false) {
+						if($this.hasClass('.ubtn-fade-bg')) {
+							$this.css("background",$this.data('hover-bg'));
+						}
+					}
+				},150);
 				var old_style = $this.attr('style');
 				if($this.data('shadow-hover') != ''){
 					var old_shadow = $this.css('box-shadow');
@@ -388,7 +395,7 @@
 				$this.find(".ubtn-text").removeAttr('style');
 				$this.find(".ubtn-hover").removeClass('ubtn-hover-active');
 				//$this.find(".ubtn-hover").removeAttr('style');
-				//$this.css("background",$this.data('bg'));
+				$this.css("background",$this.data('bg'));
 				var border_color = $this.data('border-color');
 				var old_style = $this.attr('style');
 				if($this.data('shadow-hover') != '')

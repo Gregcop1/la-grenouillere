@@ -1345,6 +1345,8 @@ if(!function_exists('bsf_admin_footer')){
 		if(!is_array($bsf_section_menu) && !empty($bsf_section_menu))
 			return false;
 		$json = json_encode($bsf_section_menu);
+		if($json === 'null')
+			return false;
 		?>
 		<script type='text/javascript'>
 		(function($){

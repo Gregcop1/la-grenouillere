@@ -186,6 +186,31 @@ class TimberComment extends TimberCore implements TimberCoreInterface {
 	}
 
 	/**
+	 * @api
+	 * @example
+	 * ```twig
+	 * {% for comment in post.comments %}
+	 * <article class="comment">
+	 *   <p class="date">Posted on {{ comment.date }} at {{comment.time}}:</p>
+	 *   <p class="comment">{{ comment.content }}</p>
+	 * </article>
+	 * {% endfor %}
+	 * ```
+	 * ```html
+	 * <article class="comment">
+	 *   <p class="date">Posted on September 28, 2015 at 12:45 am:</p>
+	 *   <p class="comment">Happy Birthday!</p>
+	 * </article>
+	 * ```
+	 * @return string
+	 */
+	public function time( $time_format = '' ) {
+		$tf = $time_format ? $time_format : get_option('time_format');
+		$the_time = (string)mysql2date($tf, $this->comment_date);
+		return apply_filters('get_comment_time', $the_time, $tf);
+	}
+
+	/**
 	 * @param string $field_name
 	 * @return mixed
 	 */
@@ -234,6 +259,34 @@ class TimberComment extends TimberCore implements TimberCoreInterface {
 		}
 		$value = apply_filters('timber_comment_get_meta_field', $value, $this->ID, $field_name, $this);
 		return $value;
+	}
+
+	/**
+	 * Enqueue the WP threaded comments javascript,
+	 * and fetch the reply link for various comments.
+	 * @api
+	 * @param int $comment_id
+	 * @param int $post_id
+	 * @return string
+	 */
+	public function reply_link( $reply_text = 'Reply' ) {
+		if ( is_singular() && comments_open() && get_option('thread_comments') ) {
+			wp_enqueue_script( 'comment-reply' );
+		}
+
+		// Get the comments depth option from the admin panel
+		$max_depth = get_option('thread_comments_depth');
+
+		// Default args
+		$args = array(
+			'add_below' => 'comment',
+			'respond_id' => 'respond',
+			'reply_text' => $reply_text,
+			'depth' => 1,
+			'max_depth' => $max_depth,
+		);
+
+		return get_comment_reply_link( $args, $this->ID, $this->post_id );
 	}
 
 	/* AVATAR Stuff
