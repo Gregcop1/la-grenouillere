@@ -255,6 +255,13 @@ if(!class_exists('AIO_Just_Icon'))
 								"value" => "",
 								"description" => __("Ran out of options? Need more styles? Write your own CSS and mention the class name here.", "ultimate_vc"),
 							),
+							array(
+								'type' => 'css_editor',
+					            'heading' => __( 'Css', 'ultimate_vc' ),
+					            'param_name' => 'css_just_icon',
+					            'group' => __( 'Design ', 'ultimate_vc' ),
+					            'edit_field_class' => 'vc_col-sm-12 vc_column no-vc-background no-vc-border creative_link_css_editor',
+					        ),
 						),
 					)
 				);
@@ -283,8 +290,15 @@ if(!class_exists('AIO_Just_Icon'))
 				'tooltip_disp' => '',
 				'tooltip_text' => '',
 				'el_class'=>'',
-				'icon_align' => 'center'
+				'icon_align' => 'center',
+				'css_just_icon' => '',
 			),$atts));
+			$is_preset = false;
+			if(isset($_GET['preset'])) {
+				$is_preset = true;
+			}
+			$css_just_icon = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, vc_shortcode_custom_css_class( $css_just_icon, ' ' ), "just_icon", $atts );
+			$css_just_icon = esc_attr( $css_just_icon );
 			$ultimate_js = get_option('ultimate_js');
 			if($tooltip_text != '' && $ultimate_js == 'disable')
 				wp_enqueue_script('ultimate-tooltip');
@@ -325,15 +339,10 @@ if(!class_exists('AIO_Just_Icon'))
 			if($icon_type == 'custom'){
 
 				$img = apply_filters('ult_get_img_single', $icon_img, 'url');
-
-				if( isset( $icon_img ) ) {
-					$icon_img_arr = explode( '|', $icon_img );
-					$icon_img_id = ( isset( $icon_img_arr[0] ) && $icon_img_arr[0] != '' ) ? $icon_img_arr[0] : $icon_img;
-					$alt = get_post_meta($icon_img_id, '_wp_attachment_image_alt', true);
-				}
-				else {
-					$alt = '';
-				}
+				$alt = apply_filters('ult_get_img_single', $icon_img, 'alt');
+				//$title = apply_filters('ult_get_img_single', $icon_img, 'title');
+				//$description = apply_filters('ult_get_img_single', $icon_img, 'description');
+				//$caption = apply_filters('ult_get_img_single', $icon_img, 'caption');
 
 				if($icon_style !== 'none'){
 					if($icon_color_bg !== '')
@@ -358,7 +367,7 @@ if(!class_exists('AIO_Just_Icon'))
 						$style .= 'display:inline-block;';
 					}
 					$output .= "\n".$link_prefix.'<div class="aio-icon-img '.$elx_class.'" style="font-size:'.$img_width.'px;'.$style.'" '.$css_trans.'>';
-					$output .= "\n\t".'<img class="img-icon" alt="'.$alt.'" src="'.$img.'"/>';
+					$output .= "\n\t".'<img class="img-icon" alt="'.$alt.'" src="'.apply_filters('ultimate_images', $img).'"/>';
 					$output .= "\n".'</div>'.$link_sufix;
 				}
 				$output = $output;
@@ -402,7 +411,21 @@ if(!class_exists('AIO_Just_Icon'))
 				$output = '<div class="align-icon" style="'.$icon_align_style.'">'.$output.'</div>';
 			}
 
-			$output = '<div class="ult-just-icon-wrapper '.$el_class.'">'.$output.'</div>';
+			$output = '<div class="ult-just-icon-wrapper '.$el_class.' '.$css_just_icon.'">'.$output.'</div>';
+
+			if($is_preset) {
+				$text = 'array ( ';
+				foreach ($atts as $key => $att) {
+					$text .= '<br/>	\''.$key.'\' => \''.$att.'\',';
+				}
+				if($content != '') {
+					$text .= '<br/>	\'content\' => \''.$content.'\',';
+				}
+				$text .= '<br/>)';
+				$output .= '<pre>';
+				$output .= $text;
+				$output .= '</pre>';
+			}
 
 			return $output;
 		}

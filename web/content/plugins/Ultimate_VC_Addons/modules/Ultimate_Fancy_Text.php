@@ -66,7 +66,7 @@ if(!class_exists('Ultimate_FancyText')){
 								"value" => array(
 									__("Type", "ultimate_vc") => "typewriter",
 									__("Slide Up", "ultimate_vc") => "ticker",
-									__("Slide Down", "ultimate_vc") => "ticker-down"
+									//__("Slide Down", "ultimate_vc") => "ticker-down"
 								),
 							),
 							array(
@@ -404,6 +404,13 @@ if(!class_exists('Ultimate_FancyText')){
 								"param_name" => "notification",
 								'edit_field_class' => 'ult-param-important-wrapper ult-dashicon ult-align-right ult-bold-font ult-blue-font vc_column vc_col-sm-12',
 							),
+							array(
+					            'type' => 'css_editor',
+					            'heading' => __( 'Css', 'ultimate_vc' ),
+					            'param_name' => 'css_fancy_design',
+					            'group' => __( 'Design ', 'ultimate_vc' ),
+					            'edit_field_class' => 'vc_col-sm-12 vc_column no-vc-background no-vc-border creative_link_css_editor',
+					        ),
 						)
 					)
 				);
@@ -437,7 +444,7 @@ if(!class_exists('Ultimate_FancyText')){
 				'typewriter_cursor_text' => '|',
 				'ticker_wait_time' => '3000',
 				'ticker_show_items' => '1',
-				'ticker_hover_pause' => 'true',
+				'ticker_hover_pause' => '',
 				'ticker_background' => '',
 				'fancytext_color' => '',
 				'prefsuf_font_family' => '',
@@ -445,13 +452,18 @@ if(!class_exists('Ultimate_FancyText')){
 				'prefix_suffix_font_size' =>'',
 				'prefix_suffix_line_height' =>'',
 				'sufpref_bg_color' => '',
-				'ex_class' => ''
+				'ex_class' => '',
+				'css_fancy_design' =>'',
 			),$atts));
 
 			$vc_version = (defined('WPB_VC_VERSION')) ? WPB_VC_VERSION : 0;
 			$is_vc_49_plus = (version_compare(4.9, $vc_version, '<=')) ? 'ult-adjust-bottom-margin' : '';
 
-			$string_inline_style = $vticker_inline = $valign = $prefsuf_style = '';
+			$string_inline_style = $vticker_inline = $valign = $prefsuf_style = $css_design_style = '';
+
+			$css_design_style = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, vc_shortcode_custom_css_class( $css_fancy_design, ' ' ), "ultimate_fancytext", $atts );
+
+			$css_design_style = esc_attr( $css_design_style );
 
 			if($strings_font_family != '')
 			{
@@ -545,7 +557,7 @@ if(!class_exists('Ultimate_FancyText')){
 
 			$ultimate_js = get_option('ultimate_js');
 
-			$output = '<'.$fancytext_tag.' id="'.$fancy_text_id.'" '.$data_list.' class="uvc-type-wrap '.$is_vc_49_plus.' ult-responsive '.$ex_class.' uvc-wrap-'.$id.'" style="'.$string_inline_style.'">';
+			$output = '<'.$fancytext_tag.' id="'.$fancy_text_id.'" '.$data_list.' class="uvc-type-wrap '.$css_design_style.' '.$is_vc_49_plus.' ult-responsive '.$ex_class.' uvc-wrap-'.$id.'" style="'.$string_inline_style.'">';
 
 				if(trim($fancytext_prefix) != '')
 				{
@@ -604,6 +616,7 @@ if(!class_exists('Ultimate_FancyText')){
 				{
 					$output .= '<script type="text/javascript">
 						jQuery(function($){
+							$(document).ready(function(){
 								$("#vticker-'.$id.'").find("li").css("opacity","1");
 								$("#vticker-'.$id.'")
 									.vTicker(
@@ -615,6 +628,7 @@ if(!class_exists('Ultimate_FancyText')){
 										direction: "'.$direction.'",
 									}
 								);
+							});
 						});
 					</script>';
 				}

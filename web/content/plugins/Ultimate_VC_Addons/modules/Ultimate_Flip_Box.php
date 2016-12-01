@@ -632,6 +632,36 @@ if(!class_exists('AIO_Flip_Box'))
 								"param_name" => "notification",
 								'edit_field_class' => 'ult-param-important-wrapper ult-dashicon ult-align-right ult-bold-font ult-blue-font vc_column vc_col-sm-12',
 							),
+							array(
+						            "type" => "ultimate_spacing",
+						            "heading" => " Content Padding ",
+						            "param_name" => "flipbx_padding",
+						            "mode"  => "padding",                    //  margin/padding
+						            "unit"  => "px",                        //  [required] px,em,%,all     Default all
+						            "positions" => array(                   //  Also set 'defaults'
+						              	"Top" => "",
+						              	"Right" => "",
+						              	"Bottom" => "",
+						              	"Left" => "",
+						            ),
+									 'group' => __( 'Design ', 'ultimate_vc' ),
+									 "description" => __("Add spacing from inside to content.", "ultimate_vc"),
+							      ),
+							array(
+						            "type" => "ultimate_spacing",
+						            "heading" => "Margin ",
+						            "param_name" => "flipbx_margin",
+						            "mode"  => "margin",                    //  margin/padding
+						            "unit"  => "px",                        //  [required] px,em,%,all     Default all
+						            "positions" => array(                   //  Also set 'defaults'
+						              	"Top" => "",
+						              	"Right" => "",
+						              	"Bottom" => "",
+						              	"Left" => "",
+						            ),
+									 'group' => __( 'Design ', 'ultimate_vc' ),
+									 "description" => __("Add spacing to FlipBox.", "ultimate_vc"),
+						        ),
 						),
 					)
 				);
@@ -693,19 +723,25 @@ if(!class_exists('AIO_Flip_Box'))
 				'desc_font_size' => '',
 				'desc_font_line_height'=> '',
 				'cont_align'=>'',
+				'flipbx_padding' => '',
+				'flipbx_margin' => '',
 
 			),$atts));
 			$output = $f_style = $b_style = $ico_color = $box_border = $icon_border = $link_style = $height = $link_sufix = $link_prefix = $link_style = '';
-			$title_style = $desc_style = '';
+			$title_style = $desc_style = $flip_design_style = '';
 			$border_front = $border_back = '';
 			//$font_args = array();
+			$flip_design_style = $flipbx_margin;
+			$flip_design_style .=$flipbx_padding;
 			if($icon_type == 'custom'){
 				$icon_style = 'none';
 			}
 			$flip_icon = do_shortcode('[just_icon icon_type="'.$icon_type.'" icon="'.$icon.'" icon_img="'.$icon_img.'" img_width="'.$img_width.'" icon_size="'.$icon_size.'" icon_color="'.$icon_color.'" icon_style="'.$icon_style.'" icon_color_bg="'.$icon_color_bg.'" icon_color_border="'.$icon_color_border.'"  icon_border_style="'.$icon_border_style.'" icon_border_size="'.$icon_border_size.'" icon_border_radius="'.$icon_border_radius.'" icon_border_spacing="'.$icon_border_spacing.'" icon_link="'.$icon_link.'" icon_animation="'.$icon_animation.'"]');
 			$css_trans = $icon_border = $box_border = '';
 			$height = $target = '';
-
+			// $flip_desing_style = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, vc_shortcode_custom_css_class( $css_flip_design, ' ' ), "icon_counter", $atts );
+			// echo $css_flip_design;
+			// $flip_desing_style = esc_attr( $flip_desing_style );
 			/* title */
 			if($title_font != '')
 			{
@@ -836,7 +872,7 @@ if(!class_exists('AIO_Flip_Box'))
 				$verticalcont.='ifb-flip-box-section-vertical-middle';
 			}
 
-			$output .= '<div class="flip-box-wrap">';
+			$output .= '<div class="flip-box-wrap" style="'.$flip_design_style.'">';
 			$output .= '<div class="flip-box '.$height_type.' '.$el_class.' '. $flip_type .' flip-'.$height_type.'" '.$css_trans.' style="'.$height.'" '.$box_style_data.'>';
 			$output .= '<div class="ifb-flip-box" id="'.$flip_box_id.'">';
 				$output .= '<div class="ifb-face ifb-front " style="'.$f_style.' '.$box_border.' '.$border_front.'">
@@ -881,6 +917,23 @@ if(!class_exists('AIO_Flip_Box'))
 					$output .= '</div> <!-- ifb-flip-box -->';
 				$output .= '</div> <!-- flip-box -->';
 			$output .='</div><!-- End icon block -->';
+			$is_preset = false; //Retrieve preset Code
+			if(isset($_GET['preset'])) {
+				$is_preset = true;
+			}
+			if($is_preset) {
+				$text = 'array ( ';
+				foreach ($atts as $key => $att) {
+					$text .= '<br/>	\''.$key.'\' => \''.$att.'\',';
+				}
+				if($content != '') {
+					$text .= '<br/>	\'content\' => \''.$content.'\',';
+				}
+				$text .= '<br/>)';
+				$output .= '<pre>';
+				$output .= $text;
+				$output .= '</pre>'; // remove backslash once copied
+			}
 			return $output;
 		}
 		function flip_box_scripts() {

@@ -39,7 +39,7 @@ if(!class_exists('Ultimate_Info_Circle'))
 			//wp_enqueue_script('info-circle');
 			//wp_enqueue_script('info-circle-ui-effect');
 			$edge_radius = $visible_circle = $start_degree = $eg_padding = $circle_type = $icon_position = $eg_br_width = $eg_br_style = $eg_border_color = $cn_br_style = $highlight_style = $responsive_breakpoint = '';
-			$icon_size = $cn_br_width =$cn_border_color = $icon_diversion = $icon_show = $content_bg = $content_color = $el_class = '';
+			$icon_size = $cn_br_width =$cn_border_color = $icon_diversion = $icon_show = $content_bg = $content_color = $el_class = $img_icon_size = '';
 			$icon_launch = $icon_launch_duration = $icon_launch_delay = $clipped_circle = '';
 			$title_font = $title_font_style = $title_font_size = $title_line_height = $desc_font = $desc_font_style = $desc_font_size = $desc_line_height = '';
 			extract(shortcode_atts(array(
@@ -57,6 +57,7 @@ if(!class_exists('Ultimate_Info_Circle'))
 				'cn_border_color' => '',
 				'highlight_style'=>'info-circle-highlight-style',
 				'icon_size' =>'32',
+				'img_icon_size' => '32',
 				'eg_padding'=>'50',
 				'icon_diversion'=>'',
 				'icon_show' =>'show',
@@ -117,7 +118,7 @@ if(!class_exists('Ultimate_Info_Circle'))
 
 			$info_circle_id = 'info-cirlce-wrap-'.rand(1000, 9999);
 			$info_circle_args = array(
-                'target' => '#'.$info_circle_id.' .new-cust-responsive-class', // set targeted element e.g. unique class/id etc.
+                'target' => '#'.$info_circle_id.' .responsive-font-class h3.new-cust-responsive-class', // set targeted element e.g. unique class/id etc.
                 'media_sizes' => array(
                     'font-size' => $title_font_size, // set 'css property' & 'ultimate_responsive' sizes. Here $title_responsive_font_size holds responsive font sizes from user input.
                    	'line-height' => $title_line_height
@@ -155,7 +156,7 @@ if(!class_exists('Ultimate_Info_Circle'))
 			}
 
 			$info_circle_desc_args = array(
-                'target' => '#'.$info_circle_id.' .new-cust-responsive-desc-class', // set targeted element e.g. unique class/id etc.
+                'target' => '#'.$info_circle_id.' .responsive-font-class *', // set targeted element e.g. unique class/id etc.
                 'media_sizes' => array(
                     'font-size' => $desc_font_size, // set 'css property' & 'ultimate_responsive' sizes. Here $title_responsive_font_size holds responsive font sizes from user input.
                    	'line-height' => $desc_line_height
@@ -210,7 +211,7 @@ if(!class_exists('Ultimate_Info_Circle'))
 			if($visible_circle != '' && $visible_circle != 100 && $circle_type_extended != 'full-circle')
 				$clipped_circle = 'clipped-info-circle';
 
-			$output ='<div class="info-wrapper"><div id="info-circle-wrapper-'.$uniq.'" data-uniqid="'.$uniq.'" class="info-circle-wrapper '.$is_vc_49_plus.' '.$ex_class.' '.$clipped_circle.'" data-half-percentage="'.$visible_circle.'" data-circle-type="'.$circle_type_extended.'">';
+			$output ='<div class="info-wrapper '.$is_vc_49_plus.'"><div id="info-circle-wrapper-'.$uniq.'" data-uniqid="'.$uniq.'" class="info-circle-wrapper '.$ex_class.' '.$clipped_circle.'" data-half-percentage="'.$visible_circle.'" data-circle-type="'.$circle_type_extended.'">';
 			$output .= '<div class="'.$circle_type.'" style=\''.$style.'\' data-start-degree="'.$start_degree.'" data-divert="'.$icon_diversion.'" data-info-circle-angle="'.$icon_position.'" data-responsive-circle="'.$responsive.'" data-responsive-breakpoint="'.$responsive_breakpoint.'" data-launch="'.$icon_launch.'" data-launch-duration="'.$icon_launch_duration.'" data-launch-delay="'.$icon_launch_delay.'" data-slide-true="'.$auto_slide.'" data-slide-duration="'.$auto_slide_duration.'" data-icon-size="'.$icon_size.'" data-icon-show="'.$icon_show.'" data-icon-show-size="'.$content_icon_size.'" data-highlight-style="'.$highlight_style.'" data-focus-on="'.$focus_on.'">';
 
 			$output .= '<div  class="icon-circle-list">';
@@ -227,13 +228,15 @@ if(!class_exists('Ultimate_Info_Circle'))
 			if($responsive=='on'){
 				$output .='<div class="smile_icon_list_wrap " data-content_bg="'.$content_bg.'" data-content_color="'.$content_color.'">
 							<ul id="'.$info_circle_id.'" class="smile_icon_list left circle with_bg">
-								<li class="icon_list_item" style="font-size:'.($icon_size*3).'px;">
-									<div class="icon_list_icon" style="font-size:'.$icon_size.'px;">
+								<li class="icon_list_item" style="font-size:'.( $img_icon_size*3).'px;">
+									<div class="icon_list_icon" style="font-size:'. $img_icon_size.'px;">
 										<i class="smt-pencil"></i>
 									</div>
-									<div  class="icon_description">
-										<h3 '.$info_circle_data_list.' class="ult-responsive new-cust-responsive-class"></h3>
-										<p '.$info_circle_desc_data_list.' class="ult-responsive new-cust-responsive-desc-class"></p>
+									<div  class="icon_description" >
+										<div class="responsive-font-class ult-responsive" '.$info_circle_desc_data_list.' style="'.$desc_style_inline.'">
+											<h3 '.$info_circle_data_list.' class="ult-responsive new-cust-responsive-class" style="'.$title_style_inline.'"></h3>
+											<p></p>
+										</div>
 									</div>
 									<div class="icon_list_connector" style="border-style:'.$eg_br_style.';border-color:'.$eg_border_color.'">
 									</div>
@@ -248,7 +251,7 @@ if(!class_exists('Ultimate_Info_Circle'))
 		{
 			global $title_style_inline, $desc_style_inline, $info_circle_id, $info_circle_data_list, $info_circle_desc_data_list;
 			// Do nothing
-			$info_title = $info_icon = $icon_color = $icon_bg_color = $info_img = $icon_type  = $contents = $radius = $icon_size = $icon_html = $style = $output = $style = '';
+			$info_title = $info_icon = $icon_color = $icon_bg_color = $info_img = $icon_type  = $contents = $radius = $icon_size = $icon_html = $style = $output = $style = $ilink = '';
 			extract(shortcode_atts(array(
 				'info_title' => '',
 				'info_icon' => '',
@@ -261,6 +264,7 @@ if(!class_exists('Ultimate_Info_Circle'))
 				'icon_border_color'=>'',
 				'contents' => '',
 				'el_class' =>'',
+				'ilink' => ''
 			), $atts));
 			$icon_html = $output = $icon_type_class = '';
 			if($icon_type == "selector"){
@@ -268,11 +272,17 @@ if(!class_exists('Ultimate_Info_Circle'))
 				$icon_type_class = 'ult-info-circle-icon';
 			} else {
 				$img = apply_filters('ult_get_img_single', $info_img, 'url');
-				$icon_html .= '<img class="info-circle-img-icon" alt="icon" src="'.$img.'"/>';
+				$alt = apply_filters('ult_get_img_single', $info_img, 'alt');
+				if($alt == '')
+					$alt = 'icon';
+				$icon_html .= '<img class="info-circle-img-icon" alt="'.$alt.'" src="'.apply_filters('ultimate_images', $img).'"/>';
 				$icon_type_class = 'ult-info-circle-img';
 			}
 			if($icon_bg_color!=''){
 				$style .='background:'.$icon_bg_color.';';
+			}
+			else {
+				$el_class .= ' info-circle-icon-without-background ';
 			}
 			if($icon_color!=''){
 				$style .='color:'.$icon_color.';';
@@ -282,13 +292,33 @@ if(!class_exists('Ultimate_Info_Circle'))
 				$style.='border-width:'.$icon_br_width.'px;';
 				$style.='border-color:'.$icon_border_color.';';
 			}
-			$output .= '<div class="info-circle-icons '.$el_class.'" style="'.$style.'">';
-			$output .= $icon_html;
-			$output .="</div>";
+			$href = vc_build_link($ilink);
+			if( !empty($href['url']) ){
+				// $href = vc_build_link($ilink);
+				if(isset($href['target'])){
+									$target = 'target="'.$href['target'].'"';
+								}
+				$output .= '<div class="info-circle-icons '.$el_class.'" style="'.$style.'"><div class="info-circle-link"><a class="info-circle-href" href="'.$href['url'].'" '.$target.'></a>';
+				$output .= $icon_html;
+				$output .="</div></div>";
+			}
+			else{
+				$output .= '<div class="info-circle-icons '.$el_class.'" style="'.$style.'">';
+				$output .= $icon_html;
+				$output .="</div>";
+			}
 			$output .='<div class="info-details" data-icon-class="'.$icon_type_class.'">';
 			//$output .=$icon_html;
-			$output .='<div class="info-circle-def"><div  class="info-circle-sub-def">'.$icon_html.'<h3 '.$info_circle_data_list.' class="info-circle-heading ult-responsive new-cust-responsive-class" style="'.$title_style_inline.'">'.$info_title.'</h3><div '.$info_circle_desc_data_list.' class="info-circle-text ult-responsive new-cust-responsive-desc-class" style="'.$desc_style_inline.'">'.do_shortcode($content).'</div></div></div></div>';
+			if( !empty($href['url']) ){
+				// $href = vc_build_link($ilink);
+				if(isset($href['target'])){
+									$target = 'target="'.$href['target'].'"';
+								}
+			$output .='<div class="info-circle-def"><div  class="info-circle-sub-def"><a class="info-circle-href" href="'.$href['url'].'" style="color:inherit;" '.$target.'>'.$icon_html.'</a><div class="responsive-font-class ult-responsive" '.$info_circle_desc_data_list.'><h3 '.$info_circle_data_list.' class="info-circle-heading ult-responsive new-cust-responsive-class" style="'.$title_style_inline.'">'.$info_title.'</h3><div '.$info_circle_desc_data_list.' class="info-circle-text " style="'.$desc_style_inline.'">'.do_shortcode($content).'</div></div></div></div></div>';
 						//$output .= wpb_js_remove_wpautop($content, true);
+			}else{
+				$output .='<div class="info-circle-def"><div  class="info-circle-sub-def">'.$icon_html.'<div class="responsive-font-class ult-responsive" '.$info_circle_desc_data_list.'><h3 '.$info_circle_data_list.' class="info-circle-heading ult-responsive new-cust-responsive-class" style="'.$title_style_inline.'">'.$info_title.'</h3><div '.$info_circle_desc_data_list.' class="info-circle-text " style="'.$desc_style_inline.'">'.do_shortcode($content).'</div></div></div></div></div>';
+			}
 			return $output;
 		}
 		function add_info_circle()
@@ -402,6 +432,17 @@ if(!class_exists('Ultimate_Info_Circle'))
 							"suffix" => "px",
 							"group" => $thumbnail_tab
 							//"description" => __("Size of the thumbnails.", "smile"),
+						),
+						array(
+							"type" => "number",
+							"class" => "",
+							"heading" => __("Responseve Icon/image Size", "ultimate_vc"),
+							"param_name" => "img_icon_size",
+							"value" => 32,
+							"suffix" => "px",
+							"dependency" => Array("element" => "responsive", "value" => array("on")),
+							"group" => $thumbnail_tab,
+							"description" => __("This size of the thumbnails on breakpoint.", "smile"),
 						),
 						array(
 							"type" => "dropdown",
@@ -913,6 +954,14 @@ if(!class_exists('Ultimate_Info_Circle'))
 							"param_name" => "el_class",
 							"value" => "",
 							"description" => __("Custom class.", "ultimate_vc"),
+						),
+						array(
+							"type" => "vc_link",
+							"class" => "",
+							"heading" => __("Link", "ultimate_vc"),
+							"param_name" => "ilink",
+							"value" => "",
+							"description" => __("Add link to Icon/image on Info Circle", "ultimate_vc")
 						),
 					   )
 					)

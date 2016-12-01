@@ -11,13 +11,13 @@
  * Plugin Name:       Master Slider Pro
  * Plugin URI:        http://codecanyon.net/item/masterslider-pro/7467925?ref=averta
  * Description:       Master Slider is the most advanced responsive HTML5 WordPress slider plugin with layer and Touch Swipe Navigation that works smoothly on devices too.
- * Version:           2.25.0
+ * Version:           3.1.1
  * Author:            averta
  * Author URI:        http://averta.net
  * Text Domain:       masterslider
  * License URI:       LICENSE.txt
  * Domain Path:       /languages
- * Tested up to: 	  4.3.1
+ * Tested up to: 	  4.6.0
  */
 
 // If this file is called directly, abort.
@@ -31,12 +31,21 @@ if ( defined( 'WP_INSTALLING' ) && WP_INSTALLING ) {
 }
 
 function mspr_two_instance_notice() {
-    echo '<div class="error"><p>' . __( 'You are using two instances of MasterSlider plugin at same time, please deactive one of them.', 'ms-slider' ) . '</p></div>';
+    echo '<div class="error"><p>' . __( 'You are using two instances of MasterSlider plugin at same time, please deactive one of them.', 'masterslider' ) . '</p></div>';
 }
 
 if( defined( 'MSWP_AVERTA_VERSION' ) ){
 	add_action( 'admin_notices', 'mspr_two_instance_notice' );
 	return;
+}
+
+function mspr_requirement_notice() {
+    echo '<div class="error"><p>' . __( 'PHP version 5.3.0 or above is required for "Master Slider" plugin', 'masterslider' ) . '</p></div>';
+}
+
+if ( version_compare( PHP_VERSION, '5.3.0', '<' ) ) {
+    add_action( 'admin_notices', 'mspr_requirement_notice' );
+    return;
 }
 
 /*----------------------------------------------------------------------------*/

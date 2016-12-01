@@ -183,12 +183,20 @@ if(!class_exists("Ultimate_Google_Trends")){
 							"param_name" => "notification",
 							'edit_field_class' => 'ult-param-important-wrapper ult-dashicon ult-align-right ult-bold-font ult-blue-font vc_column vc_col-sm-12',
 						),
+						array(
+					            'type' => 'css_editor',
+					            'heading' => __( 'Css', 'ultimate_vc' ),
+					            'param_name' => 'css_gtrend_design',
+					            'group' => __( 'Design ', 'ultimate_vc' ),
+					            'edit_field_class' => 'vc_col-sm-12 vc_column no-vc-background no-vc-border creative_link_css_editor',
+					        ),
 					)
 				));
 			}
 		}
 		function display_ultimate_trends($atts,$content = null){
 			$width = $height = $graph_type = $graph_type_2 = $search_by = $location_by = $gtrend_query = $gtrend_query_2 = $el_class = '';
+			$css_design_style = '';
 			extract(shortcode_atts(array(
 				//"id" => "map",
 				"gtrend_width" => "",
@@ -199,10 +207,15 @@ if(!class_exists("Ultimate_Google_Trends")){
 				"location_by" => "",
 				"gtrend_query" => "",
 				"gtrend_query_2" => "",
-				"el_class" => ""
+				"el_class" => "",
+				"css_gtrend_design" => "",
 			), $atts));
 			$vc_version = (defined('WPB_VC_VERSION')) ? WPB_VC_VERSION : 0;
 			$is_vc_49_plus = (version_compare(4.9, $vc_version, '<=')) ? 'ult-adjust-bottom-margin' : '';
+			
+			$css_design_style = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, vc_shortcode_custom_css_class( $css_gtrend_design, ' ' ), "ultimate_google_trends", $atts );
+ 			$css_design_style = esc_attr( $css_design_style );
+			
 			if($search_by === 'q')
 			{
 				$graph_type_new = $graph_type;
@@ -224,7 +237,7 @@ if(!class_exists("Ultimate_Google_Trends")){
 				$height = '&amp;h='.$height;
 			}
 			$id = uniqid('vc-trends-');
-			$output = '<div id="'.$id.'" class="ultimate-google-trends '.$is_vc_49_plus.' '.$el_class.'">
+			$output = '<div id="'.$id.'" class="ultimate-google-trends '.$is_vc_49_plus.' '.$el_class.' '.$css_design_style.'">
 				<script type="text/javascript" src="//www.google.com/trends/embed.js?hl=en-US&amp;q='.$gtrend_query_new.'&cmpt='.$search_by.'&amp;geo='.$location_by.'&amp;content=1&amp;cid='.$graph_type_new.'&amp;export=5'.$width.$height.'"></script>
 			</div>';
 			return $output;

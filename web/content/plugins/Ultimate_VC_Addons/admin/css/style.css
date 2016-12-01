@@ -692,9 +692,11 @@ select.tooltip_animation {
 	background-size: contain;
 	max-width:100%;
 }
+/*
 .bsf-page-wrapper .wrap-container {
 	margin: 25px 40px 0 40px;
 }
+*/
 .bsf-page-wrapper .heading-section {
 	width:100%;
 	display:inline-block;
@@ -991,4 +993,70 @@ span.vc_admin_label.admin_label_link_hover_style {
 }
 .wpb_el_type_ultimate_navigation .icon-list li:before {
 	content:"" !important;
+}
+
+
+/**/
+.ultimate-header .bend-head-logo:before {
+    content: "\e600" !important;
+    font-family: 'ultimate' !important;
+}
+
+
+.edit_form_line input[type=number] {
+    height: auto !important;
+}
+.debug_ult_btn{
+	position: absolute;
+	bottom: 10px;
+	right: 12%;
+	width: 150px;
+	z-index: 99;
+}
+.debug_ult_btn a{
+	text-decoration: none;
+	background: #2F9DD2;
+	border: 1px solid #2695CA;
+	cursor: pointer;
+}
+.debug_ult_btn a{
+    display: inline-block;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 10px 10px;
+    background: #2F9DD2;
+    color: #FFF;
+    border: 1px solid #2695CA;
+    box-shadow: none;
+    border-radius: 3px;
+    font-size: 14px;
+    font-weight: 300;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: none;
+    line-height: 1em;
+    letter-spacing: 0;
+    vertical-align: top;
+    -webkit-transition: all 100ms linear;
+    -moz-transition: all 100ms linear;
+    transition: all 100ms linear;
+}
+.debug_ult_btn a:hover{
+	color: #FFF;
+    background: #007FBB;
+    vertical-align: top;
+}
+.ult_debug{
+    position: absolute;
+    right: 12%;
+    bottom: 10px;
+    z-index: 9999;
+    font-weight: 600;
+}
+.ult_debug a{
+	text-decoration: none;
+}
+.wpb_icon_timeline .wpb_element_wrapper {
+    clear: both;
 }

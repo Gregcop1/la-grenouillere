@@ -58,12 +58,15 @@ if(!class_exists('AIO_Icons_Box'))
 				'desc_font_color' => '',
 				'desc_font_line_height'=> '',
 				'el_class'	  => '',
+				'css_info_box' => '',
 				),$atts,'bsf-info-box'));
-			$html = $target = $suffix = $prefix = $title_style = $desc_style = '';
+			$html = $target = $suffix = $prefix = $title_style = $desc_style = $inf_design_style = '';
+			$inf_design_style = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, vc_shortcode_custom_css_class( $css_info_box, ' ' ), "bsf-info-box", $atts );
+ 			$inf_design_style = esc_attr( $inf_design_style );
 			//$font_args = array();
 			//echo $pos; die();
 			$box_icon = do_shortcode('[just_icon icon_type="'.$icon_type.'" icon="'.$icon.'" icon_img="'.$icon_img.'" img_width="'.$img_width.'" icon_size="'.$icon_size.'" icon_color="'.$icon_color.'" icon_style="'.$icon_style.'" icon_color_bg="'.$icon_color_bg.'" icon_color_border="'.$icon_color_border.'"  icon_border_style="'.$icon_border_style.'" icon_border_size="'.$icon_border_size.'" icon_border_radius="'.$icon_border_radius.'" icon_border_spacing="'.$icon_border_spacing.'" icon_animation="'.$icon_animation.'"]');
-			$prefix .= '<div class="aio-icon-component '.$css_class.' '.$el_class.' '.$hover_effect.'">';
+			$prefix .= '<div class="aio-icon-component '.$inf_design_style.' '.$css_class.' '.$el_class.' '.$hover_effect.'">';
 			$suffix .= '</div> <!-- aio-icon-component -->';
 			$ex_class = $ic_class = '';
 			if($pos != ''){
@@ -170,7 +173,7 @@ if(!class_exists('AIO_Icons_Box'))
 							if($read_more == 'title')
 							{
 								$href = vc_build_link($link);
-								if(isset($href['target'])){
+								if(isset($href['target']) && trim($href['target']) !== ''){
 									$target = 'target="'.$href['target'].'"';
 								}
 								$link_prefix = '<a class="aio-icon-box-link" href="'.$href['url'].'" '.$target.'>';
@@ -191,10 +194,10 @@ if(!class_exists('AIO_Icons_Box'))
 							if($read_more == 'more')
 							{
 								$href = vc_build_link($link);
-								if(isset($href['target'])){
+								if(isset($href['target']) && $href['target'] != ''){
 									$target = 'target="'.$href['target'].'"';
 								}
-								$more_link = '<a class="aio-icon-read" href="'.$href['url'].'" '.$target.'>';
+								$more_link = '<a class="aio-icon-read x" href="'.$href['url'].'" '.$target.'>';
 								$more_link .= $read_text;
 								$more_link .= '&nbsp;&raquo;';
 								$more_link .= '</a>';
@@ -223,7 +226,7 @@ if(!class_exists('AIO_Icons_Box'))
 							if($read_more == 'title')
 							{
 								$href = vc_build_link($link);
-								if(isset($href['target'])){
+								if(isset($href['target']) && trim($href['target']) !== ''){
 									$target = 'target="'.$href['target'].'"';
 								}
 								$link_prefix = '<a class="aio-icon-box-link" href="'.$href['url'].'" '.$target.'>';
@@ -240,10 +243,10 @@ if(!class_exists('AIO_Icons_Box'))
 							if($read_more == 'more')
 							{
 								$href = vc_build_link($link);
-								if(isset($href['target'])){
+								if(isset($href['target']) && trim($href['target']) != ''){
 									$target = 'target="'.$href['target'].'"';
 								}
-								$more_link = '<a class="aio-icon-read" href="'.$href['url'].'" '.$target.'>';
+								$more_link = '<a class="aio-icon-read xx" href="'.$href['url'].'" '.$target.'>';
 								$more_link .= $read_text;
 								$more_link .= '&nbsp;&raquo;';
 								$more_link .= '</a>';
@@ -263,7 +266,7 @@ if(!class_exists('AIO_Icons_Box'))
 				if($read_more == 'box')
 				{
 					$href = vc_build_link($link);
-					if(isset($href['target'])){
+					if(isset($href['target']) && trim($href['target']) !== ''){
 						$target = 'target="'.$href['target'].'"';
 					}
 					$output = $prefix.'<a class="aio-icon-box-link" href="'.$href['url'].'" '.$target.'>'.$html.'</a>'.$suffix;
@@ -272,6 +275,23 @@ if(!class_exists('AIO_Icons_Box'))
 				}
 			} else {
 				$output = $prefix.$html.$suffix;
+			}
+			$is_preset = false; //Display settings for Preset
+			if(isset($_GET['preset'])) {
+				$is_preset = true;
+			}
+			if($is_preset) {
+				$text = 'array ( ';
+				foreach ($atts as $key => $att) {
+					$text .= '<br/>	\''.$key.'\' => \''.$att.'\',';
+				}
+				if($content != '') {
+					$text .= '<br/>	\'content\' => \''.$content.'\',';
+				}
+				$text .= '<br/>)';
+				$output .= '<pre>';
+				$output .= $text;
+				$output .= '</pre>';
 			}
 			return $output;
 		}
@@ -785,6 +805,13 @@ if(!class_exists('AIO_Icons_Box'))
 								"param_name" => "notification",
 								'edit_field_class' => 'ult-param-important-wrapper ult-dashicon ult-align-right ult-bold-font ult-blue-font vc_column vc_col-sm-12',
 							),
+							array(
+					            'type' => 'css_editor',
+					            'heading' => __( 'Css', 'ultimate_vc' ),
+					            'param_name' => 'css_info_box',
+					            'group' => __( 'Design ', 'ultimate_vc' ),
+					            'edit_field_class' => 'vc_col-sm-12 vc_column no-vc-background no-vc-border creative_link_css_editor',
+					        ),
 						) // end params array
 					) // end vc_map array
 				); // end vc_map

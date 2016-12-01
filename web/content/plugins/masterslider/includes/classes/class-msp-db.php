@@ -496,7 +496,13 @@ class MSP_DB {
 			$fields['title'] = 'Untitled Slider';
 
         $fields['title'] = $this->duplicate_title( $fields['title'] );
-		$fields['alias'] = $this->validate_slider_alias( $fields['alias'] );
+
+        // generate an alias if it is not set
+        if( ! isset( $fields['alias'] ) || empty( $fields['alias'] ) ){
+            $fields['alias'] = $this->generate_slider_alias();
+        }
+
+        $fields['alias'] = $this->validate_slider_alias( $fields['alias'] );
 
 		return $this->add_slider( $fields );
 	}

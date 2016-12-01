@@ -352,6 +352,13 @@ if(!class_exists('Ultimate_Interactive_Banner'))
 								"param_name" => "notification",
 								'edit_field_class' => 'ult-param-important-wrapper ult-dashicon ult-align-right ult-bold-font ult-blue-font vc_column vc_col-sm-12',
 							),
+							array(
+								'type' => 'css_editor',
+					            'heading' => __( 'Css', 'ultimate_vc' ),
+					            'param_name' => 'css_ib2',
+					            'group' => __( 'Design ', 'ultimate_vc' ),
+					            'edit_field_class' => 'vc_col-sm-12 vc_column no-vc-background no-vc-border creative_link_css_editor',
+					        ),
 						),
 					)
 				);
@@ -395,13 +402,18 @@ if(!class_exists('Ultimate_Interactive_Banner'))
 				'banner_min_height_op' => 'default',
 				'el_class' =>'',
 				'heading_tag' => '',
+				'css_ib2' => '',
 			),$atts));
+
+			$css_ib2_styles = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, vc_shortcode_custom_css_class( $css_ib2, ' ' ), "interactive_banner_2", $atts );
+			$css_ib2_styles = esc_attr( $css_ib2_styles );
+
 			$output = $style = $target = $link = $banner_style_inline = $title_bg = $img_style = $responsive = $target ='';
 			//$banner_style = 'style01';
 
 			if($enable_responsive == "yes"){
 				$responsive .= 'data-min-width="'.$responsive_min.'" data-max-width="'.$responsive_max.'"';
-				$el_class .= "ult-ib-resp";
+				$el_class .= " ult-ib-resp";
 			}
 
 			if($banner_title_bg !== '' && $banner_style == "style5"){
@@ -410,6 +422,7 @@ if(!class_exists('Ultimate_Interactive_Banner'))
 
 			//$img = wp_get_attachment_image_src( $banner_image, 'full');
 			$img = apply_filters('ult_get_img_single', $banner_image, 'url');
+			$alt = apply_filters('ult_get_img_single', $banner_image, 'alt');
 			if($banner_link !== ''){
 				$href = vc_build_link($banner_link);
 				$link = $href['url'];
@@ -486,6 +499,7 @@ if(!class_exists('Ultimate_Interactive_Banner'))
 					$img_min_height = ' data-min-height="'.$banner_min.'" ';
 					//$img_max_height = ' data-max-width="none" ';
 					$min_height_class = 'ult-ib2-min-height';
+					$banner_style_inline .= ' opacity:0; ';
 				}
 			}
 
@@ -511,9 +525,9 @@ if(!class_exists('Ultimate_Interactive_Banner'))
 
 			$heading_tag = ( isset($heading_tag) && trim($heading_tag) != "" ) ? $heading_tag : 'h2';
 
-			$output .= '<div class="ult-new-ib ult-ib-effect-'.$banner_style.' '.$el_class.' '.$min_height_class.'" '.$responsive.' style="'.$banner_style_inline.'" data-opacity="'.$image_opacity.'" data-hover-opacity="'.$image_opacity_on_hover.'" '.$banner_min_height.'>';
+			$output .= '<div class="ult-new-ib ult-ib-effect-'.$banner_style.' '.$el_class.' '.$min_height_class.' '.$css_ib2_styles.'" '.$responsive.' style="'.$banner_style_inline.'" data-opacity="'.$image_opacity.'" data-hover-opacity="'.$image_opacity_on_hover.'" '.$banner_min_height.'>';
 			if($img !== '')
-				$output .= '<img class="ult-new-ib-img" style="'.$img_style.'" alt="'.$banner_title.'" src="'.$img.'" '.$img_min_height.' '.$img_max_height.' />';
+				$output .= '<img class="ult-new-ib-img" style="'.$img_style.'" alt="'.$alt.'" src="'.apply_filters('ultimate_images', $img).'" '.$img_min_height.' '.$img_max_height.' />';
 			$output .= '<div id="'.$interactive_banner_id.'" class="ult-new-ib-desc" style="'.$title_bg.'">';
 			$output .= '<'.$heading_tag.' class="ult-new-ib-title ult-responsive" '.$interactive_banner_data_list.' style="'.$banner_title_style_inline.'">'.$banner_title.'</'.$heading_tag.'>';
 			$output .= '<div class="ult-new-ib-content ult-responsive" '.$interactive_banner_desc_data_list.' style="'.$banner_desc_style_inline.'"><p>'.$banner_desc.'</p></div>';
@@ -522,6 +536,30 @@ if(!class_exists('Ultimate_Interactive_Banner'))
 				$target = 'target="'.$target.'"';
 			$output .= '<a class="ult-new-ib-link" '.$href.' '.$target.'></a>';
 			$output .= '</div>';
+			$is_preset = false; //Display settings for Preset
+			if(isset($_GET['preset'])) {
+				$is_preset = true;
+			}
+			if($is_preset) {
+				$text = 'array ( ';
+				foreach ($atts as $key => $att) {
+					$text .= '<br/>	\''.$key.'\' => \''.$att.'\',';
+				}
+				if($content != '') {
+					$text .= '<br/>	\'content\' => \''.$content.'\',';
+				}
+				$text .= '<br/>)';
+				$output .= '<pre>';
+				$output .= $text;
+				$output .= '</pre>';
+			}
+			$output .= '<script type="text/javascript">
+			(function($){
+				$(document).ready(function(){
+					$(".ult-new-ib").css("opacity","1");
+				});
+			})(jQuery);
+			</script>';
 			return $output;
 		}
 	}

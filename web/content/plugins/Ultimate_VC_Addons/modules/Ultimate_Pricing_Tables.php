@@ -651,7 +651,13 @@ if(!class_exists("Ultimate_Pricing_Table")){
 							"value" => "",
 							"group" => "Typography"
 						),
-
+							array(
+							'type' => 'css_editor',
+				            'heading' => __( 'Css', 'ultimate_vc' ),
+				            'param_name' => 'css_price_box',
+				            'group' => __( 'Design ', 'ultimate_vc' ),
+				            'edit_field_class' => 'vc_col-sm-12 vc_column no-vc-background no-vc-border creative_link_css_editor',
+			        	),
 					)// params
 				));// vc_map
 			}
@@ -665,6 +671,23 @@ if(!class_exists("Ultimate_Pricing_Table")){
 			require_once(__ULTIMATE_ROOT__.'/templates/pricing/pricing-'.$design_style.'.php');
 			$design_func = 'ult_price_generate_'.$design_style;
 			$output .= $design_func($atts,$content);
+			$is_preset = false; //Display settings for Preset
+			if(isset($_GET['preset'])) {
+				$is_preset = true;
+			}
+			if($is_preset) {
+				$text = 'array ( ';
+				foreach ($atts as $key => $att) {
+					$text .= '<br/>	\''.$key.'\' => \''.$att.'\',';
+				}
+				if($content != '') {
+					$text .= '<br/>	\'content\' => \''.$content.'\',';
+				}
+				$text .= '<br/>)';
+				$output .= '<pre>';
+				$output .= $text;
+				$output .= '</pre>';
+			}
 			return $output;
 		}
 	} // class Ultimate_Pricing_Table

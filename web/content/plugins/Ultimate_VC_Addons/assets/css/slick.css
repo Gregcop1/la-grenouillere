@@ -7,11 +7,11 @@
 .slick-slider {
   position: relative;
   display: block;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-  -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
@@ -45,9 +45,7 @@
 .slick-slide,
 .slick-slide img {
   -webkit-transform: translate3d(0, 0, 0);
-  -moz-transform: translate3d(0, 0, 0);
   -ms-transform: translate3d(0, 0, 0);
-  -o-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
 }
 
@@ -147,6 +145,7 @@
   outline: none;
   background: transparent;
   color: transparent;
+  -webkit-box-shadow: none;
   box-shadow: none;
 }
 
@@ -181,6 +180,8 @@
   right: -15px;
   -webkit-tranform: rotate(-180deg);
   -moz-tranform: rotate(-180deg);
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
 }
 
@@ -193,6 +194,8 @@
   right: auto;
   -webkit-tranform: rotate(-180deg);
   -moz-tranform: rotate(-180deg);
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
 }
 
@@ -287,14 +290,13 @@
 
 .ult-carousel-wrapper .slick-dots li i {
   opacity: 0.75;
+  -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
 
 .ult-carousel-wrapper .slick-dots li.slick-active i {
   opacity: 1;
 }
-
-/*# sourceMappingURL=slick.css.map */
 button.slick-next:active,
 button.slick-prev:active {
   background: initial;
@@ -317,12 +319,15 @@ ul.slick-dots {
 
 .slick-dots {
   bottom: 0;
+  -webkit-transform: translateY(100%);
+  -ms-transform: translateY(100%);
   transform: translateY(100%);
 }
 
 /*Slider Buttons Customization*/
 .ult-carousel-wrapper button.circle-border,
 .ult-carousel-wrapper button.circle-bg {
+  -webkit-border-radius: 100%;
   border-radius: 100%;
   width: 1.5em;
   height: 1.5em;
@@ -331,6 +336,7 @@ ul.slick-dots {
 
 .ult-carousel-wrapper button.square-border,
 .ult-carousel-wrapper button.square-bg {
+  -webkit-border-radius: 0px !important;
   border-radius: 0px !important;
   width: 1.5em;
   height: 1.5em;
@@ -353,8 +359,6 @@ ul.slick-dots {
   left: 50%;
   margin: 0;
   -webkit-transform: translateX(-50%) rotate(90deg);
-  -moz-transform: translateX(-50%) rotate(90deg);
-  -o-transform: translateX(-50%) rotate(90deg);
   -ms-transform: translateX(-50%) rotate(90deg);
   transform: translateX(-50%) rotate(90deg);
 }
@@ -372,3 +376,14 @@ ul.slick-dots {
   z-index: 99;
   bottom: -30px;
 }
+
+button.slick-next.circle-border i,
+button.slick-prev.circle-border i {
+    left: 50%;
+    top: 50%;
+    position: absolute;
+    -webkit-transform: translate( -50%, -50% );
+    -ms-transform: translate( -50%, -50% );
+    transform: translate( -50%, -50% );
+}
+

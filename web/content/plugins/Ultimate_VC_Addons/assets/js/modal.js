@@ -311,7 +311,7 @@
 				});
 			}
 			$('html').css({'overflow':'auto'});
-			$(document).trigger('onUVCModalPopUpClosed',id);
+			$(document).trigger('onUVCModalPopUpClosed');
 		});
 
 		$(document).on('click', '.ult-overlay .ult_modal', function(event){
@@ -382,8 +382,6 @@
 	}
 	$(document).on('onUVCModalPopupOpen',function(){
 		resize_modal_iframe();
-	});
-	$(window).resize(function(){
-		resize_modal_iframe();
+		$(window).trigger('resize');
 	});
 })(jQuery);

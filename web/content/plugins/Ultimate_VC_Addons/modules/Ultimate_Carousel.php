@@ -43,8 +43,8 @@ if(!class_exists("Ultimate_Carousel")){
 			wp_register_script("ult-slick",plugins_url($js_path."slick".$ext.".js",__FILE__),array('jquery'),ULTIMATE_VERSION,false);
 			wp_register_script("ult-slick-custom",plugins_url($js_path."slick-custom".$ext.".js",__FILE__),array('jquery','ult-slick'),ULTIMATE_VERSION,false);
 
-			wp_register_style("ult-slick",plugins_url($css_path."slick".$ext.".css",__FILE__),array(),ULTIMATE_VERSION,false);
-			wp_register_style("ult-icons",plugins_url("../assets/css/icons.css",__FILE__),array(),ULTIMATE_VERSION,false);
+			wp_register_style("ult-slick",plugins_url($css_path."slick".$ext.".css",__FILE__),array(),ULTIMATE_VERSION);
+			wp_register_style("ult-icons",plugins_url("../assets/css/icons.css",__FILE__),array(),ULTIMATE_VERSION);
 		}
 
 		function ultimate_admin_scripts($hook){
@@ -632,6 +632,13 @@ if(!class_exists("Ultimate_Carousel")){
 								'edit_field_class' => 'ult-param-important-wrapper ult-dashicon ult-align-right ult-bold-font ult-blue-font vc_column vc_col-sm-12',
 								"group" => "General"
 							),
+							array(
+					            'type' => 'css_editor',
+					            'heading' => __( 'Css', 'ultimate_vc' ),
+					            'param_name' => 'css_ad_caraousel',
+					            'group' => __( 'Design ', 'ultimate_vc' ),
+					            'edit_field_class' => 'vc_col-sm-12 vc_column no-vc-background no-vc-border creative_link_css_editor',
+					        ),
 						),
 						"js_view" => 'VcColumnView'
 					)
@@ -644,7 +651,7 @@ if(!class_exists("Ultimate_Carousel")){
 			$slider_type = $slides_on_desk = $slides_on_tabs = $slides_on_mob = $slide_to_scroll = $speed = $infinite_loop = $autoplay = $autoplay_speed = '';
 			$lazyload = $arrows = $dots = $dots_icon = $next_icon = $prev_icon = $dots_color = $draggable = $swipe = $touch_move = '';
 			$rtl = $arrow_color = $arrow_size = $arrow_style = $arrow_bg_color = $arrow_border_color = $border_size = $item_space = $el_class = '';
-			$item_animation = '';
+			$item_animation =  '';
 			extract(shortcode_atts(array(
 				"slider_type" => "horizontal",
 				"slides_on_desk" => "5",
@@ -676,13 +683,16 @@ if(!class_exists("Ultimate_Carousel")){
 				"el_class" => "",
 				"item_animation" => "",
 				"adaptive_height" => "",
+				"css_ad_caraousel" => "",
 			),$atts));
 
 
 			$uid = uniqid(rand());
 
-			$settings = $responsive = $infinite = $dot_display = $custom_dots = $arr_style = $wrap_data = '';
+			$settings = $responsive = $infinite = $dot_display = $custom_dots = $arr_style = $wrap_data = $design_style = '';
 
+			$desing_style = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, vc_shortcode_custom_css_class( $css_ad_caraousel, ' ' ), "ultimate_carousel", $atts );
+			$desing_style = esc_attr( $desing_style);
 			if($slide_to_scroll == "all")
 				$slide_to_scroll = $slides_on_desk;
 			else
@@ -735,7 +745,7 @@ if(!class_exists("Ultimate_Carousel")){
 				$settings .= 'draggable: false,';
 			}
 
-			if($touch_move !== "off" && $touch_move !== "")
+			if($touch_move == "on")
 				$settings .= 'touchMove: true,';
 			else
 				$settings .= 'touchMove: false,';
@@ -800,7 +810,7 @@ if(!class_exists("Ultimate_Carousel")){
 			ob_start();
 			$uniqid = uniqid(rand());
 
-			echo '<div id="ult-carousel-'.$uniqid.'" class="ult-carousel-wrapper '.$el_class.' ult_'.$slider_type.'" data-gutter="'.$item_space.'" data-rtl="'.$site_rtl.'" >';
+			echo '<div id="ult-carousel-'.$uniqid.'" class="ult-carousel-wrapper '.$desing_style.' '.$el_class.' ult_'.$slider_type.'" data-gutter="'.$item_space.'" data-rtl="'.$site_rtl.'" >';
 				echo '<div class="ult-carousel-'.$uid.' " '.$wrap_data.'>';
 					ultimate_override_shortcodes($item_space, $item_animation);
 					echo do_shortcode($content);

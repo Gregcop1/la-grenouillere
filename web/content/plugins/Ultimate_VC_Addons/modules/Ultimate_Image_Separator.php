@@ -2,7 +2,7 @@
 /*
 * Add-on Name: Image Separator
 */
-if(!class_exists('Ultimate_Image_Separator')) 
+if(!class_exists('Ultimate_Image_Separator'))
 {
 	class Ultimate_Image_Separator{
 		function __construct(){
@@ -63,7 +63,7 @@ if(!class_exists('Ultimate_Image_Separator'))
 								"suffix" => "s",
 								"description" => __("How long the animation effect should last. Decides the speed of effect.","ultimate_vc"),
 								"group" => "Animation",
-							
+
 						  	),
 							array(
 								"type" => "number",
@@ -129,7 +129,14 @@ if(!class_exists('Ultimate_Image_Separator'))
 								'param_name' => 'img_separator_gutter',
 								'suffix' => '%',
 								'description' => __('50% is default. Increase to push the image outside or decrease to pull the image inside.','ultimate_vc')
-							)
+							),
+							array(
+								"type" => "vc_link",
+								"heading" => __("Link ","ultimate_vc"),
+								"param_name" => "sep_link",
+								"value" => "",
+								"description" => __("Add a custom link or select existing page. You can remove existing link as well.","ultimate_vc")
+							),
 						),
 					)
 				);
@@ -137,8 +144,8 @@ if(!class_exists('Ultimate_Image_Separator'))
 		}
 		// Shortcode handler function for stats banner
 		function ultimate_img_separator_shortcode($atts, $content)
-		{			
-			$output = $wrapper_class = $custom_position = $opacity_start_effect_data = $animation_style = $animation_el_class = $animation_data = '';
+		{
+			$output = $wrapper_class = $custom_position = $opacity_start_effect_data = $animation_style = $animation_el_class = $animation_data = $href = $url = $link_title = $target = '';
 			$is_animation = false;
 			extract(shortcode_atts( array(
 				'img_separator' => '',
@@ -150,26 +157,34 @@ if(!class_exists('Ultimate_Image_Separator'))
 				'opacity_start_effect' => '',
 				'animation_duration' => '',
 				'animation_delay' => '',
-				'animation_iteration_count' => ''
+				'animation_iteration_count' => '',
+				'sep_link' => ''
 			),$atts));
-			
+
 			$ultimate_custom_vc_row = get_option('ultimate_custom_vc_row');
 			if($ultimate_custom_vc_row == '')
 				$ultimate_custom_vc_row = 'wpb_row';
-			
+
 			$img = apply_filters('ult_get_img_single', $img_separator, 'url');
-			$alt = get_post_meta($img_separator, '_wp_attachment_image_alt', true);
-			
+			$alt = apply_filters('ult_get_img_single', $img_separator, 'alt');
+
 			$id = 'ult-easy-separator-'.uniqid(rand());
-			
+
+			if( $sep_link !='' ){
+				$href 		= 	vc_build_link($sep_link);
+				$url 		= 	$href['url'];
+				$link_title	=	' title="'.$href['title'].'" ';
+				$target		=	' target="'.trim($href['target']).'" ';
+			}
+
 			$args = array(
 				'target'      =>  '#'.$id,  // set targeted element e.g. unique class/id etc.
 				'media_sizes' => array(
 				   'width' => $img_separator_width
-				), 
+				),
 			);
 			$data_list = get_ultimate_vc_responsive_media_css($args);
-			
+
 			if($img_separator_gutter != '')
 			{
 				$wrapper_class = 'ult-easy-separator-no-default';
@@ -180,7 +195,7 @@ if(!class_exists('Ultimate_Image_Separator'))
 					$custom_position .= 'transform: translate(-50%,'.$img_separator_gutter.'%)!important;';
 					$custom_position .= '-ms-transform: translate(-50%,'.$img_separator_gutter.'%)!important;';
 					$custom_position .= '-webkit-transform: translate(-50%,'.$img_separator_gutter.'%)!important;';
-					  
+
 				}
 				else if($img_separator_position == 'ult-bottom-easy-separator')
 				{
@@ -190,7 +205,7 @@ if(!class_exists('Ultimate_Image_Separator'))
 					$custom_position .= '-webkit-transform: translate(-50%,'.$img_separator_gutter.'%)!important;';
 				}
 			}
-			
+
 			$animation_style .= 'opacity:0;';
 			if( strtolower($animation) !== strtolower('No Animation')) {
 				$is_animation = true;
@@ -210,15 +225,18 @@ if(!class_exists('Ultimate_Image_Separator'))
 			}
 			else
 				$animation_el_class .= 'ult-no-animation';
-				
+
 			$output = '<div id="'.$id.'" class="ult-easy-separator-wrapper ult-responsive '.$img_separator_position.' '.$wrapper_class.'" style="'.$custom_position.'" data-vc-row="'.$ultimate_custom_vc_row.'" '.$data_list.'>';
 				$output .= '<div class="ult-easy-separator-inner-wrapper">';
 					$output .= '<div class="'.$animation_el_class.'" style="'.$animation_style.'"  '.$animation_data.' '.$opacity_start_effect_data.'>';
-						$output .= '<img class="ult-easy-separator-img" alt="'.$alt.'" src="'.$img.'" />';
+						$output .= '<img class="ult-easy-separator-img" alt="'.$alt.'" src="'.apply_filters('ultimate_images', $img).'" />';
+						if($url != '') {
+							$output .= '<a href="'.$url.'" '.$target.'></a>';
+						}
 					$output .= '</div>';
 				$output .= '</div>';
 			$output .= '</div>';
-			
+
 			return $output;
 		}
 	}

@@ -53,8 +53,11 @@ if(!function_exists('ult_info_table_generate_design06')) {
 			'button_line_height' => '',
 			'el_class' => '',
 			'features_min_ht'=>'',
+			'css_info_tables' => '',
 
 		),$atts));
+		$css_info_tables = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, vc_shortcode_custom_css_class( $css_info_tables, ' ' ), "ultimate_info_table", $atts );
+		$css_info_tables = esc_attr( $css_info_tables );
 		$output = $link = $target = $featured = $featured_style = $normal_style = $dynamic_style = $box_icon = '';
 		if($icon_type !== "none"){
 			$box_icon = do_shortcode('[just_icon icon_type="'.$icon_type.'" icon="'.$icon.'" icon_img="'.$icon_img.'" img_width="'.$img_width.'" icon_size="'.$icon_size.'" icon_color="'.$icon_color.'" icon_style="'.$icon_style.'" icon_color_bg="'.$icon_color_bg.'" icon_color_border="'.$icon_color_border.'"  icon_border_style="'.$icon_border_style.'" icon_border_size="'.$icon_border_size.'" icon_border_radius="'.$icon_border_radius.'" icon_border_spacing="'.$icon_border_spacing.'"]');
@@ -252,7 +255,7 @@ if(!function_exists('ult_info_table_generate_design06')) {
             );
             $info_table_btn_data_list = get_ultimate_vc_responsive_media_css($info_table_btn_args);
 
-		$output .= '<div class="ult_pricing_table_wrap ult_info_table ult_design_6 '.$featured.' ult-cs-'.$color_scheme.' '.$el_class.'">
+		$output .= '<div class="ult_pricing_table_wrap ult_info_table ult_design_6 '.$featured.' ult-cs-'.$color_scheme.' '.$el_class.' '.$css_info_tables.'">
 					<div class="ult_pricing_table '.$info_tab_ht.'" style="'.$normal_style.' '.$info_tab_ht_style.'">';
 			$output .= '<div id="'.$info_table_id.'" class="ult_pricing_heading" style="'.$featured_style.'">
 							<h3 class="ult-responsive" '.$info_table_data_list.' style="'.$heading_style_inline.'">'.$package_heading.'</h3>';

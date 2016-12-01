@@ -51,8 +51,11 @@ function ult_price_generate_design01($atts,$content = null){
 		"button_line_height" => "",
 		"el_class" => "",
 		"min_ht" => "",
+		"css_price_box" => "",
 
 	),$atts));
+	$css_price_box = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, vc_shortcode_custom_css_class( $css_price_box, ' ' ), "ultimate_pricing", $atts );
+	$css_price_box = esc_attr( $css_price_box );
 	$output = $link = $target = $featured = $featured_style = $normal_style = $dynamic_style = '';
 	if($color_scheme == "custom"){
 		if($color_bg_main !== ""){
@@ -336,7 +339,7 @@ function ult_price_generate_design01($atts,$content = null){
 
 	/* End Typography */
 
-	$output .= '<div class="ult_pricing_table_wrap ult_design_1 '.$featured.' ult-cs-'.$color_scheme.' '.$el_class.'">
+	$output .= '<div class="ult_pricing_table_wrap ult_design_1 '.$featured.' ult-cs-'.$color_scheme.' '.$el_class.' '.$css_price_box.'">
 				<div class="ult_pricing_table '.$ult_price_table_ht.'" style="'.$featured_style.' '.$price_normal_style.'">';
 
 		$output .= '<div class="ult_pricing_heading" id="'.$price_table_id.'">

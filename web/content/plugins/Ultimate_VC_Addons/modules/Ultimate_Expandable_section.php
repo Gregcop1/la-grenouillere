@@ -216,7 +216,7 @@ if($icon_type == 'custom'){
 
 				$newsrc=$newimg;
 				$src1=$img;
-				$alt = get_post_meta($icon_img, '_wp_attachment_image_alt', true);
+				$alt = apply_filters('ult_get_img_single', $icon_img, 'alt');
 
 				if($icon_style !== 'none'){
 					if($icon_color_bg !== '')
@@ -244,7 +244,7 @@ if($icon_type == 'custom'){
 						$style .= 'display:inline-block;';
 					}
 					$iconoutput .= "\n".'<span class="aio-icon-img '.$el_class.' '.'ult_expsection_icon " style="font-size:'.$img_width.'px;'.$style.'" '.$css_trans.'>';
-					$iconoutput .= "\n\t".'<img class="img-icon ult_exp_img '.$img_ext.'" alt="'.$alt.'" src="'.$img.'" />';
+					$iconoutput .= "\n\t".'<img class="img-icon ult_exp_img '.$img_ext.'" alt="'.$alt.'" src="'.apply_filters('ultimate_images', $img).'" />';
 					$iconoutput .= "\n".'</span>';
 				}
 				if(!empty($img)){
@@ -386,7 +386,7 @@ $icon_output='';
 $text_align='';
 if($icon_align=='top'){
 	if($icon_type == 'custom'){
-	$text_align .='text-align:-webkit-center;';
+	$text_align .='text-align:center;';
 	}
 	else{
 	$text_align .='text-align:center;';

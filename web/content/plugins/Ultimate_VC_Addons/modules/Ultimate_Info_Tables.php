@@ -648,6 +648,13 @@ if(!class_exists("Ultimate_Info_Table")){
 							"param_name" => "notification",
 							'edit_field_class' => 'ult-param-important-wrapper ult-dashicon ult-align-right ult-bold-font ult-blue-font vc_column vc_col-sm-12',
 						),
+						array(
+							'type' => 'css_editor',
+				            'heading' => __( 'Css', 'ultimate_vc' ),
+				            'param_name' => 'css_info_tables',
+				            'group' => __( 'Design ', 'ultimate_vc' ),
+				            'edit_field_class' => 'vc_col-sm-12 vc_column no-vc-background no-vc-border creative_link_css_editor',
+					    ),
 					)// params
 				));// vc_map
 			}
@@ -663,6 +670,23 @@ if(!class_exists("Ultimate_Info_Table")){
 			//$design_cls = 'Info_'.ucfirst($design_style);
 			//$class = new $design_cls;
 			$output .= $design_func($atts,$content);
+			$is_preset = false; //Display settings for Preset
+			if(isset($_GET['preset'])) {
+				$is_preset = true;
+			}
+			if($is_preset) {
+				$text = 'array ( ';
+				foreach ($atts as $key => $att) {
+					$text .= '<br/>	\''.$key.'\' => \''.$att.'\',';
+				}
+				if($content != '') {
+					$text .= '<br/>	\'content\' => \''.$content.'\',';
+				}
+				$text .= '<br/>)';
+				$output .= '<pre>';
+				$output .= $text;
+				$output .= '</pre>';
+			}
 			return $output;
 		}
 	} // class Ultimate_Info_Table

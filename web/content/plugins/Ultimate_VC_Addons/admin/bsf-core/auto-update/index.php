@@ -34,8 +34,18 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
                     			$hashname = preg_replace("![^a-z0-9]+!i", "-", $name);
 								$url .= '#'.$hashname;
 							}
+							if(is_multisite())
+								$reg_url = network_admin_url('index.php?page=bsf-registration');
+							else {
+								if(defined('BSF_REG_MENU_TO_SETTINGS') && (BSF_REG_MENU_TO_SETTINGS == true || BSF_REG_MENU_TO_SETTINGS == 'true')) {
+									$reg_url = admin_url('options-general.php?page=bsf-registration');
+								}
+								else {
+									$reg_url = admin_url('index.php?page=bsf-registration');
+								}
+							}
 					?>
-                    	<a href="<?php echo (is_multisite()) ? network_admin_url($url) : admin_url($url) ?>"><?php echo __('Manage '.$txt.' here','bsf') ?></a> | <a href="<?php echo (is_multisite()) ? network_admin_url('index.php?page=bsf-registration') : admin_url('index.php?page=bsf-registration') ?>"><?php echo __('Back to Registration','bsf') ?></a>
+                    	<a href="<?php echo (is_multisite()) ? network_admin_url($url) : admin_url($url) ?>"><?php echo __('Manage '.$txt.' here','bsf') ?></a> | <a href="<?php echo $reg_url ?>"><?php echo __('Back to Registration','bsf') ?></a>
                     <?php endif; ?>
             	</div>
          	<?php
@@ -55,11 +65,30 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
 
 	if(isset($_GET['remove-bundled-products']))  {
 		delete_option('brainstrom_bundled_products');
-		delete_site_transient('bsf_get_bundled_products');
-		if(is_multisite())
-			$redirect = network_admin_url('index.php?page=bsf-registration');
-		else
-			$redirect = admin_url('index.php?page=bsf-registration');
+		global $ultimate_referer;
+        $ultimate_referer = 'on-refresh-bundled-products';
+        get_bundled_plugins();
+        set_site_transient( 'bsf_get_bundled_products', true, 7*24*60*60 );
+		update_option('bsf_local_transient_bundled', current_time( 'timestamp' ));
+		//delete_site_transient('bsf_get_bundled_products');
+
+		$redirect = isset( $_GET['redirect'] ) ? urldecode( $_GET['redirect'] ) : '';
+
+		if ( $redirect == '' ) {
+			if(is_multisite())
+				$redirect = network_admin_url('index.php?page=bsf-registration');
+			else {
+				if(defined('BSF_REG_MENU_TO_SETTINGS') && (BSF_REG_MENU_TO_SETTINGS == true || BSF_REG_MENU_TO_SETTINGS == 'true')) {
+					$redirect = admin_url('options-general.php?page=bsf-registration');
+				}
+				else {
+					$redirect = admin_url('index.php?page=bsf-registration');
+				}
+			}
+		} else {
+			$redirect = add_query_arg( 'bsf-reload-page', '', $redirect );
+		}
+
 		echo '<script type="text/javascript">window.location = "'.$redirect.'";</script>';
 		//wp_redirect($redirect);
 	}
@@ -78,7 +107,11 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
 	}
 
 	if(isset($_GET['force-check-update'])) {
+		global $ultimate_referer;
+		$ultimate_referer = 'on-force-check-update';
 		bsf_check_product_update();
+		set_transient( 'bsf_check_product_updates', true, 2*24*60*60 );
+		update_option('bsf_local_transient', current_time( 'timestamp' ));
 		if(is_multisite())
 			$redirect = network_admin_url('update-core.php#brainstormforce-products');
 		else
@@ -312,10 +345,21 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
 <?php
 	$brainstrom_bundled_products = (get_option('brainstrom_bundled_products')) ? get_option('brainstrom_bundled_products') : array();
 	$brainstrom_bundled_products_keys = array();
-
 	if(!empty($brainstrom_bundled_products)) :
-		foreach($brainstrom_bundled_products as $bp)
-			array_push($brainstrom_bundled_products_keys, $bp->id);
+		foreach($brainstrom_bundled_products as $bkeys => $bps){
+			if(strlen($bkeys) > 1) {
+				foreach ($bps as $key => $bp) {
+					if(!isset($bp->id) || $bp->id == '')
+						continue;
+					array_push($brainstrom_bundled_products_keys, $bp->id);
+				}
+			}
+			else {
+				if(!isset($bps->id) || $bps->id == '')
+					continue;
+				array_push($brainstrom_bundled_products_keys, $bps->id);
+			}
+		}
 	endif;
 
 	$brainstrom_products = (get_option('brainstrom_products')) ? get_option('brainstrom_products') : array();
@@ -335,7 +379,7 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
 	$themes = wp_get_themes();
 ?>
 	<div class="bsf-pr-header bsf-left-header">
-		<h2><?php echo __("Welcome to Brainstorm Force",'imedica') ?></h2>
+		<h2><?php echo __("Welcome to Brainstorm Force",'bsf') ?></h2>
     	<div class="bsf-pr-decription"><?php echo __('Validate your purchase keys and get eligible for receiving one click updates, extensions and freebies.','bsf'); ?></div>
     </div>
 
@@ -418,20 +462,10 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
                     	<tr>
                         	<th scope="col" class="manage-column column-product_name">Product</th>
                             <th scope="col" class="manage-column column-product_version">Version</th>
-                            <th scope="col" class="manage-column column-product_status">License Key</th>
+                            <th scope="col" class="manage-column column-product_status">Purchase code</th>
                             <th scope="col" class="manage-column column-product_action">Action</th>
                      	</tr>
                     </thead>
-                    <!--
-	                    <tfoot>
-	                    	<tr>
-	                        	<th scope="col" class="manage-column column-product_name">Product</th>
-	                            <th scope="col" class="manage-column column-product_version">Version</th>
-	                            <th scope="col" class="manage-column column-product_status">License Key</th>
-	                            <th scope="col" class="manage-column column-product_action">Action</th>
-	                     	</tr>
-	                    </tfoot>
-	                -->
                     <tbody>
                     	<?php
 							$count = $registered_licence = 0;
@@ -453,6 +487,7 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
 									$id = (isset($info['id'])) ? $info['id'] : '';
 									$version = (isset($plugin_data['Version'])) ? $plugin_data['Version'] : '';
 									$name = $plugin_data['Name'];
+									$purchase_url = (isset($info['purchase_url'])) ? $info['purchase_url'] : 'javascript:void(0)';
 
 									$bsf_username = (isset($info['bsf_username'])) ? $info['bsf_username'] : $bsf_user_name;
 									$bsf_useremail = (isset($info['bsf_useremail'])) ? $info['bsf_useremail'] : $bsf_user_email;
@@ -469,6 +504,10 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
 										continue;
 
 									if($init_single_product_show && $request_product_id !== $id)
+										continue;
+
+									$constant = 'BSF_REMOVE_'.$id.'_FROM_REGISTRATION_LISTING';
+									if(defined($constant) && ($constant == 'true' || $constant == true))
 										continue;
 
 									$step = (isset($plugin_data['step']) && $plugin_data['step'] != '') ? $plugin_data['step'] : 'step-product-registration';
@@ -504,7 +543,8 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
                                             <td><input type="text" class="bsf-form-input" name="purchase_key" spellcheck="false" data-required="true" value="<?php echo $purchase_key ?>" <?php echo $readonly ?>/></td>
                                             <td>
                                             	<?php if($status !== 'registered') : ?>
-                                            		<input type="button" class="button button-primary bsf-submit-button" value="Register" data-row-id="<?php echo $row_id ?>" <?php echo $common_data; ?>/> <span class="spinner bsf-spinner"></span>
+                                            		<input type="button" class="button button-primary bsf-submit-button" value="Register" data-row-id="<?php echo $row_id ?>" <?php echo $common_data; ?>/>
+                                            		<a href="<?php echo $purchase_url; ?>" target="_blank" class="bsf-purchase-link" data-row-id="<?php echo $row_id ?>" />Buy License</a> <span class="spinner bsf-spinner"></span>
                                                	<?php else : ?>
                                                 	<input type="button" class="button bsf-submit-button-deregister" value="De-register" data-row-id="<?php echo $row_id ?>" <?php echo $common_data; ?>/> <span class="spinner bsf-spinner"></span>
                                                 <?php endif; ?>
@@ -536,6 +576,7 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
 									$type = (isset($info['type'])) ? $info['type'] : 'theme';
 									$template = (isset($info['template'])) ? $info['template'] : $plugin;
 									$id = (isset($info['id'])) ? $info['id'] : '';
+									$purchase_url = (isset($info['purchase_url'])) ? $info['purchase_url'] : 'javascript:void(0)';
 
 									if($request_product_id!='')
 										$init_single_product_show = true;
@@ -543,6 +584,10 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
 										$init_single_product_show = false;
 
 									if($init_single_product_show && $request_product_id !== $id)
+										continue;
+
+									$constant = 'BSF_REMOVE_'.$id.'_FROM_REGISTRATION';
+									if(defined($constant) && ($constant == 'true' || $constant == true))
 										continue;
 
 									$version = bsf_get_current_version($template, $type);
@@ -583,7 +628,8 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
                                             <td><input type="text" class="bsf-form-input" name="purchase_key" data-required="true" value="<?php echo $purchase_key ?>" <?php echo $readonly ?>/></td>
                                             <td>
                                             	<?php if($status !== 'registered') : ?>
-                                            		<input type="button" class="button button-primary bsf-submit-button" value="Register" data-row-id="<?php echo $row_id ?>" <?php echo $common_data; ?>/> <span class="spinner bsf-spinner"></span>
+                                            		<input type="button" class="button button-primary bsf-submit-button" value="Register" data-row-id="<?php echo $row_id ?>" <?php echo $common_data; ?>/>
+                                            		<a href="<?php echo $purchase_url; ?>" target="_blank" class="bsf-purchase-link" data-row-id="<?php echo $row_id ?>" />Buy License</a> <span class="spinner bsf-spinner"></span>
                                                	<?php else : ?>
                                                 	<input type="button" class="button bsf-submit-button-deregister" value="De-register" data-row-id="<?php echo $row_id ?>" <?php echo $common_data; ?>/> <span class="spinner bsf-spinner"></span>
                                                 <?php endif; ?>
@@ -596,7 +642,11 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
 						?>
                     </tbody>
                 </table>
+	                <div class="bsf-listing-cta">
+	                	<a href="https://support.brainstormforce.com/license-registration-faqs/" target="_blank">Questions? Having Issues?</a>
+	                </div>
                 </div>
+
             </div><!-- bsf-licence-tab -->
             <div id="bsf-help" class="bsf-tab">
             	<div class="inner">
@@ -639,10 +689,16 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
                                 <h2>Force Check Updates</h2>
                                 <span class="bsf-span"><?php echo __('Check if there are updates available of plugins by Brainstorm Force.','bsf'); ?></span>
                                 <?php
-                                    if(is_multisite())
-                                        $reset_url = network_admin_url('index.php?page=bsf-registration&force-check-update');
-                                    else
-                                        $reset_url = admin_url('index.php?page=bsf-registration&force-check-update');
+                                	if(is_multisite())
+										$reset_url = network_admin_url('index.php?page=bsf-registration&force-check-update');
+									else {
+										if(defined('BSF_REG_MENU_TO_SETTINGS') && (BSF_REG_MENU_TO_SETTINGS == true || BSF_REG_MENU_TO_SETTINGS == 'true')) {
+											$reset_url = admin_url('options-general.php?page=bsf-registration&force-check-update');
+										}
+										else {
+											$reset_url = admin_url('index.php?page=bsf-registration&force-check-update');
+										}
+									}
                                 ?>
                                 <a class="button-primary bsf-cp-update-btn" href="<?php echo $reset_url ?>"><?php echo __('Check Updates Now','bsf') ?></a>
                             </div>
@@ -681,24 +737,34 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
             	<div class="inner">
                 	<div class="bsf-cp-res-user">
                     	<?php
-							if(is_multisite())
+                    		if(is_multisite())
 								$reset_url = network_admin_url('index.php?page=bsf-registration&reset-bsf-users');
-							else
-								$reset_url = admin_url('index.php?page=bsf-registration&reset-bsf-users');
+							else {
+								if(defined('BSF_REG_MENU_TO_SETTINGS') && (BSF_REG_MENU_TO_SETTINGS == true || BSF_REG_MENU_TO_SETTINGS == 'true')) {
+									$reset_url = admin_url('options-general.php?page=bsf-registration&reset-bsf-users');
+								}
+								else {
+									$reset_url = admin_url('index.php?page=bsf-registration&reset-bsf-users');
+								}
+							}
 						?>
 						<a class="button-primary" href="<?php echo $reset_url ?>"><?php echo __('Reset Site','bsf') ?></a>
                     </div>
-                    <?php if($is_product_theme) : ?>
                 	<div class="bsf-cp-rem-bundle">
 	                	<?php
-							if(is_multisite())
+	                		if(is_multisite())
 								$url = network_admin_url('index.php?page=bsf-registration&remove-bundled-products');
-							else
-								$url = admin_url('index.php?page=bsf-registration&remove-bundled-products');
+							else {
+								if(defined('BSF_REG_MENU_TO_SETTINGS') && (BSF_REG_MENU_TO_SETTINGS == true || BSF_REG_MENU_TO_SETTINGS == 'true')) {
+									$url = admin_url('options-general.php?page=bsf-registration&remove-bundled-products');
+								}
+								else {
+									$url = admin_url('index.php?page=bsf-registration&remove-bundled-products');
+								}
+							}
 						?>
 						<a class="button-primary" href="<?php echo $url ?>"><?php echo __('Check Bundled Products','bsf') ?></a>
                     </div>
-                    <?php endif; ?>
                 </div>
             </div><!-- bsf-author-tab -->
             <?php endif; ?>
@@ -756,11 +822,48 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
 									?>
                                 </td>
                             </tr>
+                            <tr>
+                            	<td>BSF Updater Path</td>
+                            	<td>
+                            		<?php global $bsf_core_version; ?>
+                            		<?php echo '(v'.$bsf_core_version.') '.BSF_UPDATER_PATH; ?>
+                            	</td>
+                            </tr>
                             <?php if(defined('WPB_VC_VERSION')) : ?>
                             <tr>
                             	<td>vc_shortcode_output Filter</td>
 								<td>
                                 	<?php echo (has_filter('vc_shortcode_output')) ? 'Available' : 'Not Available'; ?>
+                                </td>
+                            </tr>
+							<?php endif; ?>
+							<?php
+								$mix = array_merge($bsf_product_plugins, $bsf_product_themes);
+								$temp_constant = '';
+								if(!empty($mix)) :
+									foreach($mix as $key => $product) :
+										$constant = strtoupper(str_replace('-', '_', $product['id']));
+										$constant = 'BSF_'.$constant.'_CHECK_UPDATES';
+										if(defined($constant) && (constant($constant) === 'false' || constant($constant) === false)) {
+											$temp_constant .= $constant.'<br/>';
+											continue;
+										}
+									endforeach;
+								endif;
+								if(defined('BSF_CHECK_PRODUCT_UPDATES') && BSF_CHECK_PRODUCT_UPDATES == false) {
+									$temp_constant .= 'BSF_CHECK_PRODUCT_UPDATES';
+								}
+								if($temp_constant != '') {
+									if(!defined('BSF_RESTRICTED_UPDATES')) {
+										define('BSF_RESTRICTED_UPDATES', $temp_constant);
+									}
+								}
+							?>
+							<?php if(defined('BSF_RESTRICTED_UPDATES')) : ?>
+                            <tr>
+                            	<td>Restrited Updates Filter</td>
+								<td>
+                                	<?php echo BSF_RESTRICTED_UPDATES; ?>
                                 </td>
                             </tr>
 							<?php endif; ?>
@@ -815,6 +918,18 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
 										}
 										else {
 											echo 'Not Enabled';
+										}
+									?>
+                              	</td>
+                            </tr>
+                            <tr class="<?php echo (!function_exists('curl_version')) ? 'bsf-alert' : ''; ?>">
+                            	<td>SimpleXML</td>
+                                <td>
+									<?php
+										if (extension_loaded('simplexml')) {
+										    echo "All good, extension is installed";
+										} else {
+											echo "Oops! extension not installed, Icon Manager will not work";
 										}
 									?>
                               	</td>
@@ -967,7 +1082,11 @@ if(isset($_POST['bsf-advanced-form-btn'])) {
 					$('.bsf-popup-message-inner').html(html);
 					$('.bsf-popup, .bsf-popup-message').fadeIn(300);
 					if(typeof result.after_registration_action !== 'undefined' && result.after_registration_action !== '')
-						window.location.href = admin_url+'/'+result.after_registration_action;
+						if ( result.after_registration_action == 'admin.php?page=bsf-extensions' ) {
+							window.location.href = admin_url+'/'+result.after_registration_action+'?product_id=10395942';
+						} else {
+							window.location.href = admin_url+'/'+result.after_registration_action;
+						}
 					else
 						location.reload();
 				}

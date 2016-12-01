@@ -522,7 +522,14 @@ if(!class_exists('Ultimate_Info_Banner'))
 								"heading" => __("Extra class name", "ultimate_vc"),
 								"param_name" => "el_class",
 								"description" => __("If you wish to style particular content element differently, then use this field to add a class name and then refer to it in your css file.", "ultimate_vc")
-							)
+							),
+							array(
+					            'type' => 'css_editor',
+					            'heading' => __( 'Css', 'ultimate_vc' ),
+					            'param_name' => 'css_infobanner',
+					            'group' => __( 'Design', 'ultimate_vc' ),
+					            'edit_field_class' => 'vc_col-sm-12 vc_column no-vc-background no-vc-border creative_link_css_editor',
+					        ),
 						),
 					)
 				);
@@ -531,7 +538,7 @@ if(!class_exists('Ultimate_Info_Banner'))
 		// Shortcode handler function for stats banner
 		function banner_shortcode($atts)
 		{
-			$output = $el_class = $style = $img_style = '';
+			$output = $el_class = $style = $img_style = $infobnr_design = '';
 
 			extract(shortcode_atts( array(
 				'banner_title' => '',
@@ -575,11 +582,14 @@ if(!class_exists('Ultimate_Info_Banner'))
 				'banner_img_height_mobile_landscape' => '',
 				'overlay_color' => '',
 				'el_class' => '',
+				'css_infobanner' => '',
 			),$atts));
 
 			$vc_version = (defined('WPB_VC_VERSION')) ? WPB_VC_VERSION : 0;
 			$is_vc_49_plus = (version_compare(4.9, $vc_version, '<=')) ? 'ult-adjust-bottom-margin' : '';
 
+			$infobnr_design = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, vc_shortcode_custom_css_class( $css_infobanner, ' ' ), "ultimate_info_banner", $atts );
+			$infobnr_design = esc_attr( $infobnr_design );
 			/* typography */
 			$title_style_inline = $desc_style_inline = $button_style_inline = '';
 			if($title_font_family != '')
@@ -682,14 +692,7 @@ if(!class_exists('Ultimate_Info_Banner'))
 
 			$banner_src = apply_filters('ult_get_img_single', $banner_image, 'url', 'full');
 
-			$banner_img_meta = wp_get_attachment_metadata($banner_image);
-
-			if(isset($banner_img_meta['image_meta']['caption']) && $banner_img_meta['image_meta']['caption'] != '')
-				$caption = $banner_img_meta['image_meta']['caption'];
-			else if(isset($banner_img_meta['image_meta']['title']) && $banner_img_meta['image_meta']['title'] != '')
-				$caption = $banner_img_meta['image_meta']['title'];
-			else
-				$caption = 'ib3 image';
+			$alt = apply_filters('ult_get_img_single', $banner_image, 'alt');
 
 			if($ib3_background != '')
 				$style .= 'background-color: '.$ib3_background.';';
@@ -711,12 +714,12 @@ if(!class_exists('Ultimate_Info_Banner'))
 			if($button_link_main == '')
 				$button_link_main = 'javascript:void(0);';
 
-			$output .= '<div id="ultib3-'.$id.'" class="ultb3-box '.$is_vc_49_plus.' '.$el_class.' '.$ib3_effect.'" style="'.$style.'">';
+			$output .= '<div id="ultib3-'.$id.'" class="'.$infobnr_design.' ultb3-box '.$is_vc_49_plus.' '.$el_class.' '.$ib3_effect.'" style="'.$style.'">';
 				if($overlay_color != '')
 					$output .= '<div class="ultb3-box-overlay" style="background:'.$overlay_color.';"></div>';
 
 				if(isset($banner_src) && $banner_src != '')
-					$output .= '<img src="'.$banner_src.'" style="'.$img_style.'" class="ultb3-img '.$ib3_alignment.'" alt="'.$caption.'"/>';
+					$output .= '<img src="'.apply_filters('ultimate_images', $banner_src).'" style="'.$img_style.'" class="ultb3-img '.$ib3_alignment.'" alt="'.$alt.'"/>';
 
 				$output .= '<div id="'.$info_banner_id.'" class="ultb3-info '.$info_alignment.'" data-animation="'.$info_effect.'" data-animation-delay="03">';
 

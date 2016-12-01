@@ -109,13 +109,30 @@ if(!class_exists('Ult_Image_Single'))
       if($content!='' && $content!='null|null') {
 
         //  Create an array
-        $mainStr = explode('|', $content);
+        $mainStr = explode('|', (string)$content);
         $string = '';
         $mainArr = array();
+
+        $temp_id = $mainStr[0];
+        $temp_url = (isset($mainStr[1])) ? $mainStr[1] : 'null';
+
         if( !empty($mainStr) && is_array($mainStr) ) {
           foreach ($mainStr as $key => $value) {
             if( !empty($value) ) {
-              array_push($mainArr, $value);
+            	if(stripos($value, '^') !== false) {
+            		$tmvav_array = explode('^', $value);
+	            	if(is_array($tmvav_array) && !empty($tmvav_array)) {
+	            		if(!empty($tmvav_array)) {
+		            		if(isset($tmvav_array[0])) {
+		            			$mainArr[$tmvav_array[0]] = (isset($tmvav_array[1])) ? $tmvav_array[1] : '';
+		            		}
+		            	}
+	            	}
+            	}
+            	else {
+            		$mainArr['id'] = $temp_id;
+            		$mainArr['url'] = $temp_url;
+            	}
             }
           }
         }
@@ -123,7 +140,7 @@ if(!class_exists('Ult_Image_Single'))
         if($data!='') {
           switch ($data) {
             case 'url':     // First  - Priority for ID
-                            if( !empty($mainArr[0]) && $mainArr[0] != 'null' ) {
+                            if( !empty($mainArr['id']) && $mainArr['id'] != 'null' ) {
 
                               $Image_Url = '';
                               //  Get image URL, If input is number - e.g. 100x48 / 140x40 / 350x53
@@ -131,7 +148,7 @@ if(!class_exists('Ult_Image_Single'))
                                 $size = explode('x', $size);
 
                                 //  resize image using vc helper function - wpb_resize
-                                $img = wpb_resize( $mainArr[0], null, $size[0], $size[1], true );
+                                $img = wpb_resize( $mainArr['id'], null, $size[0], $size[1], true );
                                 if ( $img ) {
                                   $Image_Url = $img['url']; // $img['width'], $img['height'],
                                 }
@@ -139,7 +156,7 @@ if(!class_exists('Ult_Image_Single'))
                               } else {
 
                                 //  Get image URL, If input is string - [thumbnail, medium, large, full]
-                                $hasImage = wp_get_attachment_image_src( $mainArr[0], $size ); // returns an array
+                                $hasImage = wp_get_attachment_image_src( $mainArr['id'], $size ); // returns an array
                                 $Image_Url = $hasImage[0];
                               }
 
@@ -148,16 +165,28 @@ if(!class_exists('Ult_Image_Single'))
                               } else {
 
                                 //  Second - Priority for URL - get {image from url}
-                                if(isset($mainArr[1]))
-                                  $final = ult_get_url($mainArr[1]);
+                                if(isset($mainArr['url']))
+                                  $final = ult_get_url($mainArr['url']);
 
                               }
                             } else {
                               //  Second - Priority for URL - get {image from url}
-                              if(isset($mainArr[1]))
-                                $final = ult_get_url($mainArr[1]);
+                              if(isset($mainArr['url']))
+                                $final = ult_get_url($mainArr['url']);
                             }
-              break;
+            break;
+            case 'title':
+            	$final = isset($mainArr['title']) ? $mainArr['title'] : get_post_meta($mainArr['id'], '_wp_attachment_image_title', true);
+            break;
+            case 'caption':
+            	$final = isset($mainArr['caption']) ? $mainArr['caption'] : get_post_meta($mainArr['id'], '_wp_attachment_image_caption', true);
+            break;
+            case 'alt':
+            	$final = isset($mainArr['alt']) ? $mainArr['alt'] : get_post_meta($mainArr['id'], '_wp_attachment_image_alt', true);
+            break;
+            case 'description':
+            	$final = isset($mainArr['description']) ? $mainArr['description'] : get_post_meta($mainArr['id'], '_wp_attachment_image_description', true);
+            break;
             case 'json':
                           $final = json_encode($mainArr);
               break;
@@ -186,33 +215,37 @@ if(!class_exists('Ult_Image_Single'))
     }
   }
 
-  function ult_get_url($img) {
-    if( isset($img) && !empty($img) ) {
-      return $img;
+  if(!function_exists('ult_get_url')) {
+    function ult_get_url($img) {
+      if( isset($img) && !empty($img) ) {
+        return $img;
+      }
     }
   }
 
   //  USE THIS CODE TO SUPPORT CUSTOM SIZE OPTION
-  function getImageSquereSize( $img_id, $img_size ) {
-    if ( preg_match_all( '/(\d+)x(\d+)/', $img_size, $sizes ) ) {
-      $exact_size = array(
-        'width' => isset( $sizes[1][0] ) ? $sizes[1][0] : '0',
-        'height' => isset( $sizes[2][0] ) ? $sizes[2][0] : '0',
-      );
-    } else {
-      $image_downsize = image_downsize( $img_id, $img_size );
-      $exact_size = array(
-        'width' => $image_downsize[1],
-        'height' => $image_downsize[2],
-      );
-    }
-    if ( isset( $exact_size['width'] ) && (int) $exact_size['width'] !== (int) $exact_size['height'] ) {
-      $img_size = (int) $exact_size['width'] > (int) $exact_size['height']
-        ? $exact_size['height'] . 'x' . $exact_size['height']
-        : $exact_size['width'] . 'x' . $exact_size['width'];
-    }
+  if(!function_exists('getImageSquereSize')) {
+    function getImageSquereSize( $img_id, $img_size ) {
+      if ( preg_match_all( '/(\d+)x(\d+)/', $img_size, $sizes ) ) {
+        $exact_size = array(
+          'width' => isset( $sizes[1][0] ) ? $sizes[1][0] : '0',
+          'height' => isset( $sizes[2][0] ) ? $sizes[2][0] : '0',
+        );
+      } else {
+        $image_downsize = image_downsize( $img_id, $img_size );
+        $exact_size = array(
+          'width' => $image_downsize[1],
+          'height' => $image_downsize[2],
+        );
+      }
+      if ( isset( $exact_size['width'] ) && (int) $exact_size['width'] !== (int) $exact_size['height'] ) {
+        $img_size = (int) $exact_size['width'] > (int) $exact_size['height']
+          ? $exact_size['height'] . 'x' . $exact_size['height']
+          : $exact_size['width'] . 'x' . $exact_size['width'];
+      }
 
-    return $img_size;
+      return $img_size;
+    }
   }
 }
 

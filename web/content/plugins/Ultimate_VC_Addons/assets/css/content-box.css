@@ -13,3 +13,8 @@
     line-height: inherit;
     outline: 0
 }
+.ult-content-box:after {
+    content:'';
+    display:block;
+    clear:both;
+}

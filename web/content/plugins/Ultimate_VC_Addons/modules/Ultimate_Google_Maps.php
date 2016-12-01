@@ -12,7 +12,15 @@ if(!class_exists("Ultimate_Google_Maps")){
 		}
 		function ultimate_google_map_script()
 		{
-			wp_register_script("googleapis","https://maps.googleapis.com/maps/api/js?v=3.21&sensor=false",array(),ULTIMATE_VERSION,false);
+			$api = 'https://maps.googleapis.com/maps/api/js';
+			$map_key = bsf_get_option('map_key');
+			if($map_key != false) {
+				$arr_params = array(
+					'key' => $map_key
+				);
+				$api = esc_url( add_query_arg( $arr_params , $api ));
+			}
+			wp_register_script("googleapis",$api,null,null,false);
 		}
 		function google_maps_init(){
 			if ( function_exists('vc_map'))
@@ -225,7 +233,7 @@ if(!class_exists("Ultimate_Google_Maps")){
 							"heading" => __("Google Styled Map JSON","ultimate_vc"),
 							"param_name" => "map_style",
 							"value" => "",
-							"description" => "<a target='_blank' href='http://gmaps-samples-v3.googlecode.com/svn/trunk/styledmaps/wizard/index.html'>".__("Click here","ultimate_vc")."</a> ".__("to get the style JSON code for styling your map.","ultimate_vc"),
+							"description" => "<a target='_blank' href='http://googlemaps.github.io/js-samples/styledmaps/wizard/index.html'>".__("Click here","ultimate_vc")."</a> ".__("to get the style JSON code for styling your map.","ultimate_vc"),
 							"group" => "Styling",
 						),
 						array(
@@ -295,6 +303,36 @@ if(!class_exists("Ultimate_Google_Maps")){
 								"dependency" => Array("element" => "map_border_style", "not_empty" => true),
 								"group" => "Border"
 						  	),
+						  	array(
+						            "type" => "ultimate_spacing",
+						            "heading" => " Map Margin ",
+						            "param_name" => "gmap_margin",
+						            "mode"  => "margin",                    //  margin/padding
+						            "unit"  => "px",                        //  [required] px,em,%,all     Default all
+						            "positions" => array(                   //  Also set 'defaults'
+						              	"Top" => "",
+						              	"Right" => "",
+						              	"Bottom" => "",
+						              	"Left" => "",
+						            ),
+						            'group' => __( 'Styling', 'ultimate_vc' ),
+									"description" => __("Add spacing from outside to the map.", "ultimate_vc"),
+						        ),
+							array(
+						            "type" => "ultimate_spacing",
+						            "heading" => " Map padding ",
+						            "param_name" => "gmap_padding",
+						            "mode"  => "padding",                    //  margin/padding
+						            "unit"  => "px",                        //  [required] px,em,%,all     Default all
+						            "positions" => array(                   //  Also set 'defaults'
+						              	"Top" => "",
+						              	"Right" => "",
+						              	"Bottom" => "",
+						              	"Left" => "",
+						            ),
+						            'group' => __( 'Styling', 'ultimate_vc' ),
+									"description" => __("Add spacing from outside to the map.", "ultimate_vc"),
+						        ),
 					)
 				));
 			}
@@ -328,13 +366,17 @@ if(!class_exists("Ultimate_Google_Maps")){
 				"map_border_style" => "",
 				"map_color_border" => "",
 				"map_border_size" => "",
-				"map_radius" => ""
+				"map_radius" => "",
+				"gmap_margin" => "",
+				"gmap_padding" => "",
 			), $atts));
 
 			$vc_version = (defined('WPB_VC_VERSION')) ? WPB_VC_VERSION : 0;
 			$is_vc_49_plus = (version_compare(4.9, $vc_version, '<=')) ? 'ult-adjust-bottom-margin' : '';
 
-			$border_css='';
+			$border_css= $gmap_design_css ='';
+			$gmap_design_css = $gmap_margin;
+			$gmap_design_css .=$gmap_padding;
 			$marker_lat = $lat;
 			$marker_lng = $lng;
 			if($marker_icon == "default_self"){
@@ -367,7 +409,7 @@ if(!class_exists("Ultimate_Google_Maps")){
 			if($map_vc_template == 'map_vc_template_value')
 				$el_class .= 'uvc-boxed-layout';
 
-			$output .= "<div id='".$wrap_id."' class='ultimate-map-wrapper ".$is_vc_49_plus." ".$el_class."' style='".($map_height!="" ? "height:" . $map_height . ";" : "")."'><div id='" . $id . "' data-map_override='".$map_override."' class='ultimate_google_map wpb_content_element ".$margin_css."'" . ($width!="" || $map_height!="" ? " style='".$border_css . ($width!="" ? "width:" . $width . ";" : "") . ($map_height!="" ? "height:" . $map_height . ";" : "") . "'" : "") . "></div></div>";
+			$output .= "<div id='".$wrap_id."' class='ultimate-map-wrapper ".$is_vc_49_plus." ".$el_class."' style='".$gmap_design_css." ".($map_height!="" ? "height:" . $map_height . ";" : "")."'><div id='" . $id . "' data-map_override='".$map_override."' class='ultimate_google_map wpb_content_element ".$margin_css."'" . ($width!="" || $map_height!="" ? " style='".$border_css . ($width!="" ? "width:" . $width . ";" : "") . ($map_height!="" ? "height:" . $map_height . ";" : "") . "'" : "") . "></div></div>";
 
 			if($scrollwheel == "disable"){
 				$scrollwheel = 'false';
@@ -506,6 +548,23 @@ if(!class_exists("Ultimate_Google_Maps")){
 			}
 			})(jQuery);
 			</script>";
+			$is_preset = false; //Retrieve preset Code
+				if(isset($_GET['preset'])) {
+					$is_preset = true;
+				}
+				if($is_preset) {
+					$text = 'array ( ';
+					foreach ($atts as $key => $att) {
+						$text .= '<br/>	\''.$key.'\' => \''.$att.'\',';
+					}
+					if($content != '') {
+						$text .= '<br/>	\'content\' => \''.$content.'\',';
+					}
+					$text .= '<br/>)';
+					$output .= '<pre>';
+					$output .= $text;
+					$output .= '</pre>'; // remove backslash once copied
+				}
 			return $output;
 		}
 	}

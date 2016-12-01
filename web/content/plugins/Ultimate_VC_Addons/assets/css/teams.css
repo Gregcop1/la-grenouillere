@@ -3,21 +3,30 @@
 .ult-team-member-image {
     overflow: hidden;
     position: relative;
+    -webkit-border-top-left-radius: inherit;
     border-top-left-radius: inherit;
+    -webkit-border-top-right-radius: inherit;
     border-top-right-radius: inherit;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 
 .ult-team-member-image img {
   width: 100%;
+  -webkit-box-shadow: none;
   box-shadow: none;
   vertical-align: middle;
+  -webkit-border-radius: 0px;
   border-radius: 0px;
 }
 
 .ult-team-member-bio-wrap {
   text-align: center;
+  -webkit-border-radius: inherit;
   border-radius: inherit;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -33,19 +42,19 @@
   font-size: 60px;
   color: #373737;
   font-weight: 300;
+  -webkit-border-radius: inherit;
   border-radius: inherit;
   top: 50%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   visibility: hidden;
   opacity: 0;
+  -webkit-transition: all .2s linear;
   transition: all .2s linear;
   z-index: 9999;
   -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
-  -ms-transition: all 0.2s ease-in-out;
-  -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 .ult-team-member-wrap:hover .ult-team-member-image .ult-team-member-image-overlay.ult-team_img_hover{
@@ -53,7 +62,6 @@
     height: 101%;
     z-index: 9;
     -webkit-box-shadow: inset 10px 10px 160px 20px inherit;
-    -moz-box-shadow: inset 10px 10px 160px 20px inherit;
     box-shadow: inset 10px 10px 160px 20px inherit;
     visibility: visible;
     opacity: 1;
@@ -67,39 +75,27 @@
     visibility: hidden;
     opacity: 0;
     -webkit-box-shadow: inset 10px 10px 160px 20px inherit;
-    -moz-box-shadow: inset 10px 10px 160px 20px inherit;
     box-shadow: inset 10px 10px 160px 20px inherit;
     -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: all 0.3s ease-in-out;
-    -ms-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
+    -webkit-border-radius: inherit;
     border-radius: inherit;
 }
 .ult-team-member-wrap:hover > .ult-team-member-image.ult-team_img_hover:before {
     visibility: visible;
     opacity: 1;
     -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: all 0.3s ease-in-out;
-    -ms-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
 }
 .ult-team-member-wrap:hover > .ult-team-member-image.ult-team_img_hover:after {
     visibility: visible;
     opacity: 1;
     -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: all 0.3s ease-in-out;
-    -ms-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
 }
 
 .ult-social-icon {
 	-webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: all 0.3s ease-in-out;
-    -ms-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
 }
 
@@ -109,6 +105,8 @@
 .ult-style-3.ult-team-member-bio-wrap {
     padding: 25px 10px;
     margin: 0px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 
@@ -116,6 +114,8 @@
 .ult-style-2 .ult-team-member-name-wrap,
 .ult-style-3 .ult-team-member-name-wrap {
   width:100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -139,6 +139,8 @@
   letter-spacing: 1px;
   text-transform: uppercase;
   display: block;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -155,12 +157,16 @@
   padding-top: 2px;
   margin-top: 15px;
   margin-bottom: 0px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
 .ult-style-1 .ult-team-member-description,
 .ult-style-2 .ult-team-member-description {
   margin: 20px 0 10px 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
   color: #777777;
 }
@@ -178,13 +184,12 @@
   position: absolute;
   opacity: 0;
   margin: 20px 0 10px 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
   color: #303030;
   width: 100%;
   -webkit-transition: opacity .3s ease-in-out;
-  -moz-transition: opacity .3s ease-in-out;
-  -ms-transition: opacity .3s ease-in-out;
-  -o-transition: opacity .3s ease-in-out;
   transition: opacity .3s ease-in-out;
 }
 .ult-style-3:hover .ult-team-member-description {
@@ -192,10 +197,8 @@
 }
 .ult-style-3 .ult-team-member-image img {
   -webkit-transition: opacity .3s ease-in-out;
-  -moz-transition: opacity .3s ease-in-out;
-  -ms-transition: opacity .3s ease-in-out;
-  -o-transition: opacity .3s ease-in-out;
   transition: opacity .3s ease-in-out;
+  -webkit-border-radius: inherit;
   border-radius: inherit;
 }
 .ult-style-3:hover .ult-team-member-image img {
@@ -233,18 +236,13 @@
   -moz-filter: grayscale(100%);
   -ms-filter: grayscale(100%);
   -o-filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
   filter: grayscale(100%);
   filter: gray;
   -webkit-filter: grayscale(1);
   -webkit-transition: all .3s;
-  -moz-transition: all .3s;
-  -ms-transition: all .3s;
-  -o-transition: all .3s;
   transition: all .3s;
   -webkit-backface-visibility: hidden;
-  -moz-backface-visibility: hidden;
-  -ms-backface-visibility: hidden;
-  -o-backface-visibility: hidden;
   backface-visibility: hidden;
   ms-backface-visibility: hidden;
 }
@@ -252,6 +250,8 @@
   overflow: hidden;
   -webkit-transform: translateZ(0);
   -webkit-mask-image: -webkit-radial-gradient(circle, white 100%, black 100%);
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 .ult-style-1:hover .ult-team-member-image img.ult-team-grayscale,
@@ -259,6 +259,7 @@
   -moz-filter: grayscale(0);
   -ms-filter: grayscale(0);
   -o-filter: grayscale(0);
+  -webkit-filter: normal;
   filter: normal;
   filter: grayscale(0);
   -webkit-filter: grayscale(0);
@@ -270,25 +271,28 @@
   overflow: hidden;
   -webkit-transform: translateZ(0);
   -webkit-mask-image: -webkit-radial-gradient(circle, white 100%, black 100%);
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
 .ult-style-2 .ult-team-member-image {
+  -webkit-border-radius: inherit;
   border-radius: inherit;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
 .ult-style-2 .ult-team-member-image img{
   opacity: 0.65;
+  -webkit-border-radius: inherit;
   border-radius: inherit;
 }
 
 .ult-style-2:hover .ult-team-member-image img{
   opacity: 1;
   -webkit-transition: all 500ms ease;
-  -moz-transition: all 500ms ease;
-  -ms-transition: all 500ms ease;
-  -o-transition: all 500ms ease;
   transition: all 500ms ease;
   transition: all 500ms ease;
 }
@@ -302,29 +306,25 @@
   width: 100%;
   top: 50%;
   -webkit-transform: translateY(-50%);
-  -moz-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
-  -o-transform: translateY(-50%);
   transform: translateY(-50%);
 
   -webkit-transition: all .3s ease;
-  -moz-transition: all .3s ease;
-  -ms-transition: all .3s ease;
-  -o-transition: all .3s ease;
   transition: all .3s ease;
   text-align: center;
+  -webkit-border-radius: inherit;
   border-radius: inherit;
 }
 .ult-style-2 .ult-team-member-bio-wrap .ult-team_description_slide {
   position: absolute;
   width: 100%;
   -webkit-transition: all .3s ease;
-  -moz-transition: all .3s ease;
-  -ms-transition: all .3s ease;
-  -o-transition: all .3s ease;
   transition: all .3s ease;
   top: 100%;
+  -webkit-border-radius: inherit;
   border-radius: inherit;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -370,4 +370,13 @@
 .ult-team-member-wrap,
 .wpb_column>.wpb_wrapper .ult-team-member-wrap {
    margin-bottom: 35px;
+}
+
+.ult-team-member-wrap .ult-team-member-image a,
+.ult-team-member-wrap a {
+    -webkit-border-radius: inherit;
+    border-radius: inherit;
+}
+.ult-style-2 .ult-team-member-description {
+    margin: 10px 0 10px;
 }

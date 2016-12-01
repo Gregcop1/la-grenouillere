@@ -1,10 +1,15 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
+
 return array(
-	'name' => __( 'Row' , 'js_composer' ),
+	'name' => __( 'Row', 'js_composer' ),
 	'is_container' => true,
 	'icon' => 'icon-wpb-row',
 	'show_settings_on_create' => false,
 	'category' => __( 'Content', 'js_composer' ),
+	'class' => 'vc_main-sortable-element',
 	'description' => __( 'Place content elements inside the row', 'js_composer' ),
 	'params' => array(
 		array(
@@ -68,7 +73,7 @@ return array(
 			'heading' => __( 'Equal height', 'js_composer' ),
 			'param_name' => 'equal_height',
 			'description' => __( 'If checked columns will be set to equal height.', 'js_composer' ),
-			'value' => array( __( 'Yes', 'js_composer' ) => 'yes' )
+			'value' => array( __( 'Yes', 'js_composer' ) => 'yes' ),
 		),
 		array(
 			'type' => 'dropdown',
@@ -143,10 +148,41 @@ return array(
 			),
 		),
 		array(
+			'type' => 'textfield',
+			'heading' => __( 'Parallax speed', 'js_composer' ),
+			'param_name' => 'parallax_speed_video',
+			'value' => '1.5',
+			'description' => __( 'Enter parallax speed ratio (Note: Default value is 1.5, min value is 1)', 'js_composer' ),
+			'dependency' => array(
+				'element' => 'video_bg_parallax',
+				'not_empty' => true,
+			),
+		),
+		array(
+			'type' => 'textfield',
+			'heading' => __( 'Parallax speed', 'js_composer' ),
+			'param_name' => 'parallax_speed_bg',
+			'value' => '1.5',
+			'description' => __( 'Enter parallax speed ratio (Note: Default value is 1.5, min value is 1)', 'js_composer' ),
+			'dependency' => array(
+				'element' => 'parallax',
+				'not_empty' => true,
+			),
+		),
+		vc_map_add_css_animation( false ),
+		array(
 			'type' => 'el_id',
 			'heading' => __( 'Row ID', 'js_composer' ),
 			'param_name' => 'el_id',
 			'description' => sprintf( __( 'Enter row ID (Note: make sure it is unique and valid according to <a href="%s" target="_blank">w3c specification</a>).', 'js_composer' ), 'http://www.w3schools.com/tags/att_global_id.asp' ),
+		),
+		array(
+			'type' => 'checkbox',
+			'heading' => __( 'Disable row', 'js_composer' ),
+			'param_name' => 'disable_element',
+			// Inner param name.
+			'description' => __( 'If checked the row won\'t be visible on the public side of your website. You can switch it back any time.', 'js_composer' ),
+			'value' => array( __( 'Yes', 'js_composer' ) => 'yes' ),
 		),
 		array(
 			'type' => 'textfield',

@@ -38,6 +38,7 @@ class MSP_Shortcode_Factory {
 		if( ! isset( $this->parsed_slider_data['setting'] ) )
 			return '';
 
+
 		$shortcode_name = 'ms_slider';
 
 		// get the parsed slider setting
@@ -52,13 +53,24 @@ class MSP_Shortcode_Factory {
 			$attrs .= sprintf( '%s="%s" ', $attr, esc_attr( $attr_value ) );
 		}
 
-		// get ms_slides shortcodes(s)
+		// get ms_slides shortcode(s)
 		if( 'post' == $this->parsed_slider_data['setting']['slider_type'] ) {
-			$the_content = $this->get_post_slider_ms_slides_shortcode();
+
+            // remove the empty overlay slide data while it is not available for dynamic sliders
+            if( empty( $this->parsed_slider_data['slides']['0'] ) ){
+                array_shift( $this->parsed_slider_data['slides'] );
+            }
+            $the_content = $this->get_post_slider_ms_slides_shortcode();
 
 		} elseif( 'wc-product' == $this->parsed_slider_data['setting']['slider_type'] ) {
-			if ( ! msp_is_plugin_active( 'woocommerce/woocommerce.php' ) )
+
+            if ( ! msp_is_plugin_active( 'woocommerce/woocommerce.php' ) )
 				return __( 'Please install and activate WooCommerce plugin.', MSWP_TEXT_DOMAIN );
+
+            // remove the empty overlay slide data while it is not available for dynamic sliders
+            if( empty( $this->parsed_slider_data['slides']['0'] ) ){
+                array_shift( $this->parsed_slider_data['slides'] );
+            }
 
 			$the_content = $this->get_wc_slider_ms_slides_shortcode();
 
@@ -73,7 +85,7 @@ class MSP_Shortcode_Factory {
 
 	public function get_ms_slide_shortcode( $slide ){
 
-		if( ! isset( $slide ) || empty( $slide ) )
+		if( empty( $slide ) )
 			return '';
 
 		$shortcode_name = 'ms_slide';
@@ -138,6 +150,23 @@ class MSP_Shortcode_Factory {
 
 
 
+    public function get_ms_overlay_slide_shortcode( $slide ){
+
+        if( empty( $slide ) )
+            return '';
+
+        // dont generate overlay slide if the corresponding option is not enabled
+        if( 'true' != $this->parsed_slider_data['setting']['enable_overlay_layers'] ){
+            return '';
+        }
+
+        $the_content = $this->get_ms_layers_shortcode( $slide['layers'] );
+
+        return '[ms_overlay_slide]'.$the_content. '[/ms_overlay_slide]'."\n";
+    }
+
+
+
 	public function get_ms_slides_shortcode() {
 
 		if( ! isset( $this->parsed_slider_data['slides'] ) )
@@ -148,8 +177,13 @@ class MSP_Shortcode_Factory {
 		$shortcodes = '';
 
 		foreach ( $slides as $slide ) {
-			if( 'true' != $slide['ishide'] )
-				$shortcodes .= $this->get_ms_slide_shortcode( $slide );
+			if( ! empty( $slide['ishide'] ) && 'true' != $slide['ishide'] ){
+                if( 'true' != $slide['is_overlay_layers'] ){
+				    $shortcodes .= $this->get_ms_slide_shortcode( $slide );
+                } else {
+                    $shortcodes .= $this->get_ms_overlay_slide_shortcode( $slide );
+                }
+            }
 		}
 
 		return $shortcodes;
@@ -245,14 +279,17 @@ class MSP_Shortcode_Factory {
 	}
 
 
-
+    /**
+     * Generates shortcode code base of posts for post slider
+     *
+     * @return string    Post slider shortcode
+     */
 	public function get_post_slider_ms_slides_shortcode() {
 
 		if( ! isset( $this->parsed_slider_data['slides'] ) )
 			return '';
 
 		$slides = $this->parsed_slider_data['slides'];
-
 
 		$query = array();
 
@@ -292,6 +329,9 @@ class MSP_Shortcode_Factory {
 		$PS = msp_get_post_slider_class();
 		$query['tax_query'] = $PS->get_tax_query( $taxs_data );
 
+        $query['image_size'] = 'full';
+        $query = apply_filters( 'msp_post_slider_query_args', $query, $this->parsed_slider_data );
+
 		$this->post_slider_args = $query;
 
 
@@ -309,7 +349,7 @@ class MSP_Shortcode_Factory {
 
             // get slide image
             if( empty( $this->parsed_slider_data['setting']['ps_slide_bg'] ) ) {
-                $the_media = msp_get_auto_post_thumbnail_src( $th_wp_query->post, $query['image_from'] );
+                $the_media = msp_get_auto_post_thumbnail_url( $th_wp_query->post, $query['image_from'], $query['image_size'] );
             } else {
                 $the_media = $this->parsed_slider_data['setting']['ps_slide_bg'];
             }
@@ -343,7 +383,8 @@ class MSP_Shortcode_Factory {
 
 			$attrs .= sprintf( '%s="%s" ', 'target' , $this->parsed_slider_data['setting']['ps_link_target'] );
 
-			$attrs .= sprintf( '%s="%s" ', 'delay' , $slides['0']['delay'] );
+            $attrs .= sprintf( '%s="%s" ', 'delay' , $slides['0']['delay'] );
+			$attrs .= sprintf( '%s="%s" ', 'css_class' , $slides['0']['css_class'].' ms-slide-post-' . $th_wp_query->post->ID );
 
 			// bg color and align for slides
 			$attrs .= sprintf( '%s="%s" ', 'bgalign' , $slides['0']['bgalign'] );
@@ -375,7 +416,7 @@ class MSP_Shortcode_Factory {
 					// if "insert thumb" option was enabled generate and add the thumbnail
 					if( 'true' == $this->parsed_slider_data['setting']['thumbs_in_tab'] ) {
 						$thumb_height = $this->parsed_slider_data['setting']['thumbs_height'];
-						$tab_thumb    = msp_get_auto_post_thumbnail_src( $the_wp_query->post, 'featured', $thumb_height, $thumb_height, true );
+						$tab_thumb    = msp_get_auto_post_thumbnail_url( $th_wp_query->post, 'featured', array( $thumb_height, $thumb_height ), true );
 
 						$attrs .= sprintf( '%s="%s" ', 'tab_thumb' , $tab_thumb );
 					}
@@ -391,7 +432,11 @@ class MSP_Shortcode_Factory {
 
 			}
 
-
+            // if( 'true' != $slide['is_overlay_layers'] ){
+            //     $shortcodes .= $this->get_ms_slide_shortcode( $slide );
+            // } else {
+            //     $shortcodes .= $this->get_ms_overlay_slide_shortcode( $slide );
+            // }
 			$slide_content .= $this->get_ms_layers_shortcode( $slides['0']['layers'] );
 
 			$slides_shortcode .= sprintf( '[%1$s %2$s]%4$s%3$s[/%1$s]%4$s', 'ms_slide', $attrs, $slide_content, "\n" );
@@ -458,6 +503,9 @@ class MSP_Shortcode_Factory {
 		$wcs = msp_get_wc_slider_class();
 		$query['tax_query'] = $wcs->get_tax_query( $taxs_data );
 
+        $query['image_size'] = 'full';
+        $query = apply_filters( 'msp_wc_slider_query_args', $query, $this->parsed_slider_data );
+
 		$this->post_slider_args = $query;
 
 
@@ -476,7 +524,7 @@ class MSP_Shortcode_Factory {
 
 
             if( empty( $this->parsed_slider_data['setting']['ps_slide_bg'] ) ) {
-                $the_media = msp_get_auto_post_thumbnail_src( $th_wp_query->post, $query['image_from'] );
+                $the_media = msp_get_auto_post_thumbnail_url( $th_wp_query->post, $query['image_from'] );
             } else {
                 $the_media = $this->parsed_slider_data['setting']['ps_slide_bg'];
             }
@@ -543,7 +591,7 @@ class MSP_Shortcode_Factory {
 					// if "insert thumb" option was enabled generate and add the thumbnail
 					if( 'true' == $this->parsed_slider_data['setting']['thumbs_in_tab'] ) {
 						$thumb_height = $this->parsed_slider_data['setting']['thumbs_height'];
-						$tab_thumb    = msp_get_auto_post_thumbnail_src( $the_wp_query->post, 'featured', $thumb_height, $thumb_height, true );
+						$tab_thumb    = msp_get_auto_post_thumbnail_url( $th_wp_query->post, 'featured', array( $thumb_height, $thumb_height ), true );
 
 						$attrs .= sprintf( '%s="%s" ', 'tab_thumb' , $tab_thumb );
 					}

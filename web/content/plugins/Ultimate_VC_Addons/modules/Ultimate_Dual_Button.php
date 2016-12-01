@@ -72,7 +72,7 @@ $button2_text = $btn_icon_type = $btn_icon = $btn_icon_img = $btn_img_width = $b
 $btn_icon_color = $btn_icon_style = $btn_icon_color_bg = $btn_icon_border_style = $btn_icon_color_border =
 $btn_icon_border_size = $btn_icon_border_radius = $btn_icon_border_spacing =  $btn_icon_link = $btn2_icon_align =
 $btn2_background_color = $btn2_bghovercolor = $btn2_font_family = $btn2_heading_style = $btn2_text_color =
-$btn2_text_hovercolor='';
+$btn2_text_hovercolor = '';
 $divider_style = $divider_text = $divider_text_color = $divider_bg_color = $divider_icon = $divider_icon_img = $btn_border_style = $btn_color_border = $btn_border_size = $btn_border_radius = $btn_hover_style = $title_font_size = $title_line_ht = $el_class = '';
 
 	extract(shortcode_atts( array(
@@ -160,7 +160,7 @@ $divider_style = $divider_text = $divider_text_color = $divider_bg_color = $divi
 				'btn_alignment'=>'center',
 				'btn_width'=>'',
 				'dual_resp' =>'on',
-
+				'css_dualbtn_design' => '',
 				//'btn_resp_width'=>'',
 				//'btn_color_hoverborder'=>' ',
 
@@ -172,7 +172,9 @@ $divider_style = $divider_text = $divider_text_color = $divider_bg_color = $divi
 			$extraclass=$el_class;
 			$el_class1=$css_trans=$button2_bstyle=$button1_bstyle=$target1=$url1=$btn_color_hoverborder='';
 			$iconoutput= $style = $link_sufix = $link_prefix = $target = $href = $icon_align_style = '';
-			$secicon=$style1='';
+			$secicon=$style1= $dual_design_style_css ='';
+			 $dual_design_style_css = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, vc_shortcode_custom_css_class( $css_dualbtn_design, ' ' ), "ult_dualbutton", $atts );
+			 $dual_design_style_css = esc_attr( $dual_design_style_css );
 
 			if($icon_link !== ''){
 				 $href = vc_build_link($icon_link);
@@ -191,7 +193,7 @@ $divider_style = $divider_text = $divider_text_color = $divider_bg_color = $divi
 			if($icon_type == 'custom'){
 				if($icon_img!==''){
 				$img = apply_filters('ult_get_img_single', $icon_img, 'url');
-				$alt = get_post_meta($icon_img, '_wp_attachment_image_alt', true);
+				$alt = apply_filters('ult_get_img_single', $icon_img, 'alt');
 				if($icon_style !== 'none'){
 					if($icon_color_bg !== '')
 						$style .= 'background:'.$icon_color_bg.';';
@@ -215,7 +217,7 @@ $divider_style = $divider_text = $divider_text_color = $divider_bg_color = $divi
 						//$style .= 'display:inline-block;';
 					}
 					$iconoutput .= "\n".'<span class="aio-icon-img '.$el_class.' '.'btn1icon " style="font-size:'.$img_width.'px;'.$style.'" '.$css_trans.'>';
-					$iconoutput .= "\n\t".'<img class="img-icon dual_img" alt="'.$alt.'" src="'.$img.'" />';
+					$iconoutput .= "\n\t".'<img class="img-icon dual_img" alt="'.$alt.'" src="'.apply_filters('ultimate_images', $img).'" />';
 					$iconoutput .= "\n".'</span>';
 				}
 				if(!empty($img)){
@@ -288,7 +290,7 @@ $style2=$href1 =$target2=$img2=$alt1 =$iconoutput2=$url2='';
 
 if($btn_icon_type == 'custom'){
 				$img2 = apply_filters('ult_get_img_single', $btn_icon_img, 'url');
-				$alt2 = get_post_meta($btn_icon_img, '_wp_attachment_image_alt', true);
+				$alt2 = apply_filters('ult_get_img_single', $btn_icon_img, 'alt');
 				if($btn_icon_style !== 'none'){
 					if($btn_icon_color_bg !== '')
 						$style2 .= 'background:'.$btn_icon_color_bg.';';
@@ -313,7 +315,7 @@ if($btn_icon_type == 'custom'){
 						//$style .= 'display:inline-block;';
 					}
 					$iconoutput2 .= "\n".'<span class="aio-icon-img '.$el_class1.' btn1icon" style="font-size:'.$btn_img_width.'px;'.$style2.'" '.$css_trans.'>';
-					$iconoutput2 .= "\n\t".'<img class="img-icon dual_img" alt="'.$alt2.'" src="'.$img2.'" />';
+					$iconoutput2 .= "\n\t".'<img class="img-icon dual_img" alt="'.$alt2.'" src="'.apply_filters('ultimate_images', $img2).'" />';
 					$iconoutput2 .= "\n".'</span>';
 				}
 				if(!empty($img2)){
@@ -492,8 +494,8 @@ border-radius: 50%;
 background-color:'.$divider_bg_color.';';
 
 $img3 = apply_filters('ult_get_img_single', $divider_icon_img, 'url');
-				$alt3 = get_post_meta($divider_icon_img, '_wp_attachment_image_alt', true);
-$text='<img class="img-icon" alt="'.$alt3.'" src="'.$img3.'" style="'.$text_style.'" />';
+$alt3 = apply_filters('ult_get_img_single', $divider_icon_img, 'alt');
+$text='<img class="img-icon" alt="'.$alt3.'" src="'.apply_filters('ultimate_images', $img3).'" style="'.$text_style.'" />';
 
 }
 
@@ -608,7 +610,7 @@ if($iconoutput2==''){
 //echo $btn_width;
 		$subop='';
 		$subop .='
-			<div class="ult_dual_button '.$is_vc_49_plus.' to-'.$btn_alignment.'  '.$extraclass.'"  '.$resp_data.' id="'.$id.'">
+			<div class="ult_dual_button '.$dual_design_style_css.' '.$is_vc_49_plus.' to-'.$btn_alignment.'  '.$extraclass.'"  '.$resp_data.' id="'.$id.'">
 
 			<div id="'.$dual_btn_id.'" class="ulitmate_dual_buttons '.$hoverstyle.' ult_main_dualbtn " '.$mainbtn.'>
 
@@ -670,6 +672,24 @@ if($iconoutput2==''){
 			$subop .='</div>
 			</div>
 			</div>';
+
+			$is_preset = false; //Retrieve preset Code
+			if(isset($_GET['preset'])) {
+				$is_preset = true;
+			}
+			if($is_preset) {
+				$text = 'array ( ';
+				foreach ($atts as $key => $att) {
+					$text .= '<br/>	\''.$key.'\' => \''.$att.'\',';
+				}
+				if($content != '') {
+					$text .= '<br/>	\'content\' => \''.$content.'\',';
+				}
+				$text .= '<br/>)';
+				$subop .= '<pre>';
+				$subop .= $text;
+				$subop .= '</pre>'; // remove backslash once copied
+			}
 
 		return 	$subop ;
 
@@ -1666,8 +1686,13 @@ if($iconoutput2==''){
 								"group" => "Typography",
 
 							),
-
-
+							array(
+					            'type' => 'css_editor',
+					            'heading' => __( 'Css', 'ultimate_vc' ),
+					            'param_name' => 'css_dualbtn_design',
+					            'group' => __( 'Design ', 'ultimate_vc' ),
+					            'edit_field_class' => 'vc_col-sm-12 vc_column no-vc-background no-vc-border creative_link_css_editor',
+					        ),
 						),
 					)
 				);

@@ -51,6 +51,13 @@ if(!class_exists('Ultimate_Icons'))
 								"value" => "",
 								"description" => __("Write your own CSS and mention the class name here.", "ultimate_vc"),
 							),
+							array(
+					            'type' => 'css_editor',
+					            'heading' => __( 'Css', 'ultimate_vc' ),
+					            'param_name' => 'css_icon',
+					            'group' => __( 'Design', 'ultimate_vc' ),
+					            'edit_field_class' => 'vc_col-sm-12 vc_column no-vc-background no-vc-border creative_link_css_editor',
+					        ),
 						)
 					)
 				);
@@ -288,10 +295,12 @@ if(!class_exists('Ultimate_Icons'))
 			$align = $el_class = '';
 			extract(shortcode_atts(array(
 				'align' => '',
-				'el_class' => ''
+				'el_class' => '',
+				'css_icon' =>'',
 			),$atts));
-
-			$output = '<div class="'.$align.' uavc-icons '.$el_class.'">';
+			$icon_design_css = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, vc_shortcode_custom_css_class( $css_icon, ' ' ), "ultimate_icons", $atts );
+ 			$icon_design_css = esc_attr( $icon_design_css );
+			$output = '<div class="'.$icon_design_css.' '.$align.' uavc-icons '.$el_class.'">';
 			$output .= do_shortcode($content);
 			$output .= '</div>';
 

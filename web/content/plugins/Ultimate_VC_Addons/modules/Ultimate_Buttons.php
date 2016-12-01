@@ -81,17 +81,21 @@ if(!class_exists("Ultimate_Buttons")){
 				'tooltip_pos' => 'left',
 				'rel' => '',
 				'el_class' => '',
+				'css_adv_btn' => '',
 			),$atts));
 
 			$style = $hover_style = $btn_style_inline = $link_sufix = $link_prefix = $img = $shadow_hover = $shadow_click = $shadow_color = $box_shadow = $main_extra_class = '';
 			$main_extra_class = $el_class;
-			$tooltip = $tooltip_class = $el_class = '';
+			$tooltip = $tooltip_class = $el_class = $css_btn_design = '';
 			$el_class .= ' '.$btn_anim_effect.' ';
 			$uniqid = uniqid();
 			$tooltip_class = 'tooltip-'.$uniqid;
 
 			$vc_version = (defined('WPB_VC_VERSION')) ? WPB_VC_VERSION : 0;
 			$is_vc_49_plus = (version_compare(4.9, $vc_version, '<=')) ? 'ult-adjust-bottom-margin' : '';
+
+			$css_btn_design = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, vc_shortcode_custom_css_class( $css_adv_btn, ' ' ), "ult_buttons", $atts );
+ 			$css_btn_design = esc_attr( $css_btn_design );
 
 			if($enable_tooltip == "yes"){
 				wp_enqueue_script('ultimate-tooltip');
@@ -107,9 +111,10 @@ if(!class_exists("Ultimate_Buttons")){
 				$shadow_color = $btn_shadow_color;
 			else
 				$shadow_color = $btn_shadow_color_hover;
-
+			$alt = 'icon';
 			if($button_bg_img !== ''){
 				$img = apply_filters('ult_get_img_single', $button_bg_img, 'url');
+				$alt = apply_filters('ult_get_img_single', $button_bg_img, 'alt');
 			}
 			if($btn_link !== ''){
 				$href = vc_build_link($btn_link);
@@ -252,17 +257,22 @@ if(!class_exists("Ultimate_Buttons")){
 			//	Add a wrapper class to handle bottom margin
 			$wrapper_class = '';
 			switch ($btn_align) {
+					case 'ubtn-inline':		$wrapper_class = 'ubtn-ctn-inline'; 	break;
 					case 'ubtn-center':		$wrapper_class = 'ubtn-ctn-center'; 	break;
 					case 'ubtn-right':		$wrapper_class = 'ubtn-ctn-right'; 		break;
 					case 'ubtn-left':
 					default: 				$wrapper_class = 'ubtn-ctn-left'; 		break;
 
 			}
-			$output = '<div class="'.$wrapper_class.'">'.$output.'</div>';
+			if($img !== ''){
+				$output = '<div class="'.$wrapper_class.' '.$main_extra_class.'">'.$output.'</div>';
+			}else{
+			$output = '<div class="'.$css_btn_design.' '.$wrapper_class.' '.$main_extra_class.'">'.$output.'</div>';
+			}
 
 			if($img !== ''){
-				$html = '<div class="ubtn-img-container">';
-				$html .= '<img src="'.$img.'"/>';
+				$html = '<div class="ubtn-img-container '.$css_btn_design.'">';
+				$html .= '<img src="'.apply_filters( 'ultimate_images', $img ).'" alt="'.$alt.'"/>';
 				$html .= $output;
 				$html .= '</div>';
 				$output = $html;
@@ -275,7 +285,25 @@ if(!class_exists("Ultimate_Buttons")){
 					})
 				</script>';
 			}
+			$is_preset = false;
+			if(isset($_GET['preset'])) { //It will retrieve settings array
+				$is_preset = true;
+			}
+			if($is_preset) {
+				$text = 'array ( ';
+				foreach ($atts as $key => $att) {
+					$text .= '<br/>	\''.$key.'\' => \''.$att.'\',';
+				}
+				if($content != '') {
+					$text .= '<br/>	\'content\' => \''.$content.'\',';
+				}
+				$text .= '<br/>)';
+				$output .= '<pre>';
+				$output .= $text;
+				$output .= '</pre>'; // remove backslash once copied
+			}
 			return $output;
+
 		}
 		function init_buttons(){
 			if(function_exists("vc_map"))
@@ -320,6 +348,7 @@ if(!class_exists("Ultimate_Buttons")){
 										"Left Align" => "ubtn-left",
 										"Center Align" => "ubtn-center",
 										"Right Align" => "ubtn-right",
+										"Inline" => "ubtn-inline",
 									),
 								"description" => "",
 								"group" => "General"
@@ -421,7 +450,7 @@ if(!class_exists("Ultimate_Buttons")){
 								"type" => "textfield",
 								"heading" => __("Rel Attribute", "ultimate_vc"),
 								"param_name" => "rel",
-								"description" => __("This is useful when you want to trigger third party features. Example- preetyPhoto, thickbox etc", "ultimate_vc"),
+								"description" => __("This is useful when you want to trigger third party features. Example- prettyPhoto, thickbox etc", "ultimate_vc"),
 								"group" => "General",
 							),
 							array(
@@ -582,7 +611,7 @@ if(!class_exists("Ultimate_Buttons")){
 									"Outset" => "outset",
 								),
 								"description" => "",
-								"group" => "Border"
+								"group" => "Styling"
 							),
 							array(
 								"type" => "colorpicker",
@@ -592,7 +621,7 @@ if(!class_exists("Ultimate_Buttons")){
 								"value" => "",
 								"description" => "",
 								"dependency" => Array("element" => "btn_border_style", "not_empty" => true),
-								"group" => "Border"
+								"group" => "Styling"
 							),
 							array(
 								"type" => "colorpicker",
@@ -602,7 +631,7 @@ if(!class_exists("Ultimate_Buttons")){
 								"value" => "",
 								"description" => "",
 								"dependency" => Array("element" => "btn_border_style", "not_empty" => true),
-								"group" => "Border"
+								"group" => "Styling"
 							),
 							array(
 								"type" => "number",
@@ -615,7 +644,7 @@ if(!class_exists("Ultimate_Buttons")){
 								"suffix" => "px",
 								"description" => "",
 								"dependency" => Array("element" => "btn_border_style", "not_empty" => true),
-								"group" => "Border"
+								"group" => "Styling"
 							),
 							array(
 								"type" => "number",
@@ -628,8 +657,15 @@ if(!class_exists("Ultimate_Buttons")){
 								"suffix" => "px",
 								"description" => "",
 								"dependency" => Array("element" => "btn_border_style", "not_empty" => true),
-								"group" => "Border"
+								"group" => "Styling"
 						  	),
+						  	array(
+					            'type' => 'css_editor',
+					            'heading' => __( 'Css', 'ultimate_vc' ),
+					            'param_name' => 'css_adv_btn',
+					            'group' => __( 'Styling', 'ultimate_vc' ),
+					            'edit_field_class' => 'vc_col-sm-12 vc_column no-vc-background no-vc-border creative_link_css_editor',
+					        ),
 							array(
 								"type" => "dropdown",
 								"class" => "",

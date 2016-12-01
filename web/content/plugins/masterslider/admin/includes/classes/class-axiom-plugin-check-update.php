@@ -14,8 +14,7 @@ if ( ! defined('ABSPATH') ) {
 }
 
 
-class Axiom_Plugin_Check_Update
-{
+class Axiom_Plugin_Check_Update {
     /**
      * The plugin current version
      * @var string
@@ -82,7 +81,7 @@ class Axiom_Plugin_Check_Update
 
         $this->request_name     = empty( $item_request_name ) ? $this->slug : $item_request_name;
 
-        // define the alternative API for updating checking
+        // define the alternative API for checking for updates
         add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_update') );
 
         // Define the alternative response for information checking
@@ -103,12 +102,6 @@ class Axiom_Plugin_Check_Update
 
         // Get the remote version
         $remote_version = $this->get_remote_version();
-
-        // echo '<pre>';
-        // $isl = version_compare( $this->current_version, $remote_version, '<' );
-        // echo 'current is less than remote? : ' . $this->current_version .' < '. $remote_version;
-        // var_dump( $isl );
-        // echo '</pre>';
 
         // If a newer version is available, add the update info to update transient
         if ( version_compare( $this->current_version, $remote_version, '<' ) ) {
@@ -147,19 +140,23 @@ class Axiom_Plugin_Check_Update
         }
 
         $this_plugin = $all_plugins[ $this->plugin_slug ];
+        if( ! is_array( $this_plugin ) ){
+            $this_plugin = array();
+        }
         $this_plugin['ID']        = $this->plugin_id;
+        $this_plugin['Theme']     = $theme_data->Name;
         $this_plugin['Slug']      = $this->slug;
         $this_plugin['Activated'] = get_option( $this->slug . '_is_license_actived', 0);
 
         $request = wp_remote_post( $this->update_path, array(
                 'user-agent' => 'WordPress/'.$wp_version.'; '. get_site_url(),
                 'timeout'    => ( ( defined('DOING_CRON') && DOING_CRON ) ? 30 : 3),
-                'body' => array(
+                'body'       => array(
                     'cat'       => 'version-check',
                     'action'    => 'final',
+                    'type'      => 'plugin',
                     'item-name' => $this->request_name,
-                    'item-info' => $this_plugin,
-                    'theme'     => $theme_data->Name
+                    'item-info' => $this_plugin
                 )
             )
         );

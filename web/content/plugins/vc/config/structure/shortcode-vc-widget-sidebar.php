@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
+
 return array(
 	'name' => __( 'Widgetised Sidebar', 'js_composer' ),
 	'base' => 'vc_widget_sidebar',
@@ -12,6 +16,7 @@ return array(
 			'heading' => __( 'Widget title', 'js_composer' ),
 			'param_name' => 'title',
 			'description' => __( 'Enter text used as widget title (Note: located above content element).', 'js_composer' ),
+			'admin_label' => true,
 		),
 		array(
 			'type' => 'widgetised_sidebars',

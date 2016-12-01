@@ -40,7 +40,6 @@ function ultimate_single_tab($atts ,$content = null)
 			    'icon_margin'=>' ',
 			    'ul_sub_class'=>'',
 			    ), $atts ) );
-
 			//wp_enqueue_script('jquery_ui_tabs_rotate');
 			//wp_enqueue_script('imd_ui_tabs_rotate');
  //echo $content = wpb_js_remove_wpautop($content, true);
@@ -134,8 +133,9 @@ extract( shortcode_atts( array(
 	'font_icons_position'		=>'Right',
 	'main_title_typograpy'		=>'',
 	'tab_max' 			  		=>'off',
+	'wrapper_margin'			=>'',
+	'smooth_scroll' 			=>'on',
 ), $atts ) );
-
 global $tabarr;
 	$tabarr = array();
     do_shortcode($content);
@@ -600,7 +600,7 @@ else{
 	        	<a class="ult-tabto-actitle withBorder ult_a " id="'.$tab_id.'" style="color:'.$tab_title_color.';'.$style5bgcolor.';background-color:'.$tab_background_color.';'.$ult_ac_border.'" href="#'.$tab_id.'">
 	        		<i class="accordion-icon">+</i>
 	        			<span class="ult_tab_main ult_ac_main ult_noacordicn' .$resp_style.'">
- 
+
 						<span '.$advanced_tabs_data_list.' class="ult-span-text no_icon ult_acordian-text ult-responsive" style="'.$tabs_nav_style.';color:inherit " >'.$value['title'].'</span>
 						</span></a></dt>
 	            		<dd class="ult-tabto-accordionItem ult-tabto-accolapsed">
@@ -621,13 +621,12 @@ $newtabcontain .='<div class="ult_tabitemname" style="color:inherit">';
 $newtabcontain .=wpb_js_remove_wpautop( $content );
 $newtabcontain .='</div>';
 $newtabcontain .='</div>';
-
 $op='';
-$op .='<div id="'.$advanced_tabs_desc_id.'" class="ult_tabs '.$el_class.' " style="'.$container_style.'" data-tabsstyle="'.$style.'"
+$op .='<div id="'.$advanced_tabs_desc_id.'" class="ult_tabs '.$el_class.'" style="'.$container_style.' '.$wrapper_margin.'" data-tabsstyle="'.$style.'"
  data-titlebg="'.$tab_background_color.'" data-titlecolor="'.$tab_title_color.'" data-fullheight="'.$tab_max.'"
  data-titlehoverbg="'.$tab_hover_background_color.'" data-titlehovercolor="'.$tab_hover_title_color.'"
  data-rotatetabs="'.$interval.'" data-responsivemode="'.$resp_style.'" data-animation="'.$tab_animation.'"
-data-activetitle="'.$acttab_title.'" data-activeicon="'.$act_icon_color.'" data-activebg="'.$acttab_background.'"  data-respmode="'.$resp_type.'" data-respwidth="'.$resp_width.'">';
+data-activetitle="'.$acttab_title.'" data-activeicon="'.$act_icon_color.'" data-activebg="'.$acttab_background.'"  data-respmode="'.$resp_type.'" data-respwidth="'.$resp_width.'" data-scroll = "'.$smooth_scroll.'">';
 $op .=$newtab;
 $op .='<div '.$advanced_tabs_desc_data_list.'class="ult_tabcontent ult-responsive '.$style.'" style="'.$contain_bg.'">';
 $tabanimatclass="";
@@ -650,7 +649,7 @@ $actab .='<div class="ult_acord">
    <div class="ult-tabto-accordion " style="width:;"
     data-titlecolor="'.$tab_title_color.'"  data-titlebg="'.$tab_background_color.'"
      data-titlehoverbg="'.$tab_hover_background_color.'" data-titlehovercolor="'.$tab_hover_title_color.'" data-animation="'.$tab_animation.'"
-     data-activetitle="'.$acttab_title.'" data-activeicon="'.$act_icon_color.'" data-activebg="'.$acttab_background.'">
+     data-activetitle="'.$acttab_title.'" data-activeicon="'.$act_icon_color.'" data-activebg="'.$acttab_background.'" data-scroll = "'.$smooth_scroll.'" >
      <dl>';
 
 $actab .=$acord;
@@ -1056,6 +1055,25 @@ function ult_tab_init() {
 
 		),
 		array(
+			"type" => "ult_switch",
+			"class" => "",
+			//"heading" => __("Want To show button in responsive mode", "ultimate_vc"),
+			"param_name" => "smooth_scroll",
+			// "admin_label" => true,
+			"value" => "on",
+			"default_set" => true,
+			"options" => array(
+				"on" => array(
+					"label" => __("Scroll to Top of Container","ultimate_vc"),
+					"off" => __("No","ultimate_vc"),
+					"on" => __("Yes","ultimate_vc"),
+				  ),
+			  ),
+			"description" => __("If enable, tab will adjust on viewport on click.", "ultimate_vc"),
+			"dependency" => Array("element" => "resp_type","value" => array("Accordion")),
+			"group" => "Responsive",
+		),
+		array(
 			"type" => "dropdown",
 			"class" => "",
 			"heading" => __("Responsive Mode Visibility "),
@@ -1214,6 +1232,21 @@ function ult_tab_init() {
                 "Mobile" => '',
                 ),
                 "group" => "Typography",
+            ),
+            array(
+                "type" => "ultimate_spacing",
+                "heading" => " Wrapper Margin ",
+                "param_name" => "wrapper_margin",
+                "mode"  => "margin",                    //  margin/padding
+                "unit"  => "px",                        //  [required] px,em,%,all     Default all
+                "positions" => array(                   //  Also set 'defaults'
+                      "Top" => "",
+                      "Right" => "",
+                      "Bottom" => "",
+                      "Left" => "",
+                ),
+                 'group' => __( 'Design ', 'ultimate_vc' ),
+                 "description" => __("Add or remove margin for wrapper.", "ultimate_vc"),
             ),
 
 		/*----------end----------*/
@@ -1407,7 +1440,7 @@ if ( class_exists( "WPBakeryShortCode" ) ) {
 					$iner = '';
 					foreach ( $this->settings['params'] as $param ) {
 						$custom_markup = '';
-						$param_value = isset( $$param['param_name'] ) ? $$param['param_name'] : '';
+						$param_value = isset( $param['param_name'] ) ? $param['param_name'] : '';
 						if ( is_array( $param_value ) ) {
 							// Get first element from the array
 							reset( $param_value );

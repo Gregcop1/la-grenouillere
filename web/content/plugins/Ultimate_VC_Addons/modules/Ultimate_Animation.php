@@ -22,9 +22,12 @@ if(!class_exists('Ultimate_Animation')){
 				"animation_delay" => "0",
 				"animation_iteration_count" => "1",
 				"inline_disp" => "",
+				"css" => "",
 				"el_class" => "",
 			),$atts));
-			$style = $infi = $mobile_opt = '';
+			$style = $infi = $mobile_opt = $css_class = '';
+			$css_class = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, vc_shortcode_custom_css_class( $css, ' ' ), "ult_createlink", $atts );
+			$css_class = esc_attr( $css_class );
 			$ultimate_animation = get_option('ultimate_animation');
 			if($ultimate_animation == "disable"){
 				$mobile_opt = 'ult-no-mobile';
@@ -42,7 +45,7 @@ if(!class_exists('Ultimate_Animation')){
 				$animation_iteration_count = 'infinite';
 				$animation = 'infinite '.$animation;
 			}
-			$output .= '<div class="ult-animation '.$el_class.' '.$mobile_opt.'" data-animate="'.$animation.'" data-animation-delay="'.$animation_delay.'" data-animation-duration="'.$animation_duration.'" data-animation-iteration="'.$animation_iteration_count.'" style="'.$style.'" '.$opacity_start_effect_data.'>';
+			$output .= '<div class="ult-animation '.$el_class.' '.$mobile_opt.' '.$css_class.'" data-animate="'.$animation.'" data-animation-delay="'.$animation_delay.'" data-animation-duration="'.$animation_duration.'" data-animation-iteration="'.$animation_iteration_count.'" style="'.$style.'" '.$opacity_start_effect_data.'>';
 			$output .= do_shortcode($content);
 			$output .= '</div>';
 			return $output;
@@ -144,6 +147,13 @@ if(!class_exists('Ultimate_Animation')){
 								"param_name" => "notification",
 								'edit_field_class' => 'ult-param-important-wrapper ult-dashicon ult-align-right ult-bold-font ult-blue-font vc_column vc_col-sm-12',
 							),
+							array(
+					            'type' => 'css_editor',
+					            'heading' => __( 'Css', 'ultimate_vc' ),
+					            'param_name' => 'css',
+					            'group' => __( 'Design ', 'ultimate_vc' ),
+					            'edit_field_class' => 'vc_col-sm-12 vc_column no-vc-background no-vc-border creative_link_css_editor',
+					        ),
 						),
 						"js_view" => 'VcColumnView'
 					)

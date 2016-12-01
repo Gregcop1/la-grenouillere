@@ -194,7 +194,8 @@ function msp_get_skins(){
         array( 'class' => 'ms-skin-black-1' , 'label' => 'Black 1' ),
         array( 'class' => 'ms-skin-black-2' , 'label' => 'Black 2' ),
         array( 'class' => 'ms-skin-black-2 round-skin', 'label' => 'Black 2 Round' ),
-        array( 'class' => 'ms-skin-metro'   , 'label' => 'Metro' )
+        array( 'class' => 'ms-skin-metro'   , 'label' => 'Metro' ),
+        array( 'class' => 'ms-skin-minimal' , 'label' => 'Minimal' )
     );
 
 	return apply_filters( 'masterslider_skins', $slider_skins );
@@ -218,7 +219,7 @@ if ( ! function_exists( 'axpp' ) ) {
 		} elseif ( $dump ) {
 			echo '<pre>'; var_dump( $expression ); echo '</pre>';
 		} else {
-			echo '<pre>'; print_r ( $expression ); echo '</pre>';
+			echo '<pre style="margin-left:170px;">'; print_r ( $expression ); echo '</pre>';
 		}
 		return true;
 	}

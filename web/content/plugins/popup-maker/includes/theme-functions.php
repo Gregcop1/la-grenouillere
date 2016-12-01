@@ -16,10 +16,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 function popmake_get_default_popup_theme() {
-	$default_theme = get_option( 'popmake_default_theme' );
-	if ( false === get_post_status( $default_theme ) ) {
+	static $default_theme = null;
+
+	if ( $default_theme === null ) {
+		$default_theme = get_option( 'popmake_default_theme' );
+	}
+
+	if ( ! $default_theme ) {
+		if ( ! function_exists( 'popmake_install_default_theme' ) ) {
+			include_once POPMAKE_DIR . 'includes/install.php';
+		}
 		popmake_install_default_theme();
 		$default_theme = get_option( 'popmake_default_theme' );
+		pum_force_theme_css_refresh();
 	}
 
 	return $default_theme;
@@ -27,15 +36,23 @@ function popmake_get_default_popup_theme() {
 
 
 function popmake_get_all_popup_themes() {
-	$query = get_posts( array(
-		'post_type'      => 'popup_theme',
-		'post_status'    => 'publish',
-		'posts_per_page' => - 1
-	) );
+	static $themes;
 
-	return $query;
+	if ( ! $themes ) {
+		$query = new WP_Query( array(
+			'post_type'              => 'popup_theme',
+			'post_status'            => 'publish',
+			'posts_per_page'         => - 1,
+			// Performance Optimization.
+			'update_post_term_cache' => false,
+			'no_found_rows'          => true,
+		) );
+
+		$themes = $query->posts;
+	}
+
+	return $themes;
 }
-
 
 function popmake_get_popup_theme_meta( $group, $popup_theme_id = null, $key = null, $default = null ) {
 	if ( ! $popup_theme_id ) {

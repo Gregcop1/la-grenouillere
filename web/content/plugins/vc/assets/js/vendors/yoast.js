@@ -1,5 +1,5 @@
 /* global vc, YoastSEO, _, jQuery */
-jQuery( document ).ready( function () {
+jQuery( window ).on( 'YoastSEO:ready', function () {
 	'use strict';
 	var imageEventString, vcYoast, relevantData = {}, pluginName = 'vcVendorYoast', eventsList = [
 		'sync',
@@ -39,7 +39,7 @@ jQuery( document ).ready( function () {
 		return memo + getImageEventString( e );
 	}, '' );
 	vc.events.on( imageEventString, function ( model, param, settings ) {
-		if ( param.length > 0 ) {
+		if ( param && param.length > 0 ) {
 			var ids = param.split( /\s*,\s*/ );
 			_.each( ids, function ( id ) {
 				var attachment = window.wp.media.model.Attachment.get( id );
@@ -80,12 +80,14 @@ jQuery( document ).ready( function () {
 			}
 		}
 	} );
+
 	var VcVendorYoast = function () {
 		// init
 		YoastSEO.app.registerPlugin( pluginName, { status: 'ready' } );
+		YoastSEO.app.pluginReady( pluginName );
 		YoastSEO.app.registerModification( 'content', contentModification, pluginName, 5 );
 	};
-	vc.events.once( 'app.addAll', function () {
-		vcYoast = new VcVendorYoast();
-	} );
+
+	vcYoast = new VcVendorYoast();
+
 } );

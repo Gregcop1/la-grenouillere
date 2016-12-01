@@ -50,7 +50,7 @@
 				{
 					translate = 0;
 				}
-				var find_class = '.upb_row_bg,.upb_video-wrapper,.ult-vc-seperator';
+				var find_class = '.upb_row_bg,.upb_video-wrapper,.ult-vc-seperator,.ult-easy-separator-wrapper';
 				$(element).find('.vc-row-translate-wrapper').children().each(function(index, child) {
 					if(!jQuery(child).is(find_class))
 					{
@@ -231,8 +231,10 @@
 					setTimeout(function() {
 						jQuery('.jstime .timeline-wrapper').masonry({
 							"itemSelector": '.timeline-block',
+							"width" : "401px"
 						});
 						jQuery(this).find('.timeline-block').each(function(){
+							jQuery(this).css('left','initial');
 							if(jQuery(this).css('left')=='0px'){
 								jQuery(this).addClass('timeline-post-left');
 							}
@@ -279,26 +281,26 @@
 						else if(div > -14){
 							jQuery(this).next().addClass('time-clash-left');
 						}
-					})
-					jQuery('.smile-icon-timeline-wrap').each(function(){
-						var block_bg =jQuery(this).data('time_block_bg_color');
-						jQuery(this).find('.timeline-block').css('background-color',block_bg);
-					    jQuery(this).find('.timeline-post-left.timeline-block l').css('border-left-color',block_bg);
-					    jQuery(this).find('.timeline-post-right.timeline-block l').css('border-right-color',block_bg);
-					    jQuery(this).find('.feat-item').css('background-color',block_bg);
-					    if(jQuery(this).find('.feat-item').find('.feat-top').length > 0)
-							jQuery(this).find('.feat-item l').css('border-top-color',block_bg);
-						else
-					    	jQuery(this).find('.feat-item l').css('border-bottom-color',block_bg);
-					})
-					jQuery('.jstime.timeline_preloader').remove();
-					jQuery('.smile-icon-timeline-wrap.jstime').css('opacity','1');
+					});
 				});
 				jQuery('.timeline-post-right').each(function(){
 					var cl = jQuery(this).find('.timeline-icon-block').clone();
 					jQuery(this).find('.timeline-icon-block').remove();
 					jQuery(this).find('.timeline-header-block').after(cl);
-				})
+				});
+				jQuery('.smile-icon-timeline-wrap').each(function(){
+					var block_bg =jQuery(this).data('time_block_bg_color');
+					jQuery(this).find('.timeline-block').css('background-color',block_bg);
+				    jQuery(this).find('.timeline-post-left.timeline-block l').css('border-left-color',block_bg);
+				    jQuery(this).find('.timeline-post-right.timeline-block l').css('border-right-color',block_bg);
+				    jQuery(this).find('.feat-item').css('background-color',block_bg);
+				    if(jQuery(this).find('.feat-item').find('.feat-top').length > 0)
+						jQuery(this).find('.feat-item l').css('border-top-color',block_bg);
+					else
+				    	jQuery(this).find('.feat-item l').css('border-bottom-color',block_bg);
+				});
+				jQuery('.jstime.timeline_preloader').remove();
+				jQuery('.smile-icon-timeline-wrap.jstime').css('opacity','1');
 			}, 1000);
 			jQuery(this).find('.timeline-wrapper').each(function(){
 				if(jQuery(this).text().trim()===''){
@@ -543,49 +545,36 @@
 				},500);
 			});
 		});
+		
 		// Flip-box
-		if(! /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) )
-				var is_touch_device = false;
-			else
-				var is_touch_device = true;
-
-		jQuery('#page').click(function(){
+		jQuery(document).on('click', '#page', function(){
 			jQuery('.ifb-hover').removeClass('ifb-hover');
 		});
-		if(!is_touch_device){
-			jQuery('.ifb-flip-box').hover(function(event){
-				event.stopPropagation();
-				jQuery(this).addClass('ifb-hover');
-			},function(event){
-				event.stopPropagation();
-				jQuery(this).removeClass('ifb-hover');
-			});
-		}
+
+		jQuery(document).on('hover', '.ifb-flip-box', function(event){
+			event.stopPropagation();
+			jQuery(this).toggleClass('ifb-hover');
+		});
+
 		jQuery('.ifb-flip-box').each(function(index, element) {
 			if(jQuery(this).parent().hasClass('style_9')) {
 				jQuery(this).hover(function(){
-						jQuery(this).addClass('ifb-door-hover');
-					},
-					function(){
-						jQuery(this).removeClass('ifb-door-hover');
-					})
+					jQuery(this).addClass('ifb-door-hover');
+				},
+				function(){
+					jQuery(this).removeClass('ifb-door-hover');
+				})
 				jQuery(this).on('click',function(){
-						jQuery(this).toggleClass('ifb-door-right-open');
-						jQuery(this).removeClass('ifb-door-hover');
-					});
+					jQuery(this).toggleClass('ifb-door-right-open');
+					jQuery(this).removeClass('ifb-door-hover');
+				});
 			}
 		});
-		jQuery('.ifb-flip-box').click(function(event){
+		jQuery(document).on('click', '.ifb-flip-box', function(event) {
 			event.stopPropagation();
 			jQuery(document).trigger('ultFlipBoxClicked', jQuery(this));
-			if(jQuery(this).hasClass('ifb-hover')){
-				jQuery(this).removeClass('ifb-hover');
-			}
-			else{
-				jQuery('.ifb-hover').removeClass('ifb-hover');
-				jQuery(this).addClass('ifb-hover');
-			}
 		});
+
 
 		//Flipbox
 			//Vertical Door Flip

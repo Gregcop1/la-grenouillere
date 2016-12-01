@@ -22,6 +22,11 @@ if(!class_exists('Ultimate_Modals'))
 				$js_path = '../assets/js/';
 				$css_path = '../assets/css/';
 				$ext = '';
+				wp_register_script("ultimate-modal-customizer",plugins_url($js_path."modernizr-custom.js",__FILE__),array('jquery'),ULTIMATE_VERSION);
+				wp_register_script("ultimate-modal-classie",plugins_url($js_path."classie.js",__FILE__),array('jquery'),ULTIMATE_VERSION);
+				wp_register_script("ultimate-modal-froogaloop2",plugins_url($js_path."froogaloop2-min.js",__FILE__),array('jquery'),ULTIMATE_VERSION);
+				wp_register_script("ultimate-modal-snap-svg",plugins_url($js_path."snap-svg.js",__FILE__),array('jquery'),ULTIMATE_VERSION);
+				wp_register_script("ultimate-modal",plugins_url($js_path."modal.js",__FILE__),array('jquery', 'ultimate-modal-customizer', 'ultimate-modal-classie', 'ultimate-modal-froogaloop2', 'ultimate-modal-snap-svg' ),ULTIMATE_VERSION);
 			}
 			else {
 				$js_path = '../assets/min-js/';
@@ -87,7 +92,10 @@ if(!class_exists('Ultimate_Modals'))
 				'button_text_font_style'=>'',
 				'button_text_font_size'=>'',
 				'button_text_line_height'=>'',
+				'css_modal_box' => '',
 				),$atts,'ultimate_modal'));
+			$css_modal_box = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, vc_shortcode_custom_css_class( $css_modal_box, ' ' ), "ultimate_modal", $atts );
+			$css_modal_box = esc_attr( $css_modal_box );
 			$vc_version = (defined('WPB_VC_VERSION')) ? WPB_VC_VERSION : 0;
 			$is_vc_49_plus = (version_compare(4.9, $vc_version, '<=')) ? 'ult-adjust-bottom-margin' : '';
 
@@ -228,7 +236,8 @@ if(!class_exists('Ultimate_Modals'))
 			if($icon_type == 'custom'){
 				//$ico_img = wp_get_attachment_image_src( $icon_img, 'large');
 				$ico_img = apply_filters('ult_get_img_single', $icon_img, 'url');
-				$box_icon = '<div class="modal-icon"><img src="'.$ico_img.'" class="ult-modal-inside-img"></div>';
+				$ico_alt = apply_filters('ult_get_img_single', $icon_img, 'alt');
+				$box_icon = '<div class="modal-icon"><img src="'.apply_filters('ultimate_images', $ico_img).'" class="ult-modal-inside-img" alt="'.$ico_alt.'"></div>';
 			} elseif($icon_type == 'selector'){
 				if($icon !== '')
 					$box_icon = '<div class="modal-icon"><i class="'.$icon.'"></i></div>';
@@ -241,7 +250,8 @@ if(!class_exists('Ultimate_Modals'))
 				$modal_data_class = '';
 			}
 
-			$html .= '<div id="'.$modal_trgs_id.'" class="ult-modal-input-wrapper '.$is_vc_49_plus.'">';
+				$html .= '<div id="'.$modal_trgs_id.'" class="ult-modal-input-wrapper '.$is_vc_49_plus.' '.$init_extra_class.' '.$css_modal_box.'">';
+
 			if($modal_on == "button"){
 				if($btn_bg_color !== ''){
 					$style .= 'background:'.$btn_bg_color.';';
@@ -254,7 +264,7 @@ if(!class_exists('Ultimate_Modals'))
 					$modal_class .= ' '.$el_class.'-button ';
 
 
-				$html .= '<button '.$button_trg_data_list.' style="'.$style.' '.$button_text_style.'" data-class-id="content-'.$uniq.'" class="btn-modal ult-responsive btn-primary btn-modal-'.$btn_size.' '.$modal_class.' '.$init_extra_class.' ult-align-'.$modal_on_align.'" '.$modal_data_class.'>'.$btn_text.'</button>';
+				$html .= '<button '.$button_trg_data_list.' style="'.$style.' '.$button_text_style.'" data-class-id="content-'.$uniq.'" class="btn-modal ult-responsive btn-primary btn-modal-'.$btn_size.' '.$modal_class.' ult-align-'.$modal_on_align.'" '.$modal_data_class.'>'.$btn_text.'</button>';
 
 			} elseif($modal_on == "image"){
 				if($btn_img !==''){
@@ -262,7 +272,8 @@ if(!class_exists('Ultimate_Modals'))
 						$modal_class .= ' '.$el_class.'-image ';
 					// $img = wp_get_attachment_image_src( $btn_img, 'large');
 					$img = apply_filters('ult_get_img_single', $btn_img, 'url');
-					$html .= '<img src="'.$img.'" data-class-id="content-'.$uniq.'" class="ult-modal-img '.$init_extra_class.' '.$modal_class.' ult-align-'.$modal_on_align.' ult-modal-image-'.$el_class.'" '.$modal_data_class.'/>';
+					$btn_alt = apply_filters('ult_get_img_single', $btn_img, 'alt');
+					$html .= '<img src="'.apply_filters('ultimate_images', $img).'" alt="'.$btn_alt.'" data-class-id="content-'.$uniq.'" class="ult-modal-img '.$modal_class.' ult-align-'.$modal_on_align.' ult-modal-image-'.$el_class.'" '.$modal_data_class.'/>';
 				}
 			}
 			elseif($modal_on == "onload"){
@@ -349,6 +360,25 @@ if(!class_exists('Ultimate_Modals'))
 			$html .= "\n\t".'</div>';
 			$html .= "\n\t".'<div class="ult-overlay-close">Close</div>';
 			$html .= "\n".'</div>';
+
+			$is_preset = false; //Display settings for Preset
+			if(isset($_GET['preset'])) {
+				$is_preset = true;
+			}
+			if($is_preset) {
+				$text = 'array ( ';
+				foreach ($atts as $key => $att) {
+					$text .= '<br/>	\''.$key.'\' => \''.$att.'\',';
+				}
+				if($content != '') {
+					$text .= '<br/>	\'content\' => \''.$content.'\',';
+				}
+				$text .= '<br/>)';
+				$html .= '<pre>';
+				$html .= $text;
+				$html .= '</pre\>';
+			}
+
 			return $html;
 		}
 		/* Add modal popup Component*/
@@ -429,6 +459,7 @@ if(!class_exists('Ultimate_Modals'))
 									__("Youtube Video","ultimate_vc") => "ult-youtube",
 									__("Vimeo Video","ultimate_vc") => "ult-vimeo",
 								),
+								"description" => __("Please put the embed code in the content for videos, eg: <a href='http://bsf.io/kuv3-' target='_blank'>http://bsf.io/kuv3-</a>", "ultimate_vc"),
 								"group" => "General",
 							),
 							array(
@@ -680,7 +711,8 @@ if(!class_exists('Ultimate_Modals'))
 							),
 							array(
 								"type" => "ult_param_heading",
-								"text" => "<span style='display: block;'><a href='http://bsf.io/ei2r5' target='_blank'>".__("Watch Video Tutorial","ultimate_vc")." &nbsp; <span class='dashicons dashicons-video-alt3' style='font-size:30px;vertical-align: middle;color: #e52d27;'></span></a></span>",
+								//"text" => "<span style='display: block;'><a href='https://goo.gl/1kCZkG' target='_blank'>".__("Need More Features?","ultimate_vc")." &nbsp;&nbsp;&nbsp;</a><a href='http://bsf.io/ei2r5' target='_blank'>".__("Watch Video Tutorial","ultimate_vc")." &nbsp; <span class='dashicons dashicons-video-alt3' style='font-size:30px;vertical-align: middle;color: #e52d27;'></span></a></span>",
+								"text" => "<span style='display: block;'><a href='https://goo.gl/1kCZkG' target='_blank'>".__("Need More Features?","ultimate_vc")." &nbsp;&nbsp;&nbsp;</a></span>",
 								"param_name" => "notification",
 								'edit_field_class' => 'ult-param-important-wrapper ult-dashicon ult-align-right ult-bold-font ult-blue-font vc_column vc_col-sm-12',
 								"group" => "General",
@@ -936,6 +968,14 @@ if(!class_exists('Ultimate_Modals'))
 								"dependency" => Array("element" => "modal_on","value" => array("ult-button")),
 								"group" => "Typography",
 							),
+							array(
+								'type' => 'css_editor',
+					            'heading' => __( 'Css', 'ultimate_vc' ),
+					            'param_name' => 'css_modal_box',
+					            'group' => __( 'Design ', 'ultimate_vc' ),
+					            'edit_field_class' => 'vc_col-sm-12 vc_column no-vc-background no-vc-border creative_link_css_editor',
+					            "dependency"=> Array("element"=>"modal_on","value" => array("image","text","ult-button")),
+					        ),
 						) // end params array
 					) // end vc_map array
 				); // end vc_map

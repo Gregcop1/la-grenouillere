@@ -1,6 +1,22 @@
 (function ( $ ) {
 	jQuery(document).ready(function(){
 
+		function version_compare(strVersionA, strVersionB) {
+		    var arrVersionA = strVersionA.split('.');
+		    var arrVersionB = strVersionB.split('.');
+		    var intVersionA = (100000000 * parseInt(arrVersionA[0])) + (1000000 * parseInt(arrVersionA[1])) + (10000 * parseInt(arrVersionA[2]));
+		    var intVersionB = (100000000 * parseInt(arrVersionB[0])) + (1000000 * parseInt(arrVersionB[1])) + (10000 * parseInt(arrVersionB[2]));
+
+		    if (intVersionA > intVersionB) {
+		        return 1;
+		    }else if(intVersionA < intVersionB){
+		        return -1;
+		    }else{
+		        return 0;
+		    }
+		    return false;
+		}
+
 		if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
 			$('html').addClass('ult-remove-fixed-background');
 		}
@@ -380,12 +396,16 @@
 				var vc_row_class = selector.data('custom-vc-row');
 				var vc = selector.data('vc');
 				var theme_support = selector.data('theme-support');
+				var is_vc_4_4 = selector.data('is_old_vc');
 
 				if(typeof vc_row_class === 'undefined' || vc_row_class === '')
 					vc_row_class = 'wpb_row';
 
 				if(typeof vc === 'undefined')
 					vc = 0;
+
+				if(typeof is_vc_4_4 === 'undefined')
+					is_vc_4_4 = false;
 
 				if(typeof theme_support === 'undefined')
 					theme_support = 'disable';
@@ -422,8 +442,8 @@
 					stop ='';
 				}
 
-				vc = parseFloat(vc);
-				if(vc < 4.4 || theme_support == 'enable')
+				//vc = parseFloat(vc);
+				if(is_vc_4_4 == true || theme_support == 'enable')
 				{
 					if(selector.prev().is('p') || selector.prev().is('style'))
 						var parent = selector.prev().prev();
@@ -614,7 +634,7 @@
 				}
 				else{
 					var content = selector.find('.upb_video-src');
-
+					hosted_wrapper = content.parent();
 					if(! /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || controls == 'display_control')
 					{
 						jQuery('<source/>', {
@@ -661,20 +681,23 @@
 						{
 							if(poster != '')
 							{
-								content.parent().css({'background-image':'url('+poster+')'});
+								//content.parent().css({'background-image':'url('+poster+')'});
 								content.parent().find('.video-controls').hide();
 							}
+
 							content.remove();
 						}
 					}
 				}
-
-				jQuery(window).load(function(){
-					resizee();
-				});
-				jQuery(window).resize(function(){
-					resizee();
-				});
+				if(poster != '')
+				{
+					console.log(content);
+					if(content.is('.utube')) {
+						content.css({'background-image':'url('+poster+')'});
+					} else {
+						hosted_wrapper.css({'background-image':'url('+poster+')'});
+					}
+				}
 				//window.onload = function () {
 					jQuery('.upb_video-src').each(function(i,vd){
 						var is_muted = jQuery(vd).attr('data-mute');
@@ -686,7 +709,7 @@
 						}
 					});
 				//}
-			})
+			});
 			return this;
 		}
 
@@ -726,12 +749,16 @@
 				var vc_row_class = selector.data('custom-vc-row');
 				var vc = selector.data('vc');
 				var theme_support = selector.data('theme-support');
+				var is_vc_4_4 = selector.data('is_old_vc');
 
 				if(typeof vc_row_class === 'undefined' || vc_row_class === '')
 					vc_row_class = 'wpb_row';
 
 				if(typeof vc === 'undefined')
 					vc = 0;
+
+				if(typeof is_vc_4_4 === 'undefined')
+					is_vc_4_4 = false;
 
 				if(typeof theme_support === 'undefined')
 					theme_support = 'disable';
@@ -760,8 +787,8 @@
 					overlay_html = overlay_color_html+overlay_pattern_html+overlay_multi_color_html;
 				}
 
-				vc = parseFloat(vc);
-				if(vc < 4.4 || theme_support == 'enable')
+				//vc = parseFloat(vc);
+				if(is_vc_4_4 == true || theme_support == 'enable')
 				{
 					if(selector.prev().is('p') || selector.prev().is('style'))
 						var parent = selector.prev().prev();
@@ -919,12 +946,16 @@
 				var vc_row_class = selector.data('custom-vc-row');
 				var vc = selector.data('vc');
 				var theme_support = selector.data('theme-support');
+				var is_vc_4_4 = selector.data('is_old_vc');
 
 				if(typeof vc_row_class === 'undefined' || vc_row_class === '')
 					vc_row_class = 'wpb_row';
 
 				if(typeof vc === 'undefined')
 					vc = 0;
+
+				if(typeof is_vc_4_4 === 'undefined')
+					is_vc_4_4 = false;
 
 				if(typeof theme_support === 'undefined')
 					theme_support = 'disable';
@@ -935,8 +966,8 @@
 					multi_color_overlay_opacity = selector.data('multi-color-overlay-opacity');
 				}
 
-				vc = parseFloat(vc);
-				if(vc < 4.4 || theme_support == 'enable')
+				//vc = parseFloat(vc);
+				if(is_vc_4_4 == true || theme_support == 'enable')
 				{
 					if(selector.prev().is('p') || selector.prev().is('style'))
 						var parent = selector.prev().prev();
@@ -1097,12 +1128,16 @@
 				var vc = selector.data('vc');
 				var theme_support = selector.data('theme-support');
 				var vc_row_class = selector.data('custom-vc-row');
+				var is_vc_4_4 = selector.data('is_old_vc');
 
 				if(typeof vc_row_class === 'undefined' || vc_row_class === '')
 					vc_row_class = 'wpb_row';
 
 				if(typeof vc === 'undefined')
 					vc = 0;
+
+				if(typeof is_vc_4_4 === 'undefined')
+					is_vc_4_4 = false;
 
 				if(typeof theme_support === 'undefined')
 					theme_support = 'disable';
@@ -1113,8 +1148,10 @@
 					multi_color_overlay_opacity = selector.data('multi-color-overlay-opacity');
 				}
 
-				vc = parseFloat(vc);
-				if(vc < 4.4 || theme_support == 'enable')
+				//vc = parseFloat(vc);
+				//vc = vc.toFixed(2)
+
+				if(is_vc_4_4 == true || theme_support == 'enable')
 				{
 					if(selector.prev().is('p') || selector.prev().is('style'))
 						var parent = selector.prev().prev();
@@ -1432,6 +1469,13 @@
 						parent = jQuery(this).parents('.'+vc_row+':first');
 					else
 						parent = jQuery(this).parent();
+
+					if(parent.attr('data-vc-full-width') == 'true' || parent.attr('data-vc-full-width') == true) {
+						parent.addClass('uvc-vc-full-width');
+					} else {
+						parent.addClass('uvc-row');
+					}
+
 					if(ride=='browser_size'){
 						ancenstor=jQuery('html');
 						jQuery(this).parents('.upb_video_class').css('overflow','visible');
@@ -1463,6 +1507,7 @@
 					var w = ancenstor.outerWidth();
 					var wx = w;
 					var vdo_left = jQuery(this).offset().left;
+					//jQuery(this).css('left','initial');
 					var vdo_left_pos = jQuery(this).position().left;
 					var div_left = ancenstor.offset().left;
 					var cal_left = div_left - vdo_left;
@@ -1473,6 +1518,11 @@
 						temp_vdo_pos = vdo_left_pos;
 					if(temp_vdo_pos > 0)
 						cal_left = temp_vdo_pos;
+
+					//if(ride == 'full' || ride == 'ex-full' || ride=='browser_size') {
+						if(cal_left > 0)
+							cal_left = 0;
+					//}
 
 					if(typeof rtl !== 'undefined' && (rtl === true || rtl === 'true'))
 						jQuery(this).css({'width': w,'min-width':w,'right': cal_left });

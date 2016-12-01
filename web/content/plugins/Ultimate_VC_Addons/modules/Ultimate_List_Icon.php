@@ -63,6 +63,13 @@ if(!class_exists('Ultimate_List_Icon'))
 								"value" => "",
 								"description" => __("Write your own CSS and mention the class name here.", "ultimate_vc"),
 							),
+							array(
+								'type' => 'css_editor',
+					            'heading' => __( 'Css', 'ultimate_vc' ),
+					            'param_name' => 'css_icon_list',
+					            'group' => __( 'Design ', 'ultimate_vc' ),
+					            'edit_field_class' => 'vc_col-sm-12 vc_column no-vc-background no-vc-border creative_link_css_editor',
+					        ),
 						)
 					)
 				);
@@ -310,9 +317,11 @@ if(!class_exists('Ultimate_List_Icon'))
 			extract(shortcode_atts(array(
 				"icon_size" => "32",
 				"icon_margin" => "5",
-				"el_class" => ""
+				"el_class" => "",
+				"css_icon_list" => "",
 			),$atts));
-
+			$css_icon_list = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, vc_shortcode_custom_css_class( $css_icon_list, ' ' ), "ultimate_icon_list", $atts );
+			$css_icon_list = esc_attr( $css_icon_list );
 			$vc_version = (defined('WPB_VC_VERSION')) ? WPB_VC_VERSION : 0;
 			$is_vc_49_plus = (version_compare(4.9, $vc_version, '<=')) ? 'ult-adjust-bottom-margin' : '';
 
@@ -321,7 +330,7 @@ if(!class_exists('Ultimate_List_Icon'))
 			// enqueue js
 			//wp_enqueue_script('aio-tooltip',plugins_url('../assets/min-js/',__FILE__).'tooltip.min.js',array('jquery'));
 
-			$output = '<div class="uavc-list-icon uavc-list-icon-wrapper '.$is_vc_49_plus.' '.$el_class.'">';
+			$output = '<div class="uavc-list-icon uavc-list-icon-wrapper '.$is_vc_49_plus.' '.$el_class.' '.$css_icon_list.' '.$css_icon_list.'">';
 			$output .= '<ul class="uavc-list">';
 			$output .= do_shortcode($content);
 			$output .= '</ul>';
@@ -333,7 +342,7 @@ if(!class_exists('Ultimate_List_Icon'))
 		function icon_list_item_shortcode($atts, $content = null){
 
 			$icon_type = $icon_img = $img_width = $icon = $icon_color = $icon_color_bg = $icon_size = $icon_style = $icon_border_style = $icon_border_radius = $icon_color_border = $icon_border_size = $icon_border_spacing = $icon_link = $el_class = $icon_animation =  $tooltip_disp = $tooltip_text = $icon_margin = '';
-			$content_font_family = $content_font_style = $content_font_size = $content_line_ht = $content_font_color = '';
+			$content_font_family = $content_font_style = $content_font_size = $content_line_ht = $content_font_color = $css_icon_list = '';
 			extract(shortcode_atts( array(
 				'icon_type' => 'selector',
 				'icon'=> '',
@@ -356,7 +365,6 @@ if(!class_exists('Ultimate_List_Icon'))
 				'content_line_ht' => '',
 				'content_font_size' => '',
 			),$atts));
-
 			global $vc_list_icon_size, $vc_list_icon_margin;
 			if(empty($icon_size))
 				$icon_size = $vc_list_icon_size;
@@ -414,7 +422,7 @@ if(!class_exists('Ultimate_List_Icon'))
 					$icon_style = 'none';
 				}
 				$main_icon = do_shortcode('[just_icon icon_type="'.$icon_type.'" icon="'.$icon.'" icon_img="'.$icon_img.'" img_width="'.$icon_size.'" icon_size="'.$icon_size.'" icon_color="'.$icon_color.'" icon_style="'.$icon_style.'" icon_color_bg="'.$icon_color_bg.'" icon_color_border="'.$icon_color_border.'"  icon_border_style="'.$icon_border_style.'" icon_border_size="'.$icon_border_size.'" icon_border_radius="'.$icon_border_radius.'" icon_border_spacing="'.$icon_border_spacing.'" icon_link="'.$icon_link.'" icon_animation="'.$icon_animation.'"]');
-				$output .= "\n".'<div class="uavc-list-icon '.$el_class.'" '.$css_trans.' style="'.$style.'">';
+				$output .= "\n".'<div class="uavc-list-icon '.$el_class.' '.$css_icon_list.'" '.$css_trans.' style="'.$style.'">';
 				$output .= $main_icon;
 				$output .= "\n".'</div>';
 			}

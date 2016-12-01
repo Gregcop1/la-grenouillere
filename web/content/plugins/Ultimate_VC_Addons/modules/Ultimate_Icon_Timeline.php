@@ -149,6 +149,21 @@ if(!class_exists('Ultimate_Icon_Timeline'))
 								"param_name" => "notification",
 								'edit_field_class' => 'ult-param-important-wrapper ult-dashicon ult-align-right ult-bold-font ult-blue-font vc_column vc_col-sm-12',
 							),
+							array(
+						            "type" => "ultimate_spacing",
+						            "heading" => " Content Margin ",
+						            "param_name" => "timeline_margin",
+						            "mode"  => "margin",                    //  margin/padding
+						            "unit"  => "px",                        //  [required] px,em,%,all     Default all
+						            "positions" => array(                   //  Also set 'defaults'
+						              	"Top" => "",
+						              	"Right" => "",
+						              	"Bottom" => "",
+						              	"Left" => "",
+						            ),
+									 'group' => __( 'Design ', 'ultimate_vc' ),
+									 "description" => __("Add spacing from outside to content.", "ultimate_vc"),
+						        ),
 						),
 						"js_view" => 'VcColumnView'
 					));
@@ -1110,9 +1125,11 @@ if(!class_exists('Ultimate_Icon_Timeline'))
 				'timeline_layout' =>'',
 				'tl_animation'=>'',
 				'custom_width'=>'200',
-				'el_class' => ''
+				'el_class' => '',
+				'timeline_margin' => '',
 			), $atts));
-			$data = $cw = $line_style = $output = '';
+			$data = $cw = $line_style = $output = $timeline_design_css = '';
+ 			$timeline_design_css = $timeline_margin;
 			if($timeline_layout=='timeline-custom-width'){
 				$cw ='data-timeline-cutom-width="'.$custom_width.'"';
 			}
@@ -1133,10 +1150,10 @@ if(!class_exists('Ultimate_Icon_Timeline'))
 			}
 			if($timeline_style=='jstime'){
 				$output .= '<div class="'.$timeline_style.' timeline_preloader" style="opacity:0;width:35px;margin:auto;margin-top:30px;"><img style="box-shadow:none;" alt="timeline_pre_loader" src="'.plugin_dir_url( __FILE__ ).'../assets/img/timeline_pre-loader.gif" /></div>';
-				$output .= '<div class="smile-icon-timeline-wrap '.$timeline_style.' '.$el_class.' '.$timeline_layout.' '.$tl_animation.'" '.$cw.' '.$time_sep_bg_color.' '.$time_block_bg_color.' '.$time_sep_color.' style="opacity:0">';
+				$output .= '<div class="smile-icon-timeline-wrap '.$timeline_style.' '.$el_class.' '.$timeline_layout.' '.$tl_animation.'" '.$cw.' '.$time_sep_bg_color.' '.$time_block_bg_color.' '.$time_sep_color.' style="opacity:0; '.$timeline_design_css.'">';
 			}
 			else{
-				$output .= '<div class="smile-icon-timeline-wrap '.$timeline_style.' '.$el_class.' '.$timeline_layout.' '.$tl_animation.'" '.$cw.' '.$time_sep_bg_color.' '.$time_block_bg_color.' '.$time_sep_color.'>';
+				$output .= '<div class="smile-icon-timeline-wrap '.$timeline_style.' '.$el_class.' '.$timeline_layout.' '.$tl_animation.'" '.$cw.' '.$time_sep_bg_color.' '.$time_block_bg_color.' '.$time_sep_color.' style="'.$timeline_design_css.'">';
 			}
 			$output .= '<div class="timeline-line " style="'.$line_style.'"><z></z></div>';
 			$output .='<div class="timeline-wrapper">';

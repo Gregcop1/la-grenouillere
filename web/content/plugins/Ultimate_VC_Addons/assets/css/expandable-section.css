@@ -3,9 +3,6 @@
     padding: 0;
     width: 100%;
     -webkit-transition: background-color .5s;
-    -moz-transition: background-color .5s;
-    -o-transition: background-color .5s;
-    -ms-transition: background-color .5s;
     transition: background-color .5s
 }
 .ult_exp_section {
@@ -16,9 +13,6 @@
     position: relative;
     background-color: #eaeaea;
     -webkit-transition: background-color .5s;
-    -moz-transition: background-color .5s;
-    -o-transition: background-color .5s;
-    -ms-transition: background-color .5s;
     transition: background-color .5s;
     font-size: 20px;
     font-weight: 400;
@@ -36,9 +30,6 @@
     text-align: center;
     background-color: #fafafa;
     -webkit-transition: background-color .5s;
-    -moz-transition: background-color .5s;
-    -o-transition: background-color .5s;
-    -ms-transition: background-color .5s;
     transition: background-color .5s
 }
 .ult_exp_section .aio-icon i,
@@ -46,9 +37,6 @@
 .ult_expsection_icon {
     text-transform: capitalize;
     -webkit-transition: background-color .5s;
-    -moz-transition: background-color .5s;
-    -o-transition: background-color .5s;
-    -ms-transition: background-color .5s;
     transition: background-color .5s
 }
 .ult_exp_section .aio-icon.none {
@@ -81,6 +69,8 @@
 .ult_exp_section-main img.img-icon.ult_square {
     position: absolute;
     top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
     transform: translateY(-50%);
     display: block
 }

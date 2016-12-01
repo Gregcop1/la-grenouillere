@@ -90,6 +90,23 @@ if(!class_exists('Ultimate_Admin_Area')){
 			add_action( 'wp_ajax_update_ultimate_modules', array($this,'update_modules'));
 			add_action( 'wp_ajax_update_css_options', array($this,'update_css_options'));
 			add_action( 'wp_ajax_update_dev_notes', array($this,'update_dev_notes'));
+			add_filter('update_footer', array($this, 'debug_link'),999);
+		}
+
+		function debug_link($text) {
+			$screen = get_current_screen();
+			$array = array(
+				'ultimate_page_ultimate-scripts-and-styles',
+				'ultimate_page_ultimate-smoothscroll',
+				'ultimate_page_ultimate-dashboard',
+				'toplevel_page_about-ultimate'
+			);
+			if(!in_array($screen->id, $array))
+				return $text;
+			$url = admin_url('admin.php?page=ultimate-debug-settings');
+			$link = '<a href="'.$url.'">Ultimate Addons Debug Settings</a>';
+			$text = $link.' | '.$text;
+			return $text;
 		}
 
 		function bsf_admin_scripts_updater($hook){
@@ -144,7 +161,17 @@ if(!class_exists('Ultimate_Admin_Area')){
 					}
 				</style>
 			";
-			if($hook == "post.php" || $hook == "post-new.php" || $hook == 'ultimate_page_about-ultimate' || $hook == 'visual-composer_page_vc-roles' || $hook == 'toplevel_page_about-ultimate'){
+			if($hook == "post.php" ||
+				$hook == "post-new.php" ||
+				$hook == 'ultimate_page_about-ultimate' ||
+				$hook == 'visual-composer_page_vc-roles' ||
+				$hook == 'toplevel_page_about-ultimate' ||
+				$hook == 'ultimate_page_ultimate-dashboard' ||
+				$hook == 'ultimate_page_ultimate-smoothscroll' ||
+				$hook == 'ultimate_page_ultimate-scripts-and-styles' ||
+				$hook == 'admin_page_ultimate-debug-settings' ||
+				$hook == 'ultimate_page_bsf-google-maps' ){
+
 				$bsf_dev_mode = bsf_get_option('dev_mode');
 
 				wp_register_style("ultimate-admin-style",plugins_url("../admin/css/style.css",__FILE__));
@@ -167,8 +194,10 @@ if(!class_exists('Ultimate_Admin_Area')){
 		}/* end admin_scripts */
 
 		function register_brainstorm_menu(){
-			if(!current_user_can( 'manage_options' ))
-				return false;
+			$role = $this->can_access_admin();
+			if($role == false)
+				return;
+
 			global $submenu;
 			if(defined('BSF_MENU_POS'))
 				$required_place = BSF_MENU_POS;
@@ -183,7 +212,7 @@ if(!class_exists('Ultimate_Admin_Area')){
 			$page = add_menu_page(
 				'Ultimate',
 				'Ultimate',
-				'administrator',
+				$role,
 				'about-ultimate',
 				array($this,'load_about'),
 				'', $place );
@@ -192,7 +221,7 @@ if(!class_exists('Ultimate_Admin_Area')){
 				"about-ultimate",
 				__("Modules","ultimate_vc"),
 				__("Modules","ultimate_vc"),
-				"administrator",
+				$role,
 				"ultimate-dashboard",
 				array($this,'load_modules')
 			);
@@ -201,7 +230,7 @@ if(!class_exists('Ultimate_Admin_Area')){
 				"about-ultimate",
 				__("Smooth Scroll","ultimate_vc"),
 				__("Smooth Scroll","ultimate_vc"),
-				"administrator",
+				$role,
 				"ultimate-smoothscroll",
 				array($this,'load_smoothscroll')
 			);
@@ -210,7 +239,7 @@ if(!class_exists('Ultimate_Admin_Area')){
 				"about-ultimate",
 				__("Scripts & Styles","ultimate_vc"),
 				__("Scripts & Styles","ultimate_vc"),
-				"administrator",
+				$role,
 				"ultimate-scripts-and-styles",
 				array($this,'load_scripts_styles')
 			);
@@ -219,7 +248,7 @@ if(!class_exists('Ultimate_Admin_Area')){
 				"NOATTACH",
 				__("Debug","ultimate_vc"),
 				__("Debug","ultimate_vc"),
-				"administrator",
+				$role,
 				"ultimate-debug-settings",
 				array($this,'load_debug_settings')
 			);
@@ -250,7 +279,7 @@ if(!class_exists('Ultimate_Admin_Area')){
 				"about-ultimate",
 				__("Resources","ultimate_vc"),
 				__("Resources","ultimate_vc"),
-				"administrator",
+				$role,
 				"ultimate-resources",
 				array($this, 'ultimate_resources')
 			);
@@ -267,7 +296,7 @@ if(!class_exists('Ultimate_Admin_Area')){
 				"about-ultimate",
 				__("Icon Manager","ultimate_vc"),
 				__("Icon Manager","ultimate_vc"),
-				"administrator",
+				$role,
 				"bsf-font-icon-manager",
 				array($this, 'ultimate_icon_manager_menu')
 			);
@@ -280,11 +309,20 @@ if(!class_exists('Ultimate_Admin_Area')){
 				"about-ultimate",
 				__("Google Font Manager","ultimate_vc"),
 				__("Google Fonts","ultimate_vc"),
-				"administrator",
+				$role,
 				"bsf-google-font-manager",
 				array($Ultimate_Google_Font_Manager,'ultimate_font_manager_dashboard')
 			);
 			add_action( 'admin_print_scripts-' . $google_font_manager_page, array($Ultimate_Google_Font_Manager,'admin_google_font_scripts'));
+
+			$google_font_manager_page = add_submenu_page(
+				"about-ultimate",
+				__("Google Maps","ultimate_vc"),
+				__("Google Maps","ultimate_vc"),
+				$role,
+				"bsf-google-maps",
+				array($this,'ultimate_google_maps_dashboard')
+			);
 
 			// must be at end of all sub menu
 
@@ -330,6 +368,10 @@ if(!class_exists('Ultimate_Admin_Area')){
 			require_once(plugin_dir_path(__FILE__).'/resources.php');
 		}
 
+		function ultimate_google_maps_dashboard() {
+			require_once(plugin_dir_path(__FILE__).'/map-settings.php');
+		}
+
 		function update_modules(){
 			if(isset($_POST['ultimate_row'])){
 				$ultimate_row = $_POST['ultimate_row'];
@@ -350,6 +392,24 @@ if(!class_exists('Ultimate_Admin_Area')){
 				echo 'failed';
 			}
 			die();
+		}
+
+		function can_access_admin() {
+			$bsf_ultimate_roles = bsf_get_option('ultimate_roles');
+			if($bsf_ultimate_roles == false || empty($bsf_ultimate_roles)) {
+				$bsf_ultimate_roles = array( 'administrator' );
+			}
+
+			if(!in_array('administrator', $bsf_ultimate_roles))
+				array_push($bsf_ultimate_roles, 'administrator');
+
+			$user = wp_get_current_user();
+			$user_role = $user->roles[0];
+
+			if(in_array($user_role, $bsf_ultimate_roles)) {
+				return $user_role;
+			}
+			return false;
 		}
 
 		function update_debug_settings(){
@@ -397,7 +457,7 @@ if(!class_exists('Ultimate_Admin_Area')){
 
 			$result7 = $result8 = false;
 
-			$bsf_options_array = array('dev_mode', 'ultimate_global_scripts');
+			$bsf_options_array = array('dev_mode', 'ultimate_global_scripts', 'ultimate_roles');
 			$check_update_option_7 = $check_update_option_8 = false;
 
 			if(isset($_POST['bsf_options'])){
@@ -432,6 +492,8 @@ if(!class_exists('Ultimate_Admin_Area')){
 				$ultimate_animation = 'disable';
 			}
 			$result10 = update_option('ultimate_animation',$ultimate_animation);
+
+
 
 			if($result1 || $result2 || $result3 || $result4 || $result5 || $result6 || $result7 || $result8 || $result9 || $result10){
 				echo 'success';
@@ -531,6 +593,7 @@ if(!class_exists('Ultimate_Admin_Area')){
 						$hide_notice = true;
 					else
 						$hide_notice = false;
+					$reg_link = (is_multisite()) ? network_admin_url('index.php?page=bsf-dashboard') : admin_url('index.php?page=bsf-dashboard');
 
 					if(!$hide_notice) :
 					?>
@@ -547,7 +610,10 @@ if(!class_exists('Ultimate_Admin_Area')){
                             </style>
                                 <div class="ult_activate">
                                     <div class="ult_a"><img style="width:1em;" src="<?php echo plugins_url("img/logo-icon.png",__FILE__); ?>" alt=""></div>
-                                    <div class="ult_button_container" onclick="document.location='<?php echo admin_url('admin.php?page=bsf-dashboard'); ?>'">
+                                    <?php
+
+                                    ?>
+                                    <div class="ult_button_container" onclick="document.location='<?php echo $reg_link; ?>'">
                                         <div class="ult_button_border">
                                             <div class="ult_button"><span class="dashicons-before dashicons-admin-network" style="padding-right: 6px;"></span><?php __('Activate your license', 'ultimate_vc');?></div>
                                         </div>
@@ -566,7 +632,8 @@ if(!class_exists('Ultimate_Admin_Area')){
 					?>
 
                         <div class="updated fade">
-                            <p><?php echo _e('Howdy! Please','ultimate_vc').' <a href="'.admin_url('admin.php?page=bsf-dashboard').'">'.__('activate your copy','ultimate_vc').' </a> '.__('of the Ultimate Addons for Visual Composer to receive automatic updates & get premium support.','ultimate_vc');?>
+
+                            <p><?php echo _e('Howdy! Please','ultimate_vc').' <a href="'.$reg_link.'">'.__('activate your copy','ultimate_vc').' </a> '.__('of the Ultimate Addons for Visual Composer to receive automatic updates & get premium support.','ultimate_vc');?>
                             <span style="float: right; padding: 0px 4px; cursor: pointer;" class="uavc-activation-notice">X</span>
                             </p>
                         </div>
@@ -631,7 +698,12 @@ function ultimate_bsf_core_style_hooks($hooks) {
 	$array = array(
 		'ultimate_page_ultimate-resources',
 		'ultimate_page_about-ultimate',
-		'toplevel_page_about-ultimate'
+		'toplevel_page_about-ultimate',
+		'ultimate_page_ultimate-dashboard',
+		'ultimate_page_ultimate-smoothscroll',
+		'ultimate_page_ultimate-scripts-and-styles',
+		'admin_page_ultimate-debug-settings',
+		'ultimate_page_bsf-google-maps'
 	);
 	foreach ($array as $hook) {
 		array_push($hooks, $hook);
