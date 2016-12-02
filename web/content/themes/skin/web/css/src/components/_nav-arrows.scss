@@ -26,7 +26,7 @@
   }
   .icon { fill: $white; transition: transform .3s .3s; }
   div { position: absolute; top: 0; width: 228px; height: 100%; background-color: $grey2; perspective: 1000px; transition: transform .3s 0s; }
-  h3 { position: absolute; top: 100%; margin: 0; width: 100%; background: $grey2; transition: transform .3s; transform: rotateX(-90deg); transform-origin: 50% 0; backface-visibility: hidden;
+  h3 { position: absolute; top: 100%; margin: 0; margin-bottom: 2px; width: 100%; background: $grey2; transition: transform .3s; transform: rotateX(-90deg); transform-origin: 50% 0; backface-visibility: hidden;
     font-size: 1.5em; line-height: 2.8; font-weight: $fw-medium; text-align: center; white-space: nowrap; color: $brown1; }
   img { position: absolute; top: 0; left: 0; width: 100%; }
   .hover .icon { transition-delay: 0s; }

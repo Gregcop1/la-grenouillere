@@ -22,11 +22,6 @@ class MouseManager
     if(e)
       body = document.body
 
-      switch(e.type)
-        when 'panup' then window.cb.goToNextRow()
-        when 'pandown' then window.cb.goToPrevRow()
-        when 'panleft' then window.cb.goToNextArticle()
-        when 'panright' then window.cb.goToPrevArticle()
     return @
 
   bind: () =>

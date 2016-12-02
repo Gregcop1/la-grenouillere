@@ -68,7 +68,16 @@
         {% include 'Partials/Components/_analytics.twig' %}
     {% endblock %}
     <div id="preloader" class="preloader">
-        <img src="{{site.theme.link}}/web/img/logoInt.png" width="275" height="38" alt="La grenouillère"/>
+        
+        <img src="{{site.theme.link}}/web/img/logoIntro.png" width="572" height="143" alt="La grenouillère"/>
+        <div class="mavideo">
+              <video autoplay loop>
+                <source type="video/mp4" src="{{site.theme.link}}/web/img/grenouillere.mp4" media="(orientation: landscape)">
+              </video>
+            <div class="barreBas"></div>
+        </div>
+        
     </div>
 </body>
 </html>
+

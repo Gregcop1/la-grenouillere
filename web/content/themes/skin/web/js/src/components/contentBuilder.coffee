@@ -327,10 +327,10 @@ module.exports = class ContentBuilder
     newLeft = -((row.children.length - 1) * parseInt(@viewport.width)) - @footer.width
     Velocity(row,
       {left: newLeft + 'px'},
-      {duration: @transitionDuration.slide, easing: 'linear'})
+      {duration: @transitionDuration.slide, easing: 'easeInOutCubic'})
     Velocity(document.querySelector(@selector.siteContent),
       {left: 0, right: @footer.width},
-      {duration: @transitionDuration.slide, easing: 'linear'})
+      {duration: @transitionDuration.slide, easing: 'easeInOutCubic'})
     return @
 
 
@@ -345,10 +345,10 @@ module.exports = class ContentBuilder
       newLeft = -((row.children.length - 1) * parseInt(@viewport.width))
       Velocity(row,
         {left: newLeft + 'px'},
-        {duration: @transitionDuration.slide, easing: 'linear'})
+        {duration: @transitionDuration.slide, easing: 'easeOutCubic'})
       Velocity(document.querySelector(@selector.siteContent),
         {left: 0, right: 0},
-        {duration: @transitionDuration.slide, easing: 'linear'})
+        {duration: @transitionDuration.slide, easing: 'easeOutCubic'})
     return currentArticle
 
   showFirstArticle: () =>

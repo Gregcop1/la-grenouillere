@@ -14,17 +14,19 @@ class Preloader
     return @
 
   progressBar: () =>
-    @circle = new ProgressBar.Circle('#preloader', {
+    @circle = new ProgressBar.Line('#preloader', {
       color: '#ebc390',
-      strokeWidth: 4,
+      strokeWidth: 8,
       duration: 7000
+      trailColor: '#222',
+      trailWidth: 8,
     })
     @circle.animate(1)
 
     return @
 
   hide: () =>
-    Velocity(@preloader, 'fadeOut', {duration: 500})
+    Velocity(@preloader, 'fadeOut', {display: "none"}, {duration: 500})
 
     return @
 

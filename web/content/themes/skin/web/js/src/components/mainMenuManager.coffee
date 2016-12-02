@@ -10,6 +10,7 @@ class MainMenuManager
     icon: '#menu-icon'
     button: '#header .nav-button'
     nav: '#nav-main'
+    breadcrumb : '#breadcrumb'
   event:
     OPEN_MENU: 'OPEN_MENU'
     CLOSE_MENU: 'CLOSE_MENU'
@@ -28,6 +29,7 @@ class MainMenuManager
     @button = document.querySelector(@selector.button)
     @icon = document.querySelector(@selector.icon)
     @nav = document.querySelector(@selector.nav)
+    @breadcrumb = document.querySelector(@selector.breadcrumb)
     @viewport =
       width: Math.max(document.documentElement.clientWidth, window.innerWidth || 0) - 20 + 'px'
       height: Math.max(document.documentElement.clientHeight, window.innerHeight || 0) + 'px'
@@ -57,6 +59,7 @@ class MainMenuManager
     @transformIconToClose()
     Velocity(@header, {marginLeft: 0}, {duration: ContentBuilder::transitionDuration.slide})
     Velocity(@siteContent, {left: '330px'}, {duration: ContentBuilder::transitionDuration.slide}, 'easeInOutQuart')
+    Velocity(@breadcrumb, {left: '340px'}, {duration: ContentBuilder::transitionDuration.slide}, 'easeInOutQuart')
     jQuery('body').bind(@event.OPEN_MENU)
     return @
 
@@ -67,6 +70,7 @@ class MainMenuManager
       Velocity(@header, {marginLeft: '-330px'}, {duration: ContentBuilder::transitionDuration.slide}, 'easeInOutQuart')
       if(!event || event.type != ContentBuilder::event.FOOTER_SHOW)
         Velocity(@siteContent, {left: 0}, {duration: ContentBuilder::transitionDuration.slide}, 'easeInOutQuart')
+        Velocity(@breadcrumb, {left: 10}, {duration: ContentBuilder::transitionDuration.slide}, 'easeInOutQuart')
       jQuery('body').bind(@event.CLOSE_MENU)
     return @
 

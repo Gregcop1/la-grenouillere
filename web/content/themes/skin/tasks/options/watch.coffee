@@ -4,7 +4,6 @@ options = loadLocals('parameters')
 if options.lint.lock
   tasks =
     sass : [
-      'scsslint'
       'sass:dev'
       'postcss:dev'
       'clean:css'
@@ -19,7 +18,6 @@ else
       'sass:dev'
       'postcss:dev'
       'clean:css'
-      'scsslint'
     ]
     coffee: [
       'browserify:dev'

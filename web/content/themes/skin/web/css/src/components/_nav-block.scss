@@ -14,7 +14,7 @@
       }
       &:last-child { margin-bottom: 0; }
 
-      > .nav-link { font-size: 20px; font-weight: $fw-light; color: $grey5;
+      > .nav-link { margin-right: 16px; font-size: 20px; font-weight: $fw-light; color: $grey5;
         &:hover { color: $white; }
       }
     }
